@@ -1,0 +1,155 @@
+﻿@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@{
+    Layout = "_LayoutBase";
+}
+@RenderBody()
+@section Header {
+    <nav class="app-header navbar navbar-expand bg-body">
+        <div class="container-fluid">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-lte-toggle="sidebar" href="#" role="button">
+                        <i class="bi bi-list"></i>
+                    </a>
+                </li>
+            </ul>
+            <a class="navbar-brand" asp-area="" asp-controller="Samples" asp-action="Home">@ViewData["Title"]</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login">ログアウト</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+}   
+@section Sidebar {
+    @* <aside class="app-sidebar bg-primary-subtle" data-bs-theme="dark"> *@
+    @* <aside class="app-sidebar bg-success-subtle" data-bs-theme="light"> *@
+    <aside class="app-sidebar bg-primary-subtle" data-bs-theme="dark">
+        <div class="sidebar-brand">
+            <a asp-area="" asp-controller="Samples" asp-action="Home" class="brand-link">
+                <img src="~/img/Logo_Lumonde.png" alt="Logo" class="brand-image" />
+                @* <img src="~/img/Logo_Alfort.png" alt="Logo" class="brand-image" /> *@
+                <span class="brand-text fw-light">@Configuration["SystemName"]</span>
+            </a>
+        </div>
+        <div class="sidebar-wrapper">
+            <nav class="mt-2">
+                <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu">
+                    <li class="nav-item">
+                        <a asp-area="" asp-controller="Home" asp-action="UnderConstruction" class="nav-link">
+                            <p>申請登録（確定）</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="" asp-controller="Home" asp-action="UnderConstruction" class="nav-link">
+                            <p>申請登録（未確定）</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="" asp-controller="Home" asp-action="UnderConstruction" class="nav-link">
+                            <p>申請状況確認</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="" asp-controller="Home" asp-action="UnderConstruction" class="nav-link">
+                            <p>申請検索／鑑作成</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="" asp-controller="Home" asp-action="UnderConstruction" class="nav-link">
+                            <p>未払費用計上表出力</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="" asp-controller="Home" asp-action="UnderConstruction" class="nav-link">
+                            <p>条件見積書検索</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="" asp-controller="Home" asp-action="UnderConstruction" class="nav-link">
+                            <p>出張所別経費率登録</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="" asp-controller="Home" asp-action="UnderConstruction" class="nav-link">
+                            <p>申請月別状況検査</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="" asp-controller="Home" asp-action="UnderConstruction" class="nav-link">
+                            <p>エクセルデータ出力</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="" asp-controller="Home" asp-action="UnderConstruction" class="nav-link">
+                            <p>支払手続確定</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="" asp-controller="Home" asp-action="UnderConstruction" class="nav-link">
+                            <p>問屋値引データ取込</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="" asp-controller="Home" asp-action="UnderConstruction" class="nav-link">
+                            <p>月次最終処理</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="" asp-controller="Home" asp-action="UnderConstruction" class="nav-link">
+                            <p>データメンテナンス</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-link">
+                            <i class="nav-icon bi bi-house"></i>
+                            <p>Home</p>
+                        </a>
+                    </li>
+                    <li class="nav-item menu-open">
+                        <a href="#" class="nav-link active">
+                            <i class="nav-icon bi bi-speedometer"></i>
+                            <p>
+                                Samples
+                                <i class="nav-arrow bi bi-chevron-right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a asp-area="" asp-controller="Samples" asp-action="Index" class="nav-link">
+                                    <i class="nav-icon bi bi-circle"></i>
+                                    <p>Sample1</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-area="" asp-controller="Samples" asp-action="Index2" class="nav-link">
+                                    <i class="nav-icon bi bi-circle"></i>
+                                    <p>Sample2</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-area="" asp-controller="Samples" asp-action="HansokuSinsei" class="nav-link">
+                                    <i class="nav-icon bi bi-circle"></i>
+                                    <p>販促費申請</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-area="" asp-controller="Samples" asp-action="Home" class="nav-link">
+                                    <i class="nav-icon bi bi-circle"></i>
+                                    <p>HOME</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </aside>
+}
+@await RenderSectionAsync("Scripts", required: false)

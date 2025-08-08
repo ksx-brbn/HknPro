@@ -1,0 +1,66 @@
+@model PaginatedList<BourbonWeb.Models.HansokuSinsei>
+@* 鑑未作成一覧用テーブル *@
+
+<div class="card">
+    <div class="card-body p-0">
+        <div class="table-responsive" style="width: 100%;">
+            <table class="table table-sm table-bordered text-nowrap table-striped-pair">
+                <thead class="text-center">
+                    <tr>
+                        <th rowspan="2">#</th>
+                        <th>@Html.DisplayNameFor(model => model[0].KeihishoNm)</th>
+                        <th>@Html.DisplayNameFor(model => model[0].KeihishaNm)</th>
+                        <th>@Html.DisplayNameFor(model => model[0].SinseiTaishoYm)</th>
+                        <th rowspan="2">@Html.DisplayNameFor(model => model[0].SiharaiYoteiYmd)</th>
+                        <th rowspan="2">@Html.DisplayNameFor(model => model[0].ShoriHoho)</th>
+                        <th rowspan="2">@Html.DisplayNameFor(model => model[0].SinseiSeikyuCd)</th>
+                        <th rowspan="2">@Html.DisplayNameFor(model => model[0].SinseiChoaiCd)</th>
+                        <th rowspan="2">@Html.DisplayNameFor(model => model[0].SinseiChoaiNm)</th>
+                        <th rowspan="2">@Html.DisplayNameFor(model => model[0].TorihikiNmA)</th>
+                        <th rowspan="2">@Html.DisplayNameFor(model => model[0].SinseiNo)</th>
+                        <th rowspan="2">@Html.DisplayNameFor(model => model[0].KyosanGaku)</th>
+                        <th>@Html.DisplayNameFor(model => model[0].CreatedAt)</th>
+                        <th rowspan="2">@Html.DisplayNameFor(model => model[0].MibaraiKanriSime)</th>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model[0].SinseiShoNm)</th>
+                        <th>@Html.DisplayNameFor(model => model[0].SinseiShaNm)</th>
+                        <th>@Html.DisplayNameFor(model => model[0].SinseiKeijoYm)</th>
+                        <th>@Html.DisplayNameFor(model => model[0].UpdatedAt)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var rowIndex = (Model.PageIndex - 1) * Model.PageSize + 1;
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td rowspan="2" class="text-center">@rowIndex</td>
+                            <td>@Html.DisplayFor(modelItem => item.KeihishoNm)</td>
+                            <td>@Html.DisplayFor(modelItem => item.KeihishaNm)</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.SinseiTaishoYm)</td>
+                            <td rowspan="2" class="text-center">@Html.DisplayFor(modelItem => item.SiharaiYoteiYmd)</td>
+                            <td rowspan="2">@Html.DisplayFor(modelItem => item.ShoriHoho)</td>
+                            <td rowspan="2" class="text-center">@Html.DisplayFor(modelItem => item.SinseiSeikyuCd)</td>
+                            <td rowspan="2" class="text-center">@Html.DisplayFor(modelItem => item.SinseiChoaiCd)</td>
+                            <td rowspan="2">@Html.DisplayFor(modelItem => item.SinseiChoaiNm)</td>
+                            <td rowspan="2">@Html.DisplayFor(modelItem => item.TorihikiNmA)</td>
+                            <td rowspan="2" class="text-center"><a href="https://www.bourbon.co.jp/">@item.SinseiNo</a></td>
+                            <td rowspan="2" class="text-end">@(item.KyosanGaku.HasValue ? $"¥{item.KyosanGaku.Value:#,0}" : "")</td>
+                            <td>@Html.DisplayFor(modelItem => item.CreatedAt)</td>
+                            <td rowspan="2" class="text-center">@Html.DisplayFor(modelItem => item.MibaraiKanriSime)</td>
+                        </tr>
+                        <tr class="text-nowrap">
+                            <td>@Html.DisplayFor(modelItem => item.SinseiShoNm)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiShaNm)</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.SinseiKeijoYm)</td>
+                            <td>@Html.DisplayFor(modelItem => item.UpdatedAt)</td>
+                        </tr>
+                        rowIndex++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

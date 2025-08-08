@@ -1,0 +1,188 @@
+@model BourbonWeb.Models.HomeViewModel
+
+@{
+    ViewData["Title"] = "HOME";
+}
+
+@* toast案1 
+<div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 1200">
+    <div id="noticeToast" class="toast" style="width: 600px; max-width: 90%;" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">お知らせ</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            2025年10月31日21時からシステムメンテナンスのため利用できなくなります。<br />
+            ほげほげ
+        </div>
+    </div>
+</div>
+ *@
+
+@* toast案2 
+ *@
+<div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 1200">
+    <div id="noticeToast"
+         class="toast bg-warning text-dark border border-dark shadow"
+         style="width: 800px; max-width: 90%;"
+         role="alert" aria-live="assertive" aria-atomic="true">
+
+        <div class="toast-header bg-dark text-white">
+            <strong class="me-auto">⚠ お知らせ</strong>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+
+        <div class="toast-body fs-5 fw-bold">
+            2025年10月31日21時からシステムメンテナンスのため利用できなくなります。<br />
+            ほげほげ
+        </div>
+    </div>
+</div>
+
+<div class="alert alert-warning" role="alert">
+    2025年10月31日21時からシステムメンテナンスのため利用できなくなります。<br />
+    ほげほげ
+</div>
+
+<div class="d-flex align-items-center justify-content-between mb-1">
+    <div class="d-flex align-items-center">
+        <p class="mb-0 me-3">鑑未作成一覧</p>
+    </div>
+    <div>
+        @Model.MainList.TotalCount.ToString("N0") 件
+    </div>
+</div>
+@await Html.PartialAsync("_HansokuSinseiMainTable", Model.MainList)
+
+<nav aria-label="page navigation" class="mt-3">
+    <ul class="pagination justify-content-center">
+        <li class="page-item @(Model.MainList.HasPreviousPage ? "" : "disabled")">
+            <a class="page-link" asp-route-mainPageNumber="@(Model.MainList.PageIndex - 1)" asp-route-queryPageNumber="@Model.QueryList.PageIndex">前へ</a>
+        </li>
+        <li class="page-item @(Model.MainList.PageIndex == 1 ? "active" : "")">
+            <a class="page-link" asp-route-mainPageNumber="1" asp-route-queryPageNumber="@Model.QueryList.PageIndex">1</a>
+        </li>
+        @if (Model.MainList.PageIndex > 3)
+        {
+            <li class="page-item disabled"><span class="page-link">…</span></li>
+        }
+        @for (var i = Math.Max(2, Model.MainList.PageIndex - 1); i <= Math.Min(Model.MainList.TotalPages - 1, Model.MainList.PageIndex + 1); i++)
+        {
+            <li class="page-item @(i == Model.MainList.PageIndex ? "active" : "")">
+                <a class="page-link" asp-route-mainPageNumber="@i" asp-route-queryPageNumber="@Model.QueryList.PageIndex">@i</a>
+            </li>
+        }
+        @if (Model.MainList.PageIndex < Model.MainList.TotalPages - 2)
+        {
+            <li class="page-item disabled"><span class="page-link">…</span></li>
+        }
+        @if (Model.MainList.TotalPages > 1)
+        {
+            <li class="page-item @(Model.MainList.PageIndex == Model.MainList.TotalPages ? "active" : "")">
+                <a class="page-link" asp-route-mainPageNumber="@Model.MainList.TotalPages" asp-route-queryPageNumber="@Model.QueryList.PageIndex">@Model.MainList.TotalPages</a>
+            </li>
+        }
+        <li class="page-item @(Model.MainList.HasNextPage ? "" : "disabled")">
+            <a class="page-link" asp-route-mainPageNumber="@(Model.MainList.PageIndex + 1)" asp-route-queryPageNumber="@Model.QueryList.PageIndex">次へ</a>
+        </li>
+    </ul>
+</nav>
+
+<hr />
+<div class="d-flex align-items-center justify-content-between mb-1">
+    <div class="d-flex align-items-center">
+        <p class="mb-0 me-3">支払待ち一覧</p>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="paymentStatus" id="status-all" value="all" checked>
+            <label class="form-check-label" for="status-all">全て</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="paymentStatus" id="status-waiting" value="waiting">
+            <label class="form-check-label" for="status-waiting">支払確定待</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="paymentStatus" id="status-approved" value="approved">
+            <label class="form-check-label" for="status-approved">相殺承認済</label>
+        </div>
+    </div>
+    <div>
+        @Model.QueryList.TotalCount.ToString("N0") 件
+    </div>
+</div>
+@await Html.PartialAsync("_HansokuSinseiQueryTable", Model.QueryList)
+
+<nav aria-label="page navigation" class="mt-3">
+    <ul class="pagination justify-content-center">
+        <li class="page-item @(Model.QueryList.HasPreviousPage ? "" : "disabled")">
+            <a class="page-link" asp-route-queryPageNumber="@(Model.QueryList.PageIndex - 1)" asp-route-mainPageNumber="@Model.MainList.PageIndex">前へ</a>
+        </li>
+        <li class="page-item @(Model.QueryList.PageIndex == 1 ? "active" : "")">
+            <a class="page-link" asp-route-queryPageNumber="1" asp-route-mainPageNumber="@Model.MainList.PageIndex">1</a>
+        </li>
+        @if (Model.QueryList.PageIndex > 3)
+        {
+            <li class="page-item disabled"><span class="page-link">…</span></li>
+        }
+        @for (var i = Math.Max(2, Model.QueryList.PageIndex - 1); i <= Math.Min(Model.QueryList.TotalPages - 1, Model.QueryList.PageIndex + 1); i++)
+        {
+            <li class="page-item @(i == Model.QueryList.PageIndex ? "active" : "")">
+                <a class="page-link" asp-route-queryPageNumber="@i" asp-route-mainPageNumber="@Model.MainList.PageIndex">@i</a>
+            </li>
+        }
+        @if (Model.QueryList.PageIndex < Model.QueryList.TotalPages - 2)
+        {
+            <li class="page-item disabled"><span class="page-link">…</span></li>
+        }
+        @if (Model.QueryList.TotalPages > 1)
+        {
+            <li class="page-item @(Model.QueryList.PageIndex == Model.QueryList.TotalPages ? "active" : "")">
+                <a class="page-link" asp-route-queryPageNumber="@Model.QueryList.TotalPages" asp-route-mainPageNumber="@Model.MainList.PageIndex">@Model.QueryList.TotalPages</a>
+            </li>
+        }
+        <li class="page-item @(Model.QueryList.HasNextPage ? "" : "disabled")">
+            <a class="page-link" asp-route-queryPageNumber="@(Model.QueryList.PageIndex + 1)" asp-route-mainPageNumber="@Model.MainList.PageIndex">次へ</a>
+        </li>
+    </ul>
+</nav>
+
+<hr />
+<div class="card mt-5">
+    <div class="card-header">確認事項</div>
+    <div class="card-body">
+        <ul class="mb-0">
+            <li>画面常時表示にするかトースト表示にするか</li>
+            <li>
+                トースト表示の場合
+                <ul>
+                    <li>何秒表示するか</li>
+                    <li>シンプルか強調か</li>
+                    <li>トップページに戻るたびに表示されるのは煩わしいか</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="card mt-5">
+    <div class="card-header">機能概要</div>
+    <div class="card-body">
+        <ul class="mb-0">
+            <li>「鑑未作成一覧」と「支払待ち一覧」を表示します。</li>
+            <li>ページネーションにより各一覧のページを切り替えられます。</li>
+        </ul>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var toastEl = document.getElementById('noticeToast');
+            if (toastEl) {
+                var toast = new bootstrap.Toast(toastEl, { 
+                    delay: 5000,    // 5秒後に消える
+                    autohide: true  // falseにすると自動では消えない
+                });
+                toast.show();
+            }
+        });
+    </script>
+}

@@ -1,0 +1,265 @@
+@model IEnumerable<BourbonWeb.Models.HansokuSinsei>
+
+@{
+    ViewData["Title"] = "販促費申請";
+    var rowIndex = 1;
+}
+
+<p>T_HANSOKU_SINSEI</p>
+<div class="card">
+    <div class="card-body p-0">
+        <div class="table-responsive" style="width: 100%;">
+            <table class="table table-sm table-bordered table-striped">
+                <thead>
+                    <tr class="text-nowrap">
+                        <th class="text-center">#</th>
+                        <th>@Html.DisplayNameFor(model => model.KaishaCd)</th>
+                        <th>@Html.DisplayNameFor(model => model.UrikakeBunrui)</th>
+                        <th>@Html.DisplayNameFor(model => model.UrikakeBunruiNm)</th>
+                        <th>@Html.DisplayNameFor(model => model.SeikyuKbn)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiNo)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiShurui)</th>
+                        <th>@Html.DisplayNameFor(model => model.ShuseiSinseiNo)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiTaishoYm)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiKeijoYm)</th>
+                        <th>@Html.DisplayNameFor(model => model.KaikeiKeijoYm)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiKagamiNo)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiKagamiDaihyoNo)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiKagamiDaihyoCd)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiSiharaiGroupCd)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiSeikyuCd)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiSeikyuNm)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiSeikyuBunruiCd)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiChoaiCd)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiChoaiNm)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiChoaiBunruiCd)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiSeikyuHontenCd)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiSeikyuHontenNm)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiSeikyuSimebi)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiSeikyuShukinBi)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiSeikyuKaishuSite)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiSeikyuLastSimebi)</th>
+                        <th>@Html.DisplayNameFor(model => model.KikakuBunruiNo)</th>
+                        <th>@Html.DisplayNameFor(model => model.TorihikiCdA)</th>
+                        <th>@Html.DisplayNameFor(model => model.TorihikiNmA)</th>
+                        <th>@Html.DisplayNameFor(model => model.TorihikiKanaA)</th>
+                        <th>@Html.DisplayNameFor(model => model.TorihikiBunruiCd)</th>
+                        <th>@Html.DisplayNameFor(model => model.TorihikiGyotaiKbn)</th>
+                        <th>@Html.DisplayNameFor(model => model.TorihikiCdKbn)</th>
+                        <th>@Html.DisplayNameFor(model => model.TorihikiCdB)</th>
+                        <th>@Html.DisplayNameFor(model => model.TorihikiKanjiKbn)</th>
+                        <th>@Html.DisplayNameFor(model => model.TorihikiNmB)</th>
+                        <th>@Html.DisplayNameFor(model => model.TorihikiAreaCd)</th>
+                        <th>@Html.DisplayNameFor(model => model.TorihikiBushoCd)</th>
+                        <th>@Html.DisplayNameFor(model => model.TorihikiEigyoCd)</th>
+                        <th>@Html.DisplayNameFor(model => model.TorihikiCenterCd)</th>
+                        <th>@Html.DisplayNameFor(model => model.TorihikiKeiyakuNo)</th>
+                        <th>@Html.DisplayNameFor(model => model.TorihikiKeiyakuHozon)</th>
+                        <th>@Html.DisplayNameFor(model => model.TorihikiMitumoriNo)</th>
+                        <th>@Html.DisplayNameFor(model => model.TorihikiMitumoriHozon)</th>
+                        <th>@Html.DisplayNameFor(model => model.TorihikiMishuSeikyuNo)</th>
+                        <th>@Html.DisplayNameFor(model => model.TorihikiMishuSeikyuHozon)</th>
+                        <th>@Html.DisplayNameFor(model => model.TorihikiMishuNo)</th>
+                        <th>@Html.DisplayNameFor(model => model.TorihikiSeikyuSime)</th>
+                        <th>@Html.DisplayNameFor(model => model.SiharaiKeitai)</th>
+                        <th>@Html.DisplayNameFor(model => model.SiharaiShubetu)</th>
+                        <th>@Html.DisplayNameFor(model => model.ShoriHoho)</th>
+                        <th>@Html.DisplayNameFor(model => model.SiharaiYoteiYmd)</th>
+                        <th>@Html.DisplayNameFor(model => model.SiharaiKakuteiYmd)</th>
+                        <th>@Html.DisplayNameFor(model => model.SiharaiTetuzukiShoCd)</th>
+                        <th>@Html.DisplayNameFor(model => model.SiharaiTetuzukiShaCd)</th>
+                        <th>@Html.DisplayNameFor(model => model.SiharaiTetuzukiYmd)</th>
+                        <th>@Html.DisplayNameFor(model => model.SiharaiTetuzukiTime)</th>
+                        <th>@Html.DisplayNameFor(model => model.MibaraiKanriKbn)</th>
+                        <th>@Html.DisplayNameFor(model => model.MibaraiKanriSime)</th>
+                        <th>@Html.DisplayNameFor(model => model.MibaraiKanriShoriSimeKbn)</th>
+                        <th>@Html.DisplayNameFor(model => model.SiwakeKidenYmd)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiComment)</th>
+                        <th>@Html.DisplayNameFor(model => model.KyosanCommentHyosiFlg)</th>
+                        <th>@Html.DisplayNameFor(model => model.JotaiKbn)</th>
+                        <th>@Html.DisplayNameFor(model => model.JotaiKbnNm)</th>
+                        <th>@Html.DisplayNameFor(model => model.HonshaShoninJotaiKbn)</th>
+                        <th>@Html.DisplayNameFor(model => model.KeihishoCd)</th>
+                        <th>@Html.DisplayNameFor(model => model.KeihishoNm)</th>
+                        <th>@Html.DisplayNameFor(model => model.KeihishaCd)</th>
+                        <th>@Html.DisplayNameFor(model => model.KeihishaNm)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiShoCd)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiShoNm)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiShaCd)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiShaNm)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiKagamiShoCd)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiKagamiShoNm)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiKagamiShaCd)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiKagamiShaNm)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiTorokuYmd)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiTorokuTime)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiShoSakuseiYmd)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiShoSakuseiTime)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiShoSakuseiYmdZenkai)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiShoSakuseiTimeZenkai)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiShoInsatuYmd)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiShoInsatuTime)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiShoInsatuCnt)</th>
+                        <th>@Html.DisplayNameFor(model => model.SuryoTaniKbn)</th>
+                        <th>@Html.DisplayNameFor(model => model.KyosanJokenTaniKbn)</th>
+                        <th>@Html.DisplayNameFor(model => model.KyosanGaku)</th>
+                        <th>@Html.DisplayNameFor(model => model.KyosanGakuZeiKbn)</th>
+                        <th>@Html.DisplayNameFor(model => model.KyosanGakuZeiGaku)</th>
+                        <th>@Html.DisplayNameFor(model => model.KyosanGakuZeiNuki)</th>
+                        <th>@Html.DisplayNameFor(model => model.ZeiHasuShoriKbn)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiYmd)</th>
+                        <th>@Html.DisplayNameFor(model => model.TaishoKaisiYmd)</th>
+                        <th>@Html.DisplayNameFor(model => model.TaishoShuryoYmd)</th>
+                        <th>@Html.DisplayNameFor(model => model.MiseBunrui)</th>
+                        <th>@Html.DisplayNameFor(model => model.HacchusakiCd)</th>
+                        <th>@Html.DisplayNameFor(model => model.HacchusakiNm)</th>
+                        <th>@Html.DisplayNameFor(model => model.ShuseiKbn)</th>
+                        <th>@Html.DisplayNameFor(model => model.SinseiAssociationCd)</th>
+                        <th>@Html.DisplayNameFor(model => model.TeiseiSinseiNo)</th>
+                        <th>@Html.DisplayNameFor(model => model.TeiseiMotoSinseiNo)</th>
+                        <th>@Html.DisplayNameFor(model => model.ChofukuJogai)</th>
+                        <th>@Html.DisplayNameFor(model => model.ShuseiKagamiNo)</th>
+                        <th>@Html.DisplayNameFor(model => model.MitumoriTekiyo)</th>
+                        <th>@Html.DisplayNameFor(model => model.KakakuHansokuKbn)</th>
+                        <th>@Html.DisplayNameFor(model => model.Remarks)</th>
+                        <th>@Html.DisplayNameFor(model => model.CreatedId)</th>
+                        <th>@Html.DisplayNameFor(model => model.CreatedAt)</th>
+                        <th>@Html.DisplayNameFor(model => model.UpdatedId)</th>
+                        <th>@Html.DisplayNameFor(model => model.UpdatedAt)</th>
+                        <th>@Html.DisplayNameFor(model => model.DeletedFlg)</th>
+                        <th>@Html.DisplayNameFor(model => model.LockVersion)</th>
+                        <th>@Html.DisplayNameFor(model => model.NebikiSyubetu)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        rowIndex = 1;
+                    }
+                    @foreach (var item in Model)
+                    {
+                        <tr class="text-nowrap">
+                            <td class="text-center">@rowIndex</td>
+                            <td>@Html.DisplayFor(modelItem => item.KaishaCd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.UrikakeBunrui)</td>
+                            <td>@Html.DisplayFor(modelItem => item.UrikakeBunruiNm)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SeikyuKbn)</td>
+                            <td class="text-center"><a href="https://www.bourbon.co.jp/">@item.SinseiNo</a></td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiShurui)</td>
+                            <td>@Html.DisplayFor(modelItem => item.ShuseiSinseiNo)</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.SinseiTaishoYm)</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.SinseiKeijoYm)</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.KaikeiKeijoYm)</td>
+                            <td class="text-center"><a href="https://www.bourbon.co.jp/">@item.SinseiKagamiNo</a></td>
+                            <td class="text-center"><a href="https://www.bourbon.co.jp/">@item.SinseiKagamiDaihyoNo</a></td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiKagamiDaihyoCd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiSiharaiGroupCd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiSeikyuCd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiSeikyuNm)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiSeikyuBunruiCd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiChoaiCd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiChoaiNm)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiChoaiBunruiCd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiSeikyuHontenCd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiSeikyuHontenNm)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiSeikyuSimebi)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiSeikyuShukinBi)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiSeikyuKaishuSite)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiSeikyuLastSimebi)</td>
+                            <td>@Html.DisplayFor(modelItem => item.KikakuBunruiNo)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TorihikiCdA)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TorihikiNmA)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TorihikiKanaA)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TorihikiBunruiCd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TorihikiGyotaiKbn)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TorihikiCdKbn)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TorihikiCdB)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TorihikiKanjiKbn)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TorihikiNmB)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TorihikiAreaCd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TorihikiBushoCd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TorihikiEigyoCd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TorihikiCenterCd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TorihikiKeiyakuNo)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TorihikiKeiyakuHozon)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TorihikiMitumoriNo)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TorihikiMitumoriHozon)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TorihikiMishuSeikyuNo)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TorihikiMishuSeikyuHozon)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TorihikiMishuNo)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TorihikiSeikyuSime)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SiharaiKeitai)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SiharaiShubetu)</td>
+                            <td>@Html.DisplayFor(modelItem => item.ShoriHoho)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SiharaiYoteiYmd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SiharaiKakuteiYmd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SiharaiTetuzukiShoCd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SiharaiTetuzukiShaCd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SiharaiTetuzukiYmd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SiharaiTetuzukiTime)</td>
+                            <td>@Html.DisplayFor(modelItem => item.MibaraiKanriKbn)</td>
+                            <td>@Html.DisplayFor(modelItem => item.MibaraiKanriSime)</td>
+                            <td>@Html.DisplayFor(modelItem => item.MibaraiKanriShoriSimeKbn)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SiwakeKidenYmd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiComment)</td>
+                            <td>@Html.DisplayFor(modelItem => item.KyosanCommentHyosiFlg)</td>
+                            <td>@Html.DisplayFor(modelItem => item.JotaiKbn)</td>
+                            <td>@Html.DisplayFor(modelItem => item.JotaiKbnNm)</td>
+                            <td>@Html.DisplayFor(modelItem => item.HonshaShoninJotaiKbn)</td>
+                            <td>@Html.DisplayFor(modelItem => item.KeihishoCd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.KeihishoNm)</td>
+                            <td>@Html.DisplayFor(modelItem => item.KeihishaCd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.KeihishaNm)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiShoCd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiShoNm)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiShaCd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiShaNm)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiKagamiShoCd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiKagamiShoNm)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiKagamiShaCd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiKagamiShaNm)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiTorokuYmd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiTorokuTime)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiShoSakuseiYmd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiShoSakuseiTime)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiShoSakuseiYmdZenkai)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiShoSakuseiTimeZenkai)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiShoInsatuYmd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiShoInsatuTime)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiShoInsatuCnt)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SuryoTaniKbn)</td>
+                            <td>@Html.DisplayFor(modelItem => item.KyosanJokenTaniKbn)</td>
+                            <td>@Html.DisplayFor(modelItem => item.KyosanGaku)</td>
+                            <td>@Html.DisplayFor(modelItem => item.KyosanGakuZeiKbn)</td>
+                            <td>@Html.DisplayFor(modelItem => item.KyosanGakuZeiGaku)</td>
+                            <td>@Html.DisplayFor(modelItem => item.KyosanGakuZeiNuki)</td>
+                            <td>@Html.DisplayFor(modelItem => item.ZeiHasuShoriKbn)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiYmd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TaishoKaisiYmd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TaishoShuryoYmd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.MiseBunrui)</td>
+                            <td>@Html.DisplayFor(modelItem => item.HacchusakiCd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.HacchusakiNm)</td>
+                            <td>@Html.DisplayFor(modelItem => item.ShuseiKbn)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiAssociationCd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TeiseiSinseiNo)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TeiseiMotoSinseiNo)</td>
+                            <td>@Html.DisplayFor(modelItem => item.ChofukuJogai)</td>
+                            <td>@Html.DisplayFor(modelItem => item.ShuseiKagamiNo)</td>
+                            <td>@Html.DisplayFor(modelItem => item.MitumoriTekiyo)</td>
+                            <td>@Html.DisplayFor(modelItem => item.KakakuHansokuKbn)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Remarks)</td>
+                            <td>@Html.DisplayFor(modelItem => item.CreatedId)</td>
+                            <td>@Html.DisplayFor(modelItem => item.CreatedAt)</td>
+                            <td>@Html.DisplayFor(modelItem => item.UpdatedId)</td>
+                            <td>@Html.DisplayFor(modelItem => item.UpdatedAt)</td>
+                            <td>@Html.DisplayFor(modelItem => item.DeletedFlg)</td>
+                            <td>@Html.DisplayFor(modelItem => item.LockVersion)</td>
+                            <td>@Html.DisplayFor(modelItem => item.NebikiSyubetu)</td>
+                        </tr>
+                        rowIndex++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

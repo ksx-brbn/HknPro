@@ -1,0 +1,34 @@
+/* テーブルの縦位置中央揃え */
+.table > :not(caption) > * > * {
+    vertical-align: middle;
+}
+
+/* サイドバータイトル左揃え */
+.sidebar-brand {
+    justify-content: flex-start !important;
+}
+
+/* 1レコード2行表示のテーブル用ストライプ */
+.table-striped-pair tbody tr:nth-of-type(4n+3),
+.table-striped-pair tbody tr:nth-of-type(4n+4) {
+    --bs-table-accent-bg: var(--bs-table-striped-bg);
+    color: var(--bs-table-striped-color);
+}
+
+/* テーブルヘッダーの背景色 */
+.table thead th {
+    background-color: #e3f2fd;
+}
+
+/* AdminLTE の余白設定を上書き */
+.table-responsive th,
+.table-responsive td {
+    padding-right: 4px !important;
+    padding-left: 4px !important;
+}
+/* 1列目(行番号)の余白設定を上書き */
+.table-responsive th:first-child,
+.table-responsive td:first-child {
+    padding-right: 10px !important;
+    padding-left: 10px !important;
+}
