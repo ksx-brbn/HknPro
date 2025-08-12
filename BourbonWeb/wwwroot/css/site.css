@@ -26,11 +26,11 @@
     padding-right: 4px !important;
     padding-left: 4px !important;
 }
-/* 1列目(行番号)の余白設定を上書き */
-.table-responsive th:first-child,
-.table-responsive td:first-child {
+/* 1列目(行番号)用の余白設定 */
+.table-responsive .table-row-index {
     padding-right: 10px !important;
     padding-left: 10px !important;
+    text-align: center;
 }
 
 /* 固定幅 */
