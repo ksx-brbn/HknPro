@@ -34,6 +34,12 @@
 }
 
 /* �Œ蕝 */
-.fixed-width {
+.fixed-width-sm {
     width: 6em;
+}
+.fixed-width-md {
+    width: 8em;
+}
+.fixed-width-lg {
+    width: 12em;
 }

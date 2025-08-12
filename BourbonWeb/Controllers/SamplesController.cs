@@ -153,7 +153,7 @@ SELECT
     , LOCK_VERSION
     , NEBIKI_SYUBETU
 FROM
-    T_HANSOKU_SINSEI
+    T_HANSOKU_SINSEI 
 ";
 
         #region Sample CRUD Operations
@@ -357,6 +357,31 @@ FROM
 
         public async Task<IActionResult> InputConditions(HansokuSinseiSearchCondition condition, int? pageNumber)
         {
+            if (string.IsNullOrEmpty(condition.SinseiShoCd))
+            {
+                condition.SinseiShoCd = "100500";
+            }
+
+            if (string.IsNullOrEmpty(condition.SinseiShaCd))
+            {
+                condition.SinseiShaCd = "063232";
+            }
+
+            if (string.IsNullOrEmpty(condition.SinseiSeikyuCd))
+            {
+                condition.SinseiSeikyuCd = "143955";
+            }
+
+            if (string.IsNullOrEmpty(condition.SeikyuKbn))
+            {
+                condition.SeikyuKbn = "1";
+            }
+
+            if (string.IsNullOrEmpty(condition.TorihikiCdA))
+            {
+                condition.TorihikiCdA = "149300";
+            }
+
             var baseQuery = _context.HansokuSinsei
                 .FromSqlRaw(sql)
                 .AsNoTracking();
@@ -388,6 +413,11 @@ FROM
                 baseQuery = baseQuery.Where(s => s.SinseiSeikyuCd == condition.SinseiSeikyuCd);
             }
 
+            if (!string.IsNullOrEmpty(condition.SeikyuKbn))
+            {
+                baseQuery = baseQuery.Where(s => s.SeikyuKbn == condition.SeikyuKbn);
+            }
+
             if (!string.IsNullOrEmpty(condition.TorihikiCdA))
             {
                 baseQuery = baseQuery.Where(s => s.TorihikiCdA == condition.TorihikiCdA);
@@ -399,6 +429,7 @@ FROM
             ViewData["CurrentSinseiShoCd"] = condition.SinseiShoCd;
             ViewData["CurrentSinseiShaCd"] = condition.SinseiShaCd;
             ViewData["CurrentSinseiSeikyuCd"] = condition.SinseiSeikyuCd;
+            ViewData["CurrentSeikyuKbn"] = condition.SeikyuKbn;
             ViewData["CurrentTorihikiCdA"] = condition.TorihikiCdA;
             var list = await PaginatedList<HansokuSinsei>.CreateAsync(baseQuery, pageNumber ?? 1, pageSize);
             return View(list);

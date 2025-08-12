@@ -6,28 +6,43 @@
 
 <form method="get" class="mb-3 text-nowrap">
     <div class="d-flex align-items-center">
-        <label for="sinseiTaishoYm" class="me-2 fixed-width">対象年月</label>
-        <input type="month" id="sinseiTaishoYm" name="sinseiTaishoYm" class="form-control form-control-sm" value="@(ViewData["CurrentSinseiTaishoYm"])" />
+        <label for="sinseiTaishoYm" class="me-2 fixed-width-sm">対象年月</label>
+        <input type="month" id="sinseiTaishoYm" name="sinseiTaishoYm" class="form-control form-control-sm fixed-width-md" value="@(ViewData["CurrentSinseiTaishoYm"])" />
     </div>
     <div class="d-flex align-items-center mt-2">
-        <label for="siharaiYoteiYmd" class="me-2 fixed-width">支払予定日</label>
-        <input type="date" id="siharaiYoteiYmd" name="siharaiYoteiYmd" class="form-control form-control-sm" value="@(ViewData["CurrentSiharaiYoteiYmd"])" />
+        <label for="siharaiYoteiYmd" class="me-2 fixed-width-sm">支払予定日</label>
+        <input type="date" id="siharaiYoteiYmd" name="siharaiYoteiYmd" class="form-control form-control-sm fixed-width-md" value="@(ViewData["CurrentSiharaiYoteiYmd"])" />
     </div>
     <div class="d-flex align-items-center mt-2">
-        <label for="sinseiShoCd" class="me-2 fixed-width">売上担当所</label>
-        <input type="text" id="sinseiShoCd" name="sinseiShoCd" class="form-control form-control-sm" value="@(ViewData["CurrentSinseiShoCd"])" />
+        <label for="sinseiShoCd" class="me-2 fixed-width-sm">売上担当所</label>
+        <input type="text" id="sinseiShoCd" name="sinseiShoCd" class="form-control form-control-sm fixed-width-md" value="@(ViewData["CurrentSinseiShoCd"])" />
+        <input type="text" id="sinseiShoNm" name="sinseiShoNm" class="form-control form-control-sm fixed-width-lg ms-2" value="@(ViewData["CurrentSinseiShoNm"])" disabled />
     </div>
     <div class="d-flex align-items-center mt-2">
-        <label for="sinseiShaCd" class="me-2 fixed-width">売上担当者</label>
-        <input type="text" id="sinseiShaCd" name="sinseiShaCd" class="form-control form-control-sm" value="@(ViewData["CurrentSinseiShaCd"])" />
+        <label for="sinseiShaCd" class="me-2 fixed-width-sm">売上担当者</label>
+        <input type="text" id="sinseiShaCd" name="sinseiShaCd" class="form-control form-control-sm fixed-width-md" value="@(ViewData["CurrentSinseiShaCd"])" />
+        <input type="text" id="sinseiShaNm" name="sinseiShaNm" class="form-control form-control-sm fixed-width-lg ms-2" value="@(ViewData["CurrentSinseiShaNm"])" disabled />
     </div>
     <div class="d-flex align-items-center mt-2">
-        <label for="sinseiSeikyuCd" class="me-2 fixed-width">請求・帳合</label>
-        <input type="text" id="sinseiSeikyuCd" name="sinseiSeikyuCd" class="form-control form-control-sm" value="@(ViewData["CurrentSinseiSeikyuCd"])" />
+        <label for="sinseiSeikyuCd" class="me-2 fixed-width-sm">請求・帳合</label>
+        <input type="text" id="sinseiSeikyuCd" name="sinseiSeikyuCd" class="form-control form-control-sm fixed-width-md" value="@(ViewData["CurrentSinseiSeikyuCd"])" />
+        <input type="text" id="sinseiSeikyuNm" name="sinseiSeikyuNm" class="form-control form-control-sm fixed-width-lg ms-2" value="@(ViewData["CurrentSinseiSeikyuNm"])" disabled />
     </div>
     <div class="d-flex align-items-center mt-2">
-        <label for="torihikiCdA" class="me-2 fixed-width">得意先</label>
-        <input type="text" id="torihikiCdA" name="torihikiCdA" class="form-control form-control-sm" value="@(ViewData["CurrentTorihikiCdA"])" />
+        <label class="me-2 fixed-width-sm">請求区分</label>
+        <div class="form-check form-check-inline mt-1 ms-1">
+            <input class="form-check-input" type="radio" id="seikyuKbn1" name="seikyuKbn" value="1" @(ViewData["CurrentSeikyuKbn"]?.ToString() == "1" ? "checked" : "") />
+            <label class="form-check-label" for="seikyuKbn1">菓子</label>
+        </div>
+        <div class="form-check form-check-inline mt-1">
+            <input class="form-check-input" type="radio" id="seikyuKbn2" name="seikyuKbn" value="2" @(ViewData["CurrentSeikyuKbn"]?.ToString() == "2" ? "checked" : "") />
+            <label class="form-check-label" for="seikyuKbn2">飲料</label>
+        </div>
+    </div>
+    <div class="d-flex align-items-center mt-2">
+        <label for="torihikiCdA" class="me-2 fixed-width-sm">得意先</label>
+        <input type="text" id="torihikiCdA" name="torihikiCdA" class="form-control form-control-sm fixed-width-md" value="@(ViewData["CurrentTorihikiCdA"])" />
+        <input type="text" id="torihikiNmA" name="torihikiNmA" class="form-control form-control-sm fixed-width-lg ms-2" value="@(ViewData["CurrentTorihikiNmA"])" disabled />
     </div>
     <div class="mt-2">
         <button type="submit" class="btn btn-sm btn-primary">検索</button>

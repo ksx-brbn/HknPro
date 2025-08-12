@@ -579,6 +579,7 @@ namespace BourbonWeb.Models
         public string? SinseiShoCd { get; set; }
         public string? SinseiShaCd { get; set; }
         public string? SinseiSeikyuCd { get; set; }
+        public string? SeikyuKbn { get; set; }
         public string? TorihikiCdA { get; set; }
     }
 }
