@@ -60,27 +60,37 @@
         const form = input.closest('form');
 
         const toDisplay = (value) => {
-            const digits = value.replace(/[^0-9]/g, '');
-            return digits.length === 8 ? `${digits.slice(0, 4)}年${digits.slice(4, 6)}月${digits.slice(6, 8)}日` : value;
+            const digits = value.replace(/[^0-9]/g, '').slice(0, 6);
+            return digits.length === 6 ? `${digits.slice(0, 4)}年${digits.slice(4, 6)}月` : value;
         };
 
-        const toInput = (value) => value.replace(/[^0-9]/g, '');
+        const toYYYYMM = (value) => value.replace(/[^0-9]/g, '').slice(0, 6);
+
+        const toMonthValue = (value) => {
+            const digits = toYYYYMM(value);
+            return digits.length === 6 ? `${digits.slice(0, 4)}-${digits.slice(4, 6)}` : '';
+        };
+
+        const fromMonthValue = (value) => value.includes('-') ? value.replace('-', '') : toYYYYMM(value);
 
         if (input.value) {
             input.value = toDisplay(input.value);
         }
 
         input.addEventListener('focus', () => {
-            input.value = toInput(input.value);
-            input.select();
+            input.type = 'month';
+            input.value = toMonthValue(input.value);
         });
 
         input.addEventListener('blur', () => {
-            input.value = toDisplay(input.value);
+            const yymm = fromMonthValue(input.value);
+            input.type = 'text';
+            input.value = toDisplay(yymm);
         });
 
         form.addEventListener('submit', () => {
-            input.value = toInput(input.value);
+            input.type = 'text';
+            input.value = fromMonthValue(input.value);
         });
     });
 </script>
