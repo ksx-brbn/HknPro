@@ -496,6 +496,15 @@ FROM
             };
             return View(viewModel);
         }
+
+        public async Task<IActionResult> InputConditions(int? pageNumber)
+        {
+            var baseQuery = _context.HansokuSinsei
+                .AsNoTracking();
+            int pageSize = 5;
+            var list = await PaginatedList<HansokuSinsei>.CreateAsync(baseQuery, pageNumber ?? 1, pageSize);
+            return View(list);
+        }
         #endregion
     }
 }
