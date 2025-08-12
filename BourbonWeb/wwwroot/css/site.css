@@ -37,8 +37,16 @@
 .fixed-width-sm {
     width: 6em;
 }
+.fixed-width-smc {
+    width: 6em;
+    text-align: center;
+}
 .fixed-width-md {
-    width: 8em;
+    width: 9em;
+}
+.fixed-width-mdc {
+    width: 9em;
+    text-align: center;
 }
 .fixed-width-lg {
     width: 12em;
