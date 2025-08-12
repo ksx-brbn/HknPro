@@ -7,7 +7,7 @@
 <form method="get" class="mb-3 text-nowrap">
     <div class="d-flex align-items-center">
         <label for="sinseiTaishoYm" class="me-2 fixed-width-sm">対象年月</label>
-        <input type="month" id="sinseiTaishoYm" name="sinseiTaishoYm" class="form-control form-control-sm fixed-width-mdc" value="@(ViewData["CurrentSinseiTaishoYm"] ?? "2023-12")" />
+        <input type="text" id="sinseiTaishoYm" name="sinseiTaishoYm" class="form-control form-control-sm fixed-width-mdc" value="@(ViewData["CurrentSinseiTaishoYm"] ?? "202312")" />
     </div>
     <div class="d-flex align-items-center mt-2">
         <label for="siharaiYoteiYmd" class="me-2 fixed-width-sm">支払予定日</label>
@@ -56,31 +56,59 @@
 </form>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const input = document.getElementById('siharaiYoteiYmd');
-        const form = input.closest('form');
+        const form = document.getElementById('siharaiYoteiYmd').closest('form');
+        const siharaiInput = document.getElementById('siharaiYoteiYmd');
 
-        const toDisplay = (value) => {
+        const toDisplayDay = (value) => {
             const digits = value.replace(/[^0-9]/g, '');
             return digits.length === 8 ? `${digits.slice(0, 4)}年${digits.slice(4, 6)}月${digits.slice(6, 8)}日` : value;
         };
 
-        const toInput = (value) => value.replace(/[^0-9]/g, '');
+        const toInputDay = (value) => value.replace(/[^0-9]/g, '');
 
-        if (input.value) {
-            input.value = toDisplay(input.value);
+        if (siharaiInput.value) {
+            siharaiInput.value = toDisplayDay(siharaiInput.value);
         }
 
-        input.addEventListener('focus', () => {
-            input.value = toInput(input.value);
-            input.select();
+        siharaiInput.addEventListener('focus', () => {
+            siharaiInput.value = toInputDay(siharaiInput.value);
+            siharaiInput.select();
         });
 
-        input.addEventListener('blur', () => {
-            input.value = toDisplay(input.value);
+        siharaiInput.addEventListener('blur', () => {
+            siharaiInput.value = toDisplayDay(siharaiInput.value);
+        });
+
+        const ymInput = document.getElementById('sinseiTaishoYm');
+
+        const toDisplayYm = (value) => {
+            const digits = value.replace(/[^0-9]/g, '');
+            return digits.length === 6 ? `${digits.slice(0, 4)}年${digits.slice(4, 6)}月` : value;
+        };
+
+        const toInputYm = (value) => value.replace(/[^0-9]/g, '').slice(0, 6);
+
+        if (ymInput.value) {
+            ymInput.value = toDisplayYm(ymInput.value);
+        }
+
+        ymInput.addEventListener('focus', () => {
+            const digits = toInputYm(ymInput.value);
+            ymInput.type = 'month';
+            ymInput.value = digits.length === 6 ? `${digits.slice(0, 4)}-${digits.slice(4, 6)}` : '';
+            ymInput.showPicker?.();
+        });
+
+        ymInput.addEventListener('blur', () => {
+            const digits = toInputYm(ymInput.value);
+            ymInput.type = 'text';
+            ymInput.value = toDisplayYm(digits);
         });
 
         form.addEventListener('submit', () => {
-            input.value = toInput(input.value);
+            siharaiInput.value = toInputDay(siharaiInput.value);
+            ymInput.type = 'text';
+            ymInput.value = toInputYm(ymInput.value);
         });
     });
 </script>
