@@ -45,3 +45,26 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+
+// EnterキーでTab移動、Shift+Enterで逆方向に移動
+document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter' || e.isComposing) {
+        return;
+    }
+
+    const target = e.target;
+    if (!(target instanceof HTMLElement) || !target.matches('input, select, textarea')) {
+        return;
+    }
+
+    e.preventDefault();
+
+    const focusableSelector = 'a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"])';
+    const focusable = Array.from(document.querySelectorAll(focusableSelector))
+        .filter(el => !el.hasAttribute('disabled') && el.getAttribute('tabindex') !== '-1' && el.offsetParent !== null);
+    const index = focusable.indexOf(target);
+    const next = e.shiftKey ? focusable[index - 1] : focusable[index + 1];
+    if (next) {
+        next.focus();
+    }
+});
