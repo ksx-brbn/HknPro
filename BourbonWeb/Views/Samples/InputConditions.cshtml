@@ -9,6 +9,26 @@
         <label for="sinseiTaishoYm" class="me-2">対象年月</label>
         <input type="month" id="sinseiTaishoYm" name="sinseiTaishoYm" class="form-control form-control-sm" value="@(ViewData["CurrentSinseiTaishoYm"])" />
     </div>
+    <div class="d-flex align-items-center mt-2">
+        <label for="siharaiYoteiYmd" class="me-2">支払予定日</label>
+        <input type="date" id="siharaiYoteiYmd" name="siharaiYoteiYmd" class="form-control form-control-sm" value="@(ViewData["CurrentSiharaiYoteiYmd"])" />
+    </div>
+    <div class="d-flex align-items-center mt-2">
+        <label for="sinseiShoCd" class="me-2">申請所CD</label>
+        <input type="text" id="sinseiShoCd" name="sinseiShoCd" class="form-control form-control-sm" value="@(ViewData["CurrentSinseiShoCd"])" />
+    </div>
+    <div class="d-flex align-items-center mt-2">
+        <label for="sinseiShaCd" class="me-2">申請者CD</label>
+        <input type="text" id="sinseiShaCd" name="sinseiShaCd" class="form-control form-control-sm" value="@(ViewData["CurrentSinseiShaCd"])" />
+    </div>
+    <div class="d-flex align-items-center mt-2">
+        <label for="sinseiSeikyuCd" class="me-2">請求先CD</label>
+        <input type="text" id="sinseiSeikyuCd" name="sinseiSeikyuCd" class="form-control form-control-sm" value="@(ViewData["CurrentSinseiSeikyuCd"])" />
+    </div>
+    <div class="d-flex align-items-center mt-2">
+        <label for="torihikiCdA" class="me-2">得意先CD_A</label>
+        <input type="text" id="torihikiCdA" name="torihikiCdA" class="form-control form-control-sm" value="@(ViewData["CurrentTorihikiCdA"])" />
+    </div>
     <div class="mt-2">
         <button type="submit" class="btn btn-sm btn-primary">検索</button>
     </div>
@@ -27,10 +47,10 @@
 <nav aria-label="page navigation" class="mt-3">
     <ul class="pagination justify-content-center">
         <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
-            <a class="page-link" asp-action="InputConditions" asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-sinseiTaishoYm="@(ViewData["CurrentSinseiTaishoYm"])">前へ</a>
+            <a class="page-link" asp-action="InputConditions" asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-sinseiTaishoYm="@(ViewData["CurrentSinseiTaishoYm"])" asp-route-siharaiYoteiYmd="@(ViewData["CurrentSiharaiYoteiYmd"])" asp-route-sinseiShoCd="@(ViewData["CurrentSinseiShoCd"])" asp-route-sinseiShaCd="@(ViewData["CurrentSinseiShaCd"])" asp-route-sinseiSeikyuCd="@(ViewData["CurrentSinseiSeikyuCd"])" asp-route-torihikiCdA="@(ViewData["CurrentTorihikiCdA"])">前へ</a>
         </li>
         <li class="page-item @(Model.PageIndex == 1 ? "active" : "")">
-            <a class="page-link" asp-action="InputConditions" asp-route-pageNumber="1" asp-route-sinseiTaishoYm="@(ViewData["CurrentSinseiTaishoYm"])">1</a>
+            <a class="page-link" asp-action="InputConditions" asp-route-pageNumber="1" asp-route-sinseiTaishoYm="@(ViewData["CurrentSinseiTaishoYm"])" asp-route-siharaiYoteiYmd="@(ViewData["CurrentSiharaiYoteiYmd"])" asp-route-sinseiShoCd="@(ViewData["CurrentSinseiShoCd"])" asp-route-sinseiShaCd="@(ViewData["CurrentSinseiShaCd"])" asp-route-sinseiSeikyuCd="@(ViewData["CurrentSinseiSeikyuCd"])" asp-route-torihikiCdA="@(ViewData["CurrentTorihikiCdA"])">1</a>
         </li>
         @if (Model.PageIndex > 3)
         {
@@ -39,7 +59,7 @@
         @for (var i = Math.Max(2, Model.PageIndex - 1); i <= Math.Min(Model.TotalPages - 1, Model.PageIndex + 1); i++)
         {
             <li class="page-item @(i == Model.PageIndex ? "active" : "")">
-                <a class="page-link" asp-action="InputConditions" asp-route-pageNumber="@i" asp-route-sinseiTaishoYm="@(ViewData["CurrentSinseiTaishoYm"])">@i</a>
+                <a class="page-link" asp-action="InputConditions" asp-route-pageNumber="@i" asp-route-sinseiTaishoYm="@(ViewData["CurrentSinseiTaishoYm"])" asp-route-siharaiYoteiYmd="@(ViewData["CurrentSiharaiYoteiYmd"])" asp-route-sinseiShoCd="@(ViewData["CurrentSinseiShoCd"])" asp-route-sinseiShaCd="@(ViewData["CurrentSinseiShaCd"])" asp-route-sinseiSeikyuCd="@(ViewData["CurrentSinseiSeikyuCd"])" asp-route-torihikiCdA="@(ViewData["CurrentTorihikiCdA"])">@i</a>
             </li>
         }
         @if (Model.PageIndex < Model.TotalPages - 2)
@@ -49,11 +69,11 @@
         @if (Model.TotalPages > 1)
         {
             <li class="page-item @(Model.PageIndex == Model.TotalPages ? "active" : "")">
-                <a class="page-link" asp-action="InputConditions" asp-route-pageNumber="@Model.TotalPages" asp-route-sinseiTaishoYm="@(ViewData["CurrentSinseiTaishoYm"])">@Model.TotalPages</a>
+                <a class="page-link" asp-action="InputConditions" asp-route-pageNumber="@Model.TotalPages" asp-route-sinseiTaishoYm="@(ViewData["CurrentSinseiTaishoYm"])" asp-route-siharaiYoteiYmd="@(ViewData["CurrentSiharaiYoteiYmd"])" asp-route-sinseiShoCd="@(ViewData["CurrentSinseiShoCd"])" asp-route-sinseiShaCd="@(ViewData["CurrentSinseiShaCd"])" asp-route-sinseiSeikyuCd="@(ViewData["CurrentSinseiSeikyuCd"])" asp-route-torihikiCdA="@(ViewData["CurrentTorihikiCdA"])">@Model.TotalPages</a>
             </li>
         }
         <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
-            <a class="page-link" asp-action="InputConditions" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-sinseiTaishoYm="@(ViewData["CurrentSinseiTaishoYm"])">次へ</a>
+            <a class="page-link" asp-action="InputConditions" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-sinseiTaishoYm="@(ViewData["CurrentSinseiTaishoYm"])" asp-route-siharaiYoteiYmd="@(ViewData["CurrentSiharaiYoteiYmd"])" asp-route-sinseiShoCd="@(ViewData["CurrentSinseiShoCd"])" asp-route-sinseiShaCd="@(ViewData["CurrentSinseiShaCd"])" asp-route-sinseiSeikyuCd="@(ViewData["CurrentSinseiSeikyuCd"])" asp-route-torihikiCdA="@(ViewData["CurrentTorihikiCdA"])">次へ</a>
         </li>
     </ul>
 </nav>

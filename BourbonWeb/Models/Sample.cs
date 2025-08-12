@@ -575,5 +575,10 @@ namespace BourbonWeb.Models
     public class HansokuSinseiSearchCondition
     {
         public string? SinseiTaishoYm { get; set; }
+        public string? SiharaiYoteiYmd { get; set; }
+        public string? SinseiShoCd { get; set; }
+        public string? SinseiShaCd { get; set; }
+        public string? SinseiSeikyuCd { get; set; }
+        public string? TorihikiCdA { get; set; }
     }
 }

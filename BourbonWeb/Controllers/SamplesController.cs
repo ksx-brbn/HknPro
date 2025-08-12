@@ -367,8 +367,39 @@ FROM
                 baseQuery = baseQuery.Where(s => s.SinseiTaishoYm == ym);
             }
 
+            if (!string.IsNullOrEmpty(condition.SiharaiYoteiYmd))
+            {
+                var ymd = condition.SiharaiYoteiYmd.Replace("-", "");
+                baseQuery = baseQuery.Where(s => s.SiharaiYoteiYmd == ymd);
+            }
+
+            if (!string.IsNullOrEmpty(condition.SinseiShoCd))
+            {
+                baseQuery = baseQuery.Where(s => s.SinseiShoCd == condition.SinseiShoCd);
+            }
+
+            if (!string.IsNullOrEmpty(condition.SinseiShaCd))
+            {
+                baseQuery = baseQuery.Where(s => s.SinseiShaCd == condition.SinseiShaCd);
+            }
+
+            if (!string.IsNullOrEmpty(condition.SinseiSeikyuCd))
+            {
+                baseQuery = baseQuery.Where(s => s.SinseiSeikyuCd == condition.SinseiSeikyuCd);
+            }
+
+            if (!string.IsNullOrEmpty(condition.TorihikiCdA))
+            {
+                baseQuery = baseQuery.Where(s => s.TorihikiCdA == condition.TorihikiCdA);
+            }
+
             int pageSize = 5;
             ViewData["CurrentSinseiTaishoYm"] = condition.SinseiTaishoYm;
+            ViewData["CurrentSiharaiYoteiYmd"] = condition.SiharaiYoteiYmd;
+            ViewData["CurrentSinseiShoCd"] = condition.SinseiShoCd;
+            ViewData["CurrentSinseiShaCd"] = condition.SinseiShaCd;
+            ViewData["CurrentSinseiSeikyuCd"] = condition.SinseiSeikyuCd;
+            ViewData["CurrentTorihikiCdA"] = condition.TorihikiCdA;
             var list = await PaginatedList<HansokuSinsei>.CreateAsync(baseQuery, pageNumber ?? 1, pageSize);
             return View(list);
         }
