@@ -67,6 +67,7 @@
 
         input.addEventListener('focus', () => {
             input.value = toInput(input.value);
+            input.select();
         });
 
         input.addEventListener('blur', () => {
