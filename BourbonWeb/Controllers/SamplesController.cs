@@ -483,6 +483,7 @@ FROM
 ";
 
             var baseQuery = _context.HansokuSinsei
+                .FromSqlRaw(sql)
                 .AsNoTracking();
             var queryResult = _context.HansokuSinsei
                 .FromSqlRaw(sql)

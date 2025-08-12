@@ -76,14 +76,17 @@ namespace BourbonWeb.Models
         [Display(Name = "売掛分類")]
         public required string UrikakeBunrui { get; set; }
 
-        [NotMapped]
+        [Column("URIKAKE_BUNRUI_NM")]
         [Display(Name = "売掛分類")]
-        public string UrikakeBunruiNm => UrikakeBunrui switch
-        {
-            "1" => "特約店",
-            "4" => "登録店",
-            _ => string.Empty
-        };
+        public required string UrikakeBunruiNm { get; set; }
+        //[NotMapped]
+        //[Display(Name = "売掛分類")]
+        //public string UrikakeBunruiNm => UrikakeBunrui switch
+        //{
+        //    "1" => "特約店",
+        //    "4" => "登録店",
+        //    _ => string.Empty
+        //};
 
         [Column("SEIKYU_KBN")]
         [Display(Name = "請求区分")]
@@ -273,21 +276,24 @@ namespace BourbonWeb.Models
         [Display(Name = "支払種別")]
         public string? SiharaiShubetu { get; set; }
 
-        [NotMapped]
+        [Column("SHORI_HOHO")]
         [Display(Name = "処理方法")]
-        public string ShoriHoho =>
-            SiharaiKeitai switch
-            {
-                var k when k != null && k.StartsWith("1") => "請求書控除",
-                var k when k != null && k.StartsWith("2") => "売掛金相殺",
-                var k when k != null && k.StartsWith("3") => SiharaiShubetu switch
-                {
-                    "1" => "振込（請求・帳合）",
-                    "2" => "振込（得意先）",
-                    _ => string.Empty
-                },
-                _ => string.Empty
-            };
+        public string? ShoriHoho { get; set; }
+        //[NotMapped]
+        //[Display(Name = "処理方法")]
+        //public string ShoriHoho =>
+        //    SiharaiKeitai switch
+        //    {
+        //        var k when k != null && k.StartsWith("1") => "請求書控除",
+        //        var k when k != null && k.StartsWith("2") => "売掛金相殺",
+        //        var k when k != null && k.StartsWith("3") => SiharaiShubetu switch
+        //        {
+        //            "1" => "振込（請求・帳合）",
+        //            "2" => "振込（得意先）",
+        //            _ => string.Empty
+        //        },
+        //        _ => string.Empty
+        //    };
 
         [Column("SIHARAI_YOTEI_YMD")]
         [Display(Name = "支払予定日")]
@@ -341,22 +347,28 @@ namespace BourbonWeb.Models
         [Display(Name = "状態区分")]
         public string? JotaiKbn { get; set; }
 
-        [NotMapped]
+        [Column("JOTAI_KBN_NM")]
         [Display(Name = "状態区分")]
-        public string JotaiKbnNm => JotaiKbn switch
-        {
-            "0" => "申請登録",
-            "1" => "鑑作成済",
-            "2" => "印刷済",
-            "3" => "承認済",
-            "4" => "費用計上確定",
-            "5" => "支払完了",
-            _ => string.Empty
-        };
+        public string? JotaiKbnNm { get; set; }
+        //[NotMapped]
+        //[Display(Name = "状態区分")]
+        //public string JotaiKbnNm => JotaiKbn switch
+        //{
+        //    "0" => "申請登録",
+        //    "1" => "鑑作成済",
+        //    "2" => "印刷済",
+        //    "3" => "承認済",
+        //    "4" => "費用計上確定",
+        //    "5" => "支払完了",
+        //    _ => string.Empty
+        //};
 
-        [NotMapped]
+        [Column("HONSHA_SHONIN_JOTAI_KBN")]
         [Display(Name = "本社承認状態区分")]
-        public string HonshaShoninJotaiKbn => "0";
+        public string? HonshaShoninJotaiKbn { get; set; }
+        //[NotMapped]
+        //[Display(Name = "本社承認状態区分")]
+        //public string HonshaShoninJotaiKbn => "0";
 
         [Column("KEIHISHO_CD")]
         [Display(Name = "経費所CD")]
