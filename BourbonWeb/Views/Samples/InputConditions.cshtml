@@ -6,27 +6,27 @@
 
 <form method="get" class="mb-3 text-nowrap">
     <div class="d-flex align-items-center">
-        <label for="sinseiTaishoYm" class="me-2">対象年月</label>
+        <label for="sinseiTaishoYm" class="me-2 fixed-width">対象年月</label>
         <input type="month" id="sinseiTaishoYm" name="sinseiTaishoYm" class="form-control form-control-sm" value="@(ViewData["CurrentSinseiTaishoYm"])" />
     </div>
     <div class="d-flex align-items-center mt-2">
-        <label for="siharaiYoteiYmd" class="me-2">支払予定日</label>
+        <label for="siharaiYoteiYmd" class="me-2 fixed-width">支払予定日</label>
         <input type="date" id="siharaiYoteiYmd" name="siharaiYoteiYmd" class="form-control form-control-sm" value="@(ViewData["CurrentSiharaiYoteiYmd"])" />
     </div>
     <div class="d-flex align-items-center mt-2">
-        <label for="sinseiShoCd" class="me-2">申請所CD</label>
+        <label for="sinseiShoCd" class="me-2 fixed-width">売上担当所</label>
         <input type="text" id="sinseiShoCd" name="sinseiShoCd" class="form-control form-control-sm" value="@(ViewData["CurrentSinseiShoCd"])" />
     </div>
     <div class="d-flex align-items-center mt-2">
-        <label for="sinseiShaCd" class="me-2">申請者CD</label>
+        <label for="sinseiShaCd" class="me-2 fixed-width">売上担当者</label>
         <input type="text" id="sinseiShaCd" name="sinseiShaCd" class="form-control form-control-sm" value="@(ViewData["CurrentSinseiShaCd"])" />
     </div>
     <div class="d-flex align-items-center mt-2">
-        <label for="sinseiSeikyuCd" class="me-2">請求先CD</label>
+        <label for="sinseiSeikyuCd" class="me-2 fixed-width">請求・帳合</label>
         <input type="text" id="sinseiSeikyuCd" name="sinseiSeikyuCd" class="form-control form-control-sm" value="@(ViewData["CurrentSinseiSeikyuCd"])" />
     </div>
     <div class="d-flex align-items-center mt-2">
-        <label for="torihikiCdA" class="me-2">得意先CD_A</label>
+        <label for="torihikiCdA" class="me-2 fixed-width">得意先</label>
         <input type="text" id="torihikiCdA" name="torihikiCdA" class="form-control form-control-sm" value="@(ViewData["CurrentTorihikiCdA"])" />
     </div>
     <div class="mt-2">

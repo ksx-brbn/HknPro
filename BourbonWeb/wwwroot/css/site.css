@@ -32,3 +32,8 @@
     padding-right: 10px !important;
     padding-left: 10px !important;
 }
+
+/* �Œ蕝 */
+.fixed-width {
+    width: 6em;
+}
