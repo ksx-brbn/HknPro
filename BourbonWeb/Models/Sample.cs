@@ -570,4 +570,10 @@ namespace BourbonWeb.Models
         [Display(Name = "値引き種別")]
         public required string NebikiSyubetu { get; set; }
     }
+
+    [Display(Name = "販促費申請情報検索条件")]
+    public class HansokuSinseiSearchCondition
+    {
+        public string? SinseiTaishoYm { get; set; }
+    }
 }

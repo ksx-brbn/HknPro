@@ -4,6 +4,16 @@
     ViewData["Title"] = "販促費申請条件入力（確定）";
 }
 
+<form method="get" class="mb-3">
+    <div class="d-flex align-items-center">
+        <label for="sinseiTaishoYm" class="me-2">対象年月</label>
+        <input type="month" id="sinseiTaishoYm" name="sinseiTaishoYm" class="form-control form-control-sm" value="@(ViewData["CurrentSinseiTaishoYm"])" />
+    </div>
+    <div class="mt-2">
+        <button type="submit" class="btn btn-sm btn-primary">検索</button>
+    </div>
+    <input type="hidden" name="pageNumber" value="1" />
+</form>
 <div class="d-flex align-items-center justify-content-between mb-1">
     <div class="d-flex align-items-center">
         <p class="mb-0 me-3">販促費申請条件入力（確定）</p>
@@ -17,10 +27,10 @@
 <nav aria-label="page navigation" class="mt-3">
     <ul class="pagination justify-content-center">
         <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
-            <a class="page-link" asp-action="Uncreated" asp-route-pageNumber="@(Model.PageIndex - 1)">前へ</a>
+            <a class="page-link" asp-action="InputConditions" asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-sinseiTaishoYm="@(ViewData["CurrentSinseiTaishoYm"])">前へ</a>
         </li>
         <li class="page-item @(Model.PageIndex == 1 ? "active" : "")">
-            <a class="page-link" asp-action="Uncreated" asp-route-pageNumber="1">1</a>
+            <a class="page-link" asp-action="InputConditions" asp-route-pageNumber="1" asp-route-sinseiTaishoYm="@(ViewData["CurrentSinseiTaishoYm"])">1</a>
         </li>
         @if (Model.PageIndex > 3)
         {
@@ -29,7 +39,7 @@
         @for (var i = Math.Max(2, Model.PageIndex - 1); i <= Math.Min(Model.TotalPages - 1, Model.PageIndex + 1); i++)
         {
             <li class="page-item @(i == Model.PageIndex ? "active" : "")">
-                <a class="page-link" asp-action="Uncreated" asp-route-pageNumber="@i">@i</a>
+                <a class="page-link" asp-action="InputConditions" asp-route-pageNumber="@i" asp-route-sinseiTaishoYm="@(ViewData["CurrentSinseiTaishoYm"])">@i</a>
             </li>
         }
         @if (Model.PageIndex < Model.TotalPages - 2)
@@ -39,11 +49,11 @@
         @if (Model.TotalPages > 1)
         {
             <li class="page-item @(Model.PageIndex == Model.TotalPages ? "active" : "")">
-                <a class="page-link" asp-action="Uncreated" asp-route-pageNumber="@Model.TotalPages">@Model.TotalPages</a>
+                <a class="page-link" asp-action="InputConditions" asp-route-pageNumber="@Model.TotalPages" asp-route-sinseiTaishoYm="@(ViewData["CurrentSinseiTaishoYm"])">@Model.TotalPages</a>
             </li>
         }
         <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
-            <a class="page-link" asp-action="Uncreated" asp-route-pageNumber="@(Model.PageIndex + 1)">次へ</a>
+            <a class="page-link" asp-action="InputConditions" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-sinseiTaishoYm="@(ViewData["CurrentSinseiTaishoYm"])">次へ</a>
         </li>
     </ul>
 </nav>
