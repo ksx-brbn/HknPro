@@ -42,7 +42,12 @@
     <div class="d-flex align-items-center mt-2">
         <label for="torihikiCdA" class="me-2 fixed-width-sm">得意先</label>
         <input type="text" id="torihikiCdA" name="torihikiCdA" class="form-control form-control-sm fixed-width-smc" value="@(ViewData["CurrentTorihikiCdA"])" />
-        <input type="text" id="torihikiNmA" name="torihikiNmA" class="form-control form-control-sm fixed-width-lg ms-2" value="@(ViewData["CurrentTorihikiNmA"] ?? "㈱福田屋百貨店")" disabled />
+        <select id="torihikiNmA" name="torihikiNmA" class="form-select form-select-sm fixed-width-lg ms-2" disabled>
+            <option value="">選択してください</option>
+            <option value="@(ViewData["CurrentTorihikiNmA"] ?? "㈱福田屋百貨店")" selected>
+                @(ViewData["CurrentTorihikiNmA"] ?? "㈱福田屋百貨店")
+            </option>
+        </select>
     </div>
     <div class="mt-2">
         <button type="submit" class="btn btn-sm btn-primary">検索</button>
