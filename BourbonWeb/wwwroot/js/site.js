@@ -68,3 +68,14 @@ document.addEventListener('keydown', function (e) {
         next.focus();
     }
 });
+
+// フォーカス時に入力値を全選択
+document.addEventListener('focus', function (e) {
+    const target = e.target;
+    if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement) {
+        target.addEventListener('mouseup', function (event) {
+            event.preventDefault();
+        }, { once: true });
+        target.select();
+    }
+}, true);
