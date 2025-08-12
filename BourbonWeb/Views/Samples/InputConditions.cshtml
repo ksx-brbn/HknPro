@@ -7,7 +7,8 @@
 <form method="get" class="mb-3 text-nowrap">
     <div class="d-flex align-items-center">
         <label for="sinseiTaishoYm" class="me-2 fixed-width-sm">対象年月</label>
-        <input type="month" id="sinseiTaishoYm" name="sinseiTaishoYm" class="form-control form-control-sm fixed-width-mdc" value="@(ViewData["CurrentSinseiTaishoYm"] ?? "2023-12")" />
+        <input type="text" id="sinseiTaishoYm" name="sinseiTaishoYm" class="form-control form-control-sm fixed-width-mdc" value="@(ViewData["CurrentSinseiTaishoYm"] ?? "2023-12")" />
+        <input type="month" id="sinseiTaishoYmPicker" style="position:absolute; left:-9999px;" />
     </div>
     <div class="d-flex align-items-center mt-2">
         <label for="siharaiYoteiYmd" class="me-2 fixed-width-sm">支払予定日</label>
@@ -56,31 +57,70 @@
 </form>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const input = document.getElementById('siharaiYoteiYmd');
-        const form = input.closest('form');
+        const ymInput = document.getElementById('sinseiTaishoYm');
+        const ymPicker = document.getElementById('sinseiTaishoYmPicker');
+        const siharaiInput = document.getElementById('siharaiYoteiYmd');
+        const form = ymInput.closest('form');
 
-        const toDisplay = (value) => {
+        const toDisplayYm = (value) => {
+            const digits = value.replace(/[^0-9]/g, '').slice(0, 6);
+            return digits.length === 6 ? `${digits.slice(0, 4)}年${digits.slice(4, 6)}月` : value;
+        };
+
+        const toInputYm = (value) => value.replace(/[^0-9]/g, '').slice(0, 6);
+
+        const toPickerYm = (value) => {
+            const digits = toInputYm(value);
+            return digits.length === 6 ? `${digits.slice(0, 4)}-${digits.slice(4, 6)}` : '';
+        };
+
+        const toDisplayYmd = (value) => {
             const digits = value.replace(/[^0-9]/g, '');
             return digits.length === 8 ? `${digits.slice(0, 4)}年${digits.slice(4, 6)}月${digits.slice(6, 8)}日` : value;
         };
 
-        const toInput = (value) => value.replace(/[^0-9]/g, '');
+        const toInputYmd = (value) => value.replace(/[^0-9]/g, '');
 
-        if (input.value) {
-            input.value = toDisplay(input.value);
+        if (ymInput.value) {
+            ymInput.value = toDisplayYm(ymInput.value);
         }
 
-        input.addEventListener('focus', () => {
-            input.value = toInput(input.value);
-            input.select();
+        if (siharaiInput.value) {
+            siharaiInput.value = toDisplayYmd(siharaiInput.value);
+        }
+
+        ymInput.addEventListener('focus', () => {
+            ymInput.value = toInputYm(ymInput.value);
+            ymInput.select();
         });
 
-        input.addEventListener('blur', () => {
-            input.value = toDisplay(input.value);
+        ymInput.addEventListener('click', () => {
+            ymPicker.value = toPickerYm(ymInput.value);
+            if (ymPicker.showPicker) {
+                ymPicker.showPicker();
+            }
+        });
+
+        ymInput.addEventListener('blur', () => {
+            ymInput.value = toDisplayYm(ymInput.value);
+        });
+
+        ymPicker.addEventListener('change', () => {
+            ymInput.value = toDisplayYm(ymPicker.value);
+        });
+
+        siharaiInput.addEventListener('focus', () => {
+            siharaiInput.value = toInputYmd(siharaiInput.value);
+            siharaiInput.select();
+        });
+
+        siharaiInput.addEventListener('blur', () => {
+            siharaiInput.value = toDisplayYmd(siharaiInput.value);
         });
 
         form.addEventListener('submit', () => {
-            input.value = toInput(input.value);
+            ymInput.value = toInputYm(ymInput.value);
+            siharaiInput.value = toInputYmd(siharaiInput.value);
         });
     });
 </script>
