@@ -7,7 +7,7 @@
             <table class="table table-sm table-bordered text-nowrap table-striped-pair">
                 <thead class="text-center">
                     <tr>
-                        <th rowspan="2">#</th>
+                        <th rowspan="2" class="table-row-index">#</th>
                         <th>@Html.DisplayNameFor(model => model[0].KeihishoNm)</th>
                         <th>@Html.DisplayNameFor(model => model[0].KeihishaNm)</th>
                         <th rowspan="2">@Html.DisplayNameFor(model => model[0].UrikakeBunruiNm)</th>
@@ -39,7 +39,7 @@
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td rowspan="2" class="text-center">@rowIndex</td>
+                            <td rowspan="2" class="table-row-index">@rowIndex</td>
                             <td>@Html.DisplayFor(modelItem => item.KeihishoNm)</td>
                             <td>@Html.DisplayFor(modelItem => item.KeihishaNm)</td>
                             <td rowspan="2">@Html.DisplayFor(modelItem => item.UrikakeBunruiNm)</td>

@@ -1,6 +1,8 @@
 ﻿@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
 @{
     Layout = "_LayoutBase";
+    var ip = Context.Connection.RemoteIpAddress?.ToString();
+    ip = "XXX.XXX.XXX.XXX";
 }
 @RenderBody()
 @section Header {
@@ -20,7 +22,18 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login">ログアウト</a>
+                        <span class="nav-link">端末No：@ip</span>
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-link">申請所：本社営業部</span>
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-link">申請者：柏崎　太郎</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-danger d-flex align-items-center" asp-area="" asp-controller="Account" asp-action="Login">
+                            <i class="bi bi-box-arrow-right me-1"></i>ログアウト
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -42,7 +55,7 @@
             <nav class="mt-2">
                 <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu">
                     <li class="nav-item">
-                        <a asp-area="" asp-controller="Home" asp-action="UnderConstruction" class="nav-link">
+                        <a asp-area="" asp-controller="Samples" asp-action="InputConditions" class="nav-link">
                             <p>申請登録（確定）</p>
                         </a>
                     </li>
