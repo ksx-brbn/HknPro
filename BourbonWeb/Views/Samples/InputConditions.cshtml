@@ -11,7 +11,7 @@
     </div>
     <div class="d-flex align-items-center mt-2">
         <label for="siharaiYoteiYmd" class="me-2 fixed-width-sm">支払予定日</label>
-        <input type="date" id="siharaiYoteiYmd" name="siharaiYoteiYmd" class="form-control form-control-sm fixed-width-mdc" value="@(ViewData["CurrentSiharaiYoteiYmd"])" />
+        <input type="text" id="siharaiYoteiYmd" name="siharaiYoteiYmd" class="form-control form-control-sm fixed-width-mdc" value="@(ViewData["CurrentSiharaiYoteiYmd"])" />
     </div>
     <div class="d-flex align-items-center mt-2">
         <label for="keihishoCd" class="me-2 fixed-width-sm">経費所</label>
@@ -49,6 +49,36 @@
     </div>
     <input type="hidden" name="pageNumber" value="1" />
 </form>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const input = document.getElementById('siharaiYoteiYmd');
+        const form = input.closest('form');
+
+        const toDisplay = (value) => {
+            const digits = value.replace(/[^0-9]/g, '');
+            return digits.length === 8 ? `${digits.slice(0, 4)}年${digits.slice(4, 6)}月${digits.slice(6, 8)}日` : value;
+        };
+
+        const toInput = (value) => value.replace(/[^0-9]/g, '');
+
+        if (input.value) {
+            input.value = toDisplay(input.value);
+        }
+
+        input.addEventListener('focus', () => {
+            input.value = toInput(input.value);
+            input.select();
+        });
+
+        input.addEventListener('blur', () => {
+            input.value = toDisplay(input.value);
+        });
+
+        form.addEventListener('submit', () => {
+            input.value = toInput(input.value);
+        });
+    });
+</script>
 <div class="d-flex align-items-center justify-content-between mb-1">
     <div class="d-flex align-items-center">
         <p class="mb-0 me-3">販促費申請条件入力（確定）</p>
