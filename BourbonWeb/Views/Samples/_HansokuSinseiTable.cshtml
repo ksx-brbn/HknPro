@@ -144,8 +144,8 @@
                             <td class="text-center">@Html.DisplayFor(modelItem => item.SinseiTaishoYm)</td>
                             <td class="text-center">@Html.DisplayFor(modelItem => item.SinseiKeijoYm)</td>
                             <td class="text-center">@Html.DisplayFor(modelItem => item.KaikeiKeijoYm)</td>
-                            <td class="text-center"><a href="https://www.bourbon.co.jp/">@item.SinseiKagamiNo</a></td>
-                            <td class="text-center"><a href="https://www.bourbon.co.jp/">@item.SinseiKagamiDaihyoNo</a></td>
+                            <td class="text-center"><a href="#" data-bs-toggle="modal" data-bs-target="#pdfModal">@item.SinseiKagamiNo</a></td>
+                            <td class="text-center"><a href="/pdf/サンプル申請書(明細).pdf" target="_blank" rel="noopener noreferrer" download>@item.SinseiKagamiDaihyoNo</a></td>
                             <td>@Html.DisplayFor(modelItem => item.SinseiKagamiDaihyoCd)</td>
                             <td>@Html.DisplayFor(modelItem => item.SinseiSiharaiGroupCd)</td>
                             <td>@Html.DisplayFor(modelItem => item.SinseiSeikyuCd)</td>
