@@ -168,7 +168,7 @@
         @Model.MainList.TotalCount.ToString("N0") 件
     </div>
 </div>
-@await Html.PartialAsync("_HansokuSinseiMainTable", Model.MainList)
+@await Html.PartialAsync("_KagamiNotCreatedTable", Model.MainList)
 
 <nav aria-label="page navigation" class="mt-3">
     <ul class="pagination justify-content-center">
@@ -225,7 +225,7 @@
         @Model.QueryList.TotalCount.ToString("N0") 件
     </div>
 </div>
-@await Html.PartialAsync("_HansokuSinseiQueryTable", Model.QueryList)
+@await Html.PartialAsync("_AwaitingPaymentTable", Model.QueryList)
 
 <nav aria-label="page navigation" class="mt-3">
     <ul class="pagination justify-content-center">
