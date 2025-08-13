@@ -13,6 +13,10 @@
     <div class="d-flex align-items-center mt-2">
         <label for="siharaiYoteiYmd" class="me-2 fixed-width-sm">支払予定日</label>
         <input type="text" id="siharaiYoteiYmd" name="siharaiYoteiYmd" class="form-control form-control-sm fixed-width-mdc" value="@(ViewData["CurrentSiharaiYoteiYmd"])" />
+        <button type="button" id="siharaiYoteiYmdButton" class="btn btn-outline-secondary btn-sm ms-1" tabindex="-1">
+            <i class="bi bi-calendar"></i>
+        </button>
+        <input type="date" id="siharaiYoteiYmdPicker" style="position:absolute; left:-9999px;" tabindex="-1" />
     </div>
     <div class="d-flex align-items-center mt-2">
         <label for="keihishoCd" class="me-2 fixed-width-sm">経費所</label>
@@ -233,6 +237,8 @@
         const ymInput = document.getElementById('sinseiTaishoYm');
         const ymPicker = document.getElementById('sinseiTaishoYmPicker');
         const siharaiInput = document.getElementById('siharaiYoteiYmd');
+        const siharaiPicker = document.getElementById('siharaiYoteiYmdPicker');
+        const siharaiButton = document.getElementById('siharaiYoteiYmdButton');
         const form = ymInput.closest('form');
         const searchButton = document.getElementById('searchButton');
 
@@ -261,6 +267,11 @@
         };
 
         const toInputYmd = (value) => value.replace(/[^0-9]/g, '');
+
+        const toPickerYmd = (value) => {
+            const digits = toInputYmd(value);
+            return digits.length === 8 ? `${digits.slice(0, 4)}-${digits.slice(4, 6)}-${digits.slice(6, 8)}` : '';
+        };
 
         if (ymInput.value) {
             ymInput.value = toDisplayYm(ymInput.value);
@@ -297,6 +308,17 @@
 
         siharaiInput.addEventListener('blur', () => {
             siharaiInput.value = toDisplayYmd(siharaiInput.value);
+        });
+
+        siharaiButton.addEventListener('click', () => {
+            siharaiPicker.value = toPickerYmd(siharaiInput.value);
+            if (siharaiPicker.showPicker) {
+                siharaiPicker.showPicker();
+            }
+        });
+
+        siharaiPicker.addEventListener('change', () => {
+            siharaiInput.value = toDisplayYmd(siharaiPicker.value);
         });
 
         form.addEventListener('submit', () => {
