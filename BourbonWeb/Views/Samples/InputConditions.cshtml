@@ -66,20 +66,31 @@
 
         const toInput = (value) => value.replace(/[^0-9]/g, '');
 
+        const toDateValue = (value) => {
+            const digits = toInput(value);
+            return digits.length === 8 ? `${digits.slice(0, 4)}-${digits.slice(4, 6)}-${digits.slice(6, 8)}` : '';
+        };
+
         if (input.value) {
             input.value = toDisplay(input.value);
         }
 
         input.addEventListener('focus', () => {
-            input.value = toInput(input.value);
-            input.select();
+            input.type = 'date';
+            input.value = toDateValue(input.value);
+            if (input.showPicker) {
+                input.showPicker();
+            }
         });
 
         input.addEventListener('blur', () => {
-            input.value = toDisplay(input.value);
+            const digits = toInput(input.value);
+            input.type = 'text';
+            input.value = toDisplay(digits);
         });
 
         form.addEventListener('submit', () => {
+            input.type = 'text';
             input.value = toInput(input.value);
         });
     });
