@@ -7,11 +7,18 @@
 <form method="get" class="mb-3 text-nowrap">
     <div class="d-flex align-items-center">
         <label for="sinseiTaishoYm" class="me-2 fixed-width-sm">対象年月</label>
-        <input type="month" id="sinseiTaishoYm" name="sinseiTaishoYm" class="form-control form-control-sm fixed-width-mdc" value="@(ViewData["CurrentSinseiTaishoYm"] ?? "2023-12")" />
+        <input type="text" id="sinseiTaishoYm" name="sinseiTaishoYm" class="form-control form-control-sm fixed-width-mdc" value="@(ViewData["CurrentSinseiTaishoYm"] ?? "2023-12")" />
+        <input type="month" id="sinseiTaishoYmPicker" style="position:absolute; left:-9999px;" />
     </div>
     <div class="d-flex align-items-center mt-2">
         <label for="siharaiYoteiYmd" class="me-2 fixed-width-sm">支払予定日</label>
-        <input type="text" id="siharaiYoteiYmd" name="siharaiYoteiYmd" class="form-control form-control-sm fixed-width-mdc" value="@(ViewData["CurrentSiharaiYoteiYmd"])" />
+        <div class="input-group input-group-sm fixed-width-md">
+            <input type="text" id="siharaiYoteiYmd" name="siharaiYoteiYmd" class="form-control text-center" value="@(ViewData["CurrentSiharaiYoteiYmd"])" />
+            <span class="input-group-text position-relative p-0">
+                <i class="bi bi-calendar3"></i>
+                <input type="date" id="siharaiYoteiYmdPicker" class="position-absolute top-0 start-0 opacity-0" style="width:100%; height:100%; cursor:pointer;" />
+            </span>
+        </div>
     </div>
     <div class="d-flex align-items-center mt-2">
         <label for="keihishoCd" class="me-2 fixed-width-sm">経費所</label>
@@ -49,41 +56,83 @@
             </option>
         </select>
     </div>
-    <div class="mt-2">
-        <button type="submit" class="btn btn-sm btn-primary">検索</button>
+    <div class="d-flex align-items-center mt-2">
+        <label class="me-2 fixed-width-sm">処理方法</label>
+        <div class="form-check form-check-inline mt-1 ms-1">
+            <input class="form-check-input" type="radio" id="shoriHoho1" name="shoriHoho" value="20;" @(ViewData["CurrentShoriHoho"]?.ToString() == "20;" ? "checked" : "") />
+            <label class="form-check-label" for="shoriHoho1">売掛金相殺</label>
+        </div>
+        <div class="form-check form-check-inline mt-1">
+            <input class="form-check-input" type="radio" id="shoriHoho2" name="shoriHoho" value="30;1" @(ViewData["CurrentShoriHoho"]?.ToString() == "30;1" ? "checked" : "") />
+            <label class="form-check-label" for="shoriHoho2">振込(特約店)</label>
+        </div>
+        <div class="form-check form-check-inline mt-1">
+            <input class="form-check-input" type="radio" id="shoriHoho3" name="shoriHoho" value="30;2" @(ViewData["CurrentShoriHoho"]?.ToString() == "30;2" ? "checked" : "") />
+            <label class="form-check-label" for="shoriHoho3">振込(小売業)</label>
+        </div>
+        <div class="form-check form-check-inline mt-1">
+            <input class="form-check-input" type="radio" id="shoriHoho4" name="shoriHoho" value="30;3" @(ViewData["CurrentShoriHoho"]?.ToString() == "30;3" ? "checked" : "") />
+            <label class="form-check-label" for="shoriHoho4">振込(業者・一般店・グループ企業)</label>
+        </div>
+        <div class="form-check form-check-inline mt-1">
+            <input class="form-check-input" type="radio" id="shoriHoho5" name="shoriHoho" value="30;4" @(ViewData["CurrentShoriHoho"]?.ToString() == "30;4" ? "checked" : "") />
+            <label class="form-check-label" for="shoriHoho5">振込(登録二次店)</label>
+        </div>
+    </div>
+    <div class="d-flex align-items-center mt-2">
+        <label for="gyoshaCd" class="me-2 fixed-width-sm">業者</label>
+        <input type="text" id="gyoshaCd" name="gyoshaCd" class="form-control form-control-sm fixed-width-smc" value="@(ViewData["CurrentGyoshaCd"])" disabled />
+        <select id="gyoshaNm" name="gyoshaNm" class="form-select form-select-sm fixed-width-lg ms-2" disabled>
+            <option value="" selected></option>
+        </select>
+    </div>
+    <div class="d-flex align-items-center mt-2">
+        <label class="me-2 fixed-width-sm">協賛条件単位</label>
+        <div class="form-check form-check-inline mt-1 ms-1">
+            <input class="form-check-input" type="radio" id="kyosanJokenTaniKbn1" name="kyosanJokenTaniKbn" value="0" @(ViewData["CurrentKyosanJokenTaniKbn"]?.ToString() == "0" ? "checked" : "") />
+            <label class="form-check-label" for="kyosanJokenTaniKbn1">率</label>
+        </div>
+        <div class="form-check form-check-inline mt-1">
+            <input class="form-check-input" type="radio" id="kyosanJokenTaniKbn2" name="kyosanJokenTaniKbn" value="1" @(ViewData["CurrentKyosanJokenTaniKbn"]?.ToString() == "1" ? "checked" : "") />
+            <label class="form-check-label" for="kyosanJokenTaniKbn2">円</label>
+        </div>
+    </div>
+    <div class="d-flex align-items-center mt-2">
+        <label class="me-2 fixed-width-sm">価格販促区分</label>
+        <div class="form-check form-check-inline mt-1 ms-1">
+            <input class="form-check-input" type="radio" id="kakakuHansokuKbn1" name="kakakuHansokuKbn" value="1" @(ViewData["CurrentKakakuHansokuKbn"]?.ToString() == "1" ? "checked" : "") />
+            <label class="form-check-label" for="kakakuHansokuKbn1">商品CD指定</label>
+        </div>
+        <div class="form-check form-check-inline mt-1">
+            <input class="form-check-input" type="radio" id="kakakuHansokuKbn2" name="kakakuHansokuKbn" value="2" @(ViewData["CurrentKakakuHansokuKbn"]?.ToString() == "2" ? "checked" : "") />
+            <label class="form-check-label" for="kakakuHansokuKbn2">企画CD指定</label>
+        </div>
+        <div class="form-check form-check-inline mt-1">
+            <input class="form-check-input" type="radio" id="kakakuHansokuKbn3" name="kakakuHansokuKbn" value="3" @(ViewData["CurrentKakakuHansokuKbn"]?.ToString() == "3" ? "checked" : "") />
+            <label class="form-check-label" for="kakakuHansokuKbn3">承認CD指定</label>
+        </div>
+    </div>
+    <div class="d-flex align-items-center mt-2">
+        <label class="me-2 fixed-width-sm">所別経費率</label>
+        <div class="form-check form-check-inline mt-1 ms-1">
+            <input class="form-check-input" type="radio" id="createKeihiRitu1" name="createKeihiRitu" value="0" @(ViewData["CurrentCreateKeihiRitu"]?.ToString() == "0" ? "checked" : "") />
+            <label class="form-check-label" for="createKeihiRitu1">作成しない</label>
+        </div>
+        <div class="form-check form-check-inline mt-1">
+            <input class="form-check-input" type="radio" id="createKeihiRitu2" name="createKeihiRitu" value="1" @(ViewData["CurrentCreateKeihiRitu"]?.ToString() == "1" ? "checked" : "") />
+            <label class="form-check-label" for="createKeihiRitu2">作成する</label>
+        </div>
+    </div>
+    <div class="d-flex align-items-center mt-2">
+        <label for="sinseiNo" class="me-2 fixed-width-sm">申請番号</label>
+        <input type="text" id="sinseiNo" name="sinseiNo" class="form-control form-control-sm fixed-width-mdc" />
+    </div>
+    <div class="mt-3">
+        <button type="submit" id="searchButton" class="btn btn-sm btn-primary btn-fixed">検索 (F10)</button>
     </div>
     <input type="hidden" name="pageNumber" value="1" />
 </form>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const input = document.getElementById('siharaiYoteiYmd');
-        const form = input.closest('form');
 
-        const toDisplay = (value) => {
-            const digits = value.replace(/[^0-9]/g, '');
-            return digits.length === 8 ? `${digits.slice(0, 4)}年${digits.slice(4, 6)}月${digits.slice(6, 8)}日` : value;
-        };
-
-        const toInput = (value) => value.replace(/[^0-9]/g, '');
-
-        if (input.value) {
-            input.value = toDisplay(input.value);
-        }
-
-        input.addEventListener('focus', () => {
-            input.value = toInput(input.value);
-            input.select();
-        });
-
-        input.addEventListener('blur', () => {
-            input.value = toDisplay(input.value);
-        });
-
-        form.addEventListener('submit', () => {
-            input.value = toInput(input.value);
-        });
-    });
-</script>
 <div class="d-flex align-items-center justify-content-between mb-1">
     <div class="d-flex align-items-center">
         <p class="mb-0 me-3">販促費申請条件入力（確定）</p>
@@ -92,7 +141,7 @@
         @Model.TotalCount.ToString("N0") 件
     </div>
 </div>
-@await Html.PartialAsync("_HansokuSinseiMainTable", Model)
+@await Html.PartialAsync("_SinseiJokenTable", Model)
 
 <nav aria-label="page navigation" class="mt-3">
     <ul class="pagination justify-content-center">
@@ -127,3 +176,152 @@
         </li>
     </ul>
 </nav>
+
+<hr />
+<div class="card mt-1">
+    <div class="card-header">要件一覧</div>
+    <div class="card-body">
+        <ul class="mb-0">
+            <li>半角ｶﾅ表示廃止</li>
+            <li>処理方法：請求書控除廃止</li>
+            <li>処理方法：振込細分化（特約店、小売業、業者・一般店・グループ企業、登録二次店）</li>
+            <li>業者CD入力追加</li>
+            <li>値引種別廃止</li>
+        </ul>
+    </div>
+</div>
+<div class="card mt-1">
+    <div class="card-header">確認事項</div>
+    <div class="card-body">
+        <ul class="mb-0">
+            <li>機能仕様書［画面項目］シート・「処理方法」の備考記載の区分値の情報源は？</li>
+            <li>処理方法の初期値は「売掛金相殺」で良い？</li>
+            <li>価格販促区分の選択肢は赤太字？</li>
+            <li>価格販促区分の承認CD指定は"(ｾﾝﾀｰR、特殊R、遊技場、商品登録料)"必要？</li>
+        </ul>
+    </div>
+</div>
+<div class="card mt-1">
+    <div class="card-header">仕様一覧</div>
+    <div class="card-body">
+        <ul class="mb-0">
+            <li>
+                一覧の抽出条件となるのは「対象年月」「経費所」「請求・帳合」「請求区分」
+                <ul>
+                    <li>「申請番号」の入力がある場合は対象申請番号の登録画面に遷移する</li>
+                </ul>
+            </li>
+            <li>登録画面からの戻り時は対象申請の条件を復元する</li>
+        </ul>
+    </div>
+</div>
+<div class="card mt-1">
+    <div class="card-header">機能概要</div>
+    <div class="card-body">
+        <ul class="mb-0">
+            <li></li>
+        </ul>
+    </div>
+</div>
+<div class="card mt-1">
+    <div class="card-header">TODO</div>
+    <div class="card-body">
+        <ul class="mb-0">
+            <li>対象年月にカレンダー入力を追加</li>
+            <li>支払予定日にカレンダー入力を追加</li>
+            <li>Functionキー対応</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const ymInput = document.getElementById('sinseiTaishoYm');
+        const ymPicker = document.getElementById('sinseiTaishoYmPicker');
+        const siharaiInput = document.getElementById('siharaiYoteiYmd');
+        const siharaiPicker = document.getElementById('siharaiYoteiYmdPicker');
+        const form = ymInput.closest('form');
+        const searchButton = document.getElementById('searchButton');
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'F10' || event.keyCode === 121) {
+                event.preventDefault();
+                searchButton.click();
+            }
+        });
+
+        const toDisplayYm = (value) => {
+            const digits = value.replace(/[^0-9]/g, '').slice(0, 6);
+            return digits.length === 6 ? `${digits.slice(0, 4)}年${digits.slice(4, 6)}月` : value;
+        };
+
+        const toInputYm = (value) => value.replace(/[^0-9]/g, '').slice(0, 6);
+
+        const toPickerYm = (value) => {
+            const digits = toInputYm(value);
+            return digits.length === 6 ? `${digits.slice(0, 4)}-${digits.slice(4, 6)}` : '';
+        };
+
+        const toDisplayYmd = (value) => {
+            const digits = value.replace(/[^0-9]/g, '');
+            return digits.length === 8 ? `${digits.slice(0, 4)}年${digits.slice(4, 6)}月${digits.slice(6, 8)}日` : value;
+        };
+
+        const toInputYmd = (value) => value.replace(/[^0-9]/g, '');
+
+        const toPickerYmd = (value) => {
+            const digits = toInputYmd(value);
+            return digits.length === 8 ? `${digits.slice(0, 4)}-${digits.slice(4, 6)}-${digits.slice(6, 8)}` : '';
+        };
+
+        if (ymInput.value) {
+            ymInput.value = toDisplayYm(ymInput.value);
+        }
+
+        if (siharaiInput.value) {
+            siharaiInput.value = toDisplayYmd(siharaiInput.value);
+        }
+
+        ymInput.addEventListener('focus', () => {
+            ymInput.value = toInputYm(ymInput.value);
+            ymInput.select();
+        });
+
+        ymInput.addEventListener('click', () => {
+            ymPicker.value = toPickerYm(ymInput.value);
+            if (ymPicker.showPicker) {
+                ymPicker.showPicker();
+            }
+        });
+
+        ymInput.addEventListener('blur', () => {
+            ymInput.value = toDisplayYm(ymInput.value);
+        });
+
+        ymPicker.addEventListener('change', () => {
+            ymInput.value = toDisplayYm(ymPicker.value);
+        });
+
+        siharaiPicker.addEventListener('focus', () => {
+            siharaiPicker.value = toPickerYmd(siharaiInput.value);
+        });
+
+        siharaiPicker.addEventListener('change', () => {
+            siharaiInput.value = toDisplayYmd(siharaiPicker.value);
+        });
+
+        siharaiInput.addEventListener('focus', () => {
+            siharaiInput.value = toInputYmd(siharaiInput.value);
+            siharaiInput.select();
+        });
+
+        siharaiInput.addEventListener('blur', () => {
+            siharaiInput.value = toDisplayYmd(siharaiInput.value);
+        });
+
+        form.addEventListener('submit', () => {
+            ymInput.value = toInputYm(ymInput.value);
+            siharaiInput.value = toInputYmd(siharaiInput.value);
+        });
+    });
+</script>

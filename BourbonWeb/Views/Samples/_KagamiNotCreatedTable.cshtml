@@ -46,7 +46,7 @@
                             <td rowspan="2" class="text-center">@Html.DisplayFor(modelItem => item.SinseiChoaiCd)</td>
                             <td rowspan="2">@Html.DisplayFor(modelItem => item.SinseiChoaiNm)</td>
                             <td rowspan="2">@Html.DisplayFor(modelItem => item.TorihikiNmA)</td>
-                            <td rowspan="2" class="text-center"><a href="https://www.bourbon.co.jp/">@item.SinseiNo</a></td>
+                            <td rowspan="2" class="text-center"><a href="/pdf/サンプル申請書(明細).pdf" target="_blank" rel="noopener noreferrer" download>@item.SinseiNo</a></td>
                             <td rowspan="2" class="text-end">@(item.KyosanGaku.HasValue ? $"¥{item.KyosanGaku.Value:#,0}" : "")</td>
                             <td>@Html.DisplayFor(modelItem => item.CreatedAt)</td>
                             <td rowspan="2" class="text-center">@Html.DisplayFor(modelItem => item.MibaraiKanriSime)</td>

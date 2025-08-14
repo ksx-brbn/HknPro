@@ -400,6 +400,26 @@ FROM
                 condition.TorihikiCdA = "XA0734";
             }
 
+            if (string.IsNullOrEmpty(condition.ShoriHoho))
+            {
+                condition.ShoriHoho = "20;";
+            }
+
+            if (string.IsNullOrEmpty(condition.KyosanJokenTaniKbn))
+            {
+                condition.KyosanJokenTaniKbn = "0";
+            }
+
+            if (string.IsNullOrEmpty(condition.KakakuHansokuKbn))
+            {
+                condition.KakakuHansokuKbn = "1";
+            }
+
+            if (string.IsNullOrEmpty(condition.CreateKeihiRitu))
+            {
+                condition.CreateKeihiRitu = "0";
+            }
+
             var baseQuery = _context.HansokuSinsei
                 .FromSqlRaw(sql)
                 .AsNoTracking();
@@ -410,50 +430,19 @@ FROM
                 baseQuery = baseQuery.Where(s => s.SinseiTaishoYm == ym);
             }
 
-            if (!string.IsNullOrEmpty(condition.SiharaiYoteiYmd))
-            {
-                var ymd = condition.SiharaiYoteiYmd.Replace("-", "");
-                baseQuery = baseQuery.Where(s => s.SiharaiYoteiYmd == ymd);
-            }
-
-            if (!string.IsNullOrEmpty(condition.SinseiShoCd))
-            {
-                baseQuery = baseQuery.Where(s => s.SinseiShoCd == condition.SinseiShoCd);
-            }
-
-            if (!string.IsNullOrEmpty(condition.SinseiShaCd))
-            {
-                baseQuery = baseQuery.Where(s => s.SinseiShaCd == condition.SinseiShaCd);
-            }
-
-            if (!string.IsNullOrEmpty(condition.SinseiSeikyuCd))
-            {
-                baseQuery = baseQuery.Where(s => s.SinseiSeikyuCd == condition.SinseiSeikyuCd);
-            }
-
-            if (!string.IsNullOrEmpty(condition.SeikyuKbn))
-            {
-                baseQuery = baseQuery.Where(s => s.SeikyuKbn == condition.SeikyuKbn);
-            }
-
-            if (!string.IsNullOrEmpty(condition.TorihikiCdA))
-            {
-                baseQuery = baseQuery.Where(s => s.TorihikiCdA == condition.TorihikiCdA);
-            }
-
             if (!string.IsNullOrEmpty(condition.KeihishoCd))
             {
                 baseQuery = baseQuery.Where(s => s.KeihishoCd == condition.KeihishoCd);
             }
 
-            if (!string.IsNullOrEmpty(condition.KeihishaCd))
-            {
-                baseQuery = baseQuery.Where(s => s.KeihishaCd == condition.KeihishaCd);
-            }
-
             if (!string.IsNullOrEmpty(condition.SinseiChoaiCd))
             {
                 baseQuery = baseQuery.Where(s => s.SinseiChoaiCd == condition.SinseiChoaiCd);
+            }
+
+            if (!string.IsNullOrEmpty(condition.SeikyuKbn))
+            {
+                baseQuery = baseQuery.Where(s => s.SeikyuKbn == condition.SeikyuKbn);
             }
 
             baseQuery = baseQuery
@@ -470,6 +459,10 @@ FROM
             ViewData["CurrentKeihishoCd"] = condition.KeihishoCd;
             ViewData["CurrentKeihishaCd"] = condition.KeihishaCd;
             ViewData["CurrentSinseiChoaiCd"] = condition.SinseiChoaiCd;
+            ViewData["CurrentShoriHoho"] = condition.ShoriHoho;
+            ViewData["CurrentKyosanJokenTaniKbn"] = condition.KyosanJokenTaniKbn;
+            ViewData["CurrentKakakuHansokuKbn"] = condition.KakakuHansokuKbn;
+            ViewData["CurrentCreateKeihiRitu"] = condition.CreateKeihiRitu;
             var list = await PaginatedList<HansokuSinsei>.CreateAsync(baseQuery, pageNumber ?? 1, pageSize);
             return View(list);
         }
