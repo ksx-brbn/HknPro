@@ -140,7 +140,7 @@
 @* toast案8 OK
  *@
 <div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 1200">
-    <div id="noticeToast"
+    <div id="noticeToast1"
          class="toast border-0 shadow-lg text-white rounded-4"
          style="width: 800px; max-width: 90%; background: linear-gradient(135deg, #4e54c8, #8f94fb);"
          role="alert" aria-live="assertive" aria-atomic="true">
@@ -262,6 +262,8 @@
 </nav>
 
 <hr />
+<button id="showToastButton1" class="btn btn-primary mb-3">トースト①</button>
+<button id="showToastButton2" class="btn btn-primary mb-3">トースト②</button>
 <div class="card mt-5">
     <div class="card-header">要件一覧</div>
     <div class="card-body">
@@ -307,13 +309,16 @@
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            var toastEl = document.getElementById('noticeToast');
-            if (toastEl) {
-                var toast = new bootstrap.Toast(toastEl, { 
+            var toastEl = document.getElementById('noticeToast1');
+            var button = document.getElementById('showToastButton1');
+            if (toastEl && button) {
+                var toast = new bootstrap.Toast(toastEl, {
                     delay: 5000,    // 5秒後に消える
                     autohide: true  // falseにすると自動では消えない
                 });
-                toast.show();
+                button.addEventListener('click', function () {
+                    toast.show();
+                });
             }
         });
     </script>
