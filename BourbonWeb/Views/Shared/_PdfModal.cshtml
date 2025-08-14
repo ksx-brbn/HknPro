@@ -1,0 +1,55 @@
+﻿<div class="modal fade" id="pdfModal" tabindex="-1" aria-labelledby="pdfModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="pdfModalLabel">出力条件選択</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">印刷単位</label>
+                    <div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="printUnit" id="printUnitBoth" value="鑑・明細両方" checked>
+                            <label class="form-check-label" for="printUnitBoth">鑑・明細両方</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="printUnit" id="printUnitKan" value="鑑のみ">
+                            <label class="form-check-label" for="printUnitKan">鑑のみ</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="printUnit" id="printUnitMeisai" value="明細のみ">
+                            <label class="form-check-label" for="printUnitMeisai">明細のみ</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">申請鑑番号</label>
+                    <input type="text" class="form-control" value="K2025080377764" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">代表得意先</label>
+                    <input type="text" class="form-control" value="㈱日本アクセス　近畿支社" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">受取人名</label>
+                    <input type="text" class="form-control" value="柏崎　太郎" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">振込日</label>
+                    <input type="text" class="form-control" value="2025/08/29" />
+                </div>
+                <div class="mt-5 d-flex justify-content-between">
+                    <a class="btn btn-primary btn-fixed" href="/pdf/サンプル申請書(鑑).pdf" target="_blank" rel="noopener noreferrer" download>出力</a>
+                    <button type="button" class="btn btn-secondary btn-fixed" data-bs-dismiss="modal">キャンセル</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .modal-backdrop.show {
+        opacity: 0.5 !important;
+    }
+</style>

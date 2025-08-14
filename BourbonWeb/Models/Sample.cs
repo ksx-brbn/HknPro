@@ -584,5 +584,9 @@ namespace BourbonWeb.Models
         public string? KeihishoCd { get; set; }
         public string? KeihishaCd { get; set; }
         public string? SinseiChoaiCd { get; set; }
+        public string? ShoriHoho { get; set; }
+        public string? KyosanJokenTaniKbn { get; set; }
+        public string? KakakuHansokuKbn { get; set; }
+        public string? CreateKeihiRitu { get; set; }
     }
 }
