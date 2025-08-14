@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\img\current\" />
     <Folder Include="wwwroot\pdf\" />
   </ItemGroup>
 
