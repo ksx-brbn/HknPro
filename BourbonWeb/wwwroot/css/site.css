@@ -51,3 +51,7 @@
 .fixed-width-lg {
     width: 12em;
 }
+
+.btn-fixed {
+    width: 200px;
+}
