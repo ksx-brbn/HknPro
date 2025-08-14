@@ -13,6 +13,148 @@ namespace BourbonWeb.Controllers
     public class SamplesController : Controller
     {
         private readonly AppDbContext _context;
+        private const string sql = @"
+SELECT
+    KAISHA_CD
+    , URIKAKE_BUNRUI
+    , CASE URIKAKE_BUNRUI
+        WHEN '1' THEN '特約店'
+        WHEN '4' THEN '登録店'
+        ELSE ''
+        END AS URIKAKE_BUNRUI_NM
+    , SEIKYU_KBN
+    , SINSEI_NO
+    , SINSEI_SHURUI
+    , SHUSEI_SINSEI_NO
+    , SINSEI_TAISHO_YM
+    , SINSEI_KEIJO_YM
+    , KAIKEI_KEIJO_YM
+    , SINSEI_KAGAMI_NO
+    , SINSEI_KAGAMI_DAIHYO_NO
+    , SINSEI_KAGAMI_DAIHYO_CD
+    , SINSEI_SIHARAI_GROUP_CD
+    , SINSEI_SEIKYU_CD
+    , SINSEI_SEIKYU_NM
+    , SINSEI_SEIKYU_BUNRUI_CD
+    , SINSEI_CHOAI_CD
+    , SINSEI_CHOAI_NM
+    , SINSEI_CHOAI_BUNRUI_CD
+    , SINSEI_SEIKYU_HONTEN_CD
+    , SINSEI_SEIKYU_HONTEN_NM
+    , SINSEI_SEIKYU_SIMEBI
+    , SINSEI_SEIKYU_SHUKIN_BI
+    , SINSEI_SEIKYU_KAISHU_SITE
+    , SINSEI_SEIKYU_LAST_SIMEBI
+    , KIKAKU_BUNRUI_NO
+    , TORIHIKI_CD_A
+    , TORIHIKI_NM_A
+    , TORIHIKI_KANA_A
+    , TORIHIKI_BUNRUI_CD
+    , TORIHIKI_GYOTAI_KBN
+    , TORIHIKI_CD_KBN
+    , TORIHIKI_CD_B
+    , TORIHIKI_KANJI_KBN
+    , TORIHIKI_NM_B
+    , TORIHIKI_AREA_CD
+    , TORIHIKI_BUSHO_CD
+    , TORIHIKI_EIGYO_CD
+    , TORIHIKI_CENTER_CD
+    , TORIHIKI_KEIYAKU_NO
+    , TORIHIKI_KEIYAKU_HOZON
+    , TORIHIKI_MITUMORI_NO
+    , TORIHIKI_MITUMORI_HOZON
+    , TORIHIKI_MISHU_SEIKYU_NO
+    , TORIHIKI_MISHU_SEIKYU_HOZON
+    , TORIHIKI_MISHU_NO
+    , TORIHIKI_SEIKYU_SIME
+    , SIHARAI_KEITAI
+    , SIHARAI_SHUBETU
+    , CASE SUBSTRING(SIHARAI_KEITAI, 1, 1)
+        WHEN '1' THEN '請求書控除'
+        WHEN '2' THEN '売掛金相殺'
+        WHEN '3' THEN CASE SIHARAI_SHUBETU
+            WHEN '1' THEN '振込（請求・帳合）'
+            WHEN '2' THEN '振込（得意先）'
+            ELSE ''
+            END
+        ELSE ''
+        END AS SHORI_HOHO
+    , SIHARAI_YOTEI_YMD
+    , SIHARAI_KAKUTEI_YMD
+    , SIHARAI_TETUZUKI_SHO_CD
+    , SIHARAI_TETUZUKI_SHA_CD
+    , SIHARAI_TETUZUKI_YMD
+    , SIHARAI_TETUZUKI_TIME
+    , MIBARAI_KANRI_KBN
+    , MIBARAI_KANRI_SIME
+    , MIBARAI_KANRI_SHORI_SIME_KBN
+    , SIWAKE_KIDEN_YMD
+    , SINSEI_COMMENT
+    , KYOSAN_COMMENT_HYOSI_FLG
+    , JOTAI_KBN
+    , CASE JOTAI_KBN
+        WHEN '0' THEN '申請登録'
+        WHEN '1' THEN '鑑作成済'
+        WHEN '2' THEN '印刷済'
+        WHEN '3' THEN '承認済'
+        WHEN '4' THEN '費用計上確定'
+        WHEN '5' THEN '支払完了'
+        ELSE ''
+        END AS JOTAI_KBN_NM
+    , '0' AS HONSHA_SHONIN_JOTAI_KBN
+    , KEIHISHO_CD
+    , KEIHISHO_NM
+    , KEIHISHA_CD
+    , KEIHISHA_NM
+    , SINSEI_SHO_CD
+    , IIF(SINSEI_SHO_NM = KEIHISHO_NM, '', SINSEI_SHO_NM) AS SINSEI_SHO_NM
+    , SINSEI_SHA_CD
+    , IIF(SINSEI_SHA_NM = KEIHISHA_NM, '', SINSEI_SHA_NM) AS SINSEI_SHA_NM
+    , SINSEI_KAGAMI_SHO_CD
+    , SINSEI_KAGAMI_SHO_NM
+    , SINSEI_KAGAMI_SHA_CD
+    , SINSEI_KAGAMI_SHA_NM
+    , SINSEI_TOROKU_YMD
+    , SINSEI_TOROKU_TIME
+    , SINSEI_SHO_SAKUSEI_YMD
+    , SINSEI_SHO_SAKUSEI_TIME
+    , SINSEI_SHO_SAKUSEI_YMD_ZENKAI
+    , SINSEI_SHO_SAKUSEI_TIME_ZENKAI
+    , SINSEI_SHO_INSATU_YMD
+    , SINSEI_SHO_INSATU_TIME
+    , SINSEI_SHO_INSATU_CNT
+    , SURYO_TANI_KBN
+    , KYOSAN_JOKEN_TANI_KBN
+    , KYOSAN_GAKU
+    , KYOSAN_GAKU_ZEI_KBN
+    , KYOSAN_GAKU_ZEI_GAKU
+    , KYOSAN_GAKU_ZEI_NUKI
+    , ZEI_HASU_SHORI_KBN
+    , SINSEI_YMD
+    , TAISHO_KAISI_YMD
+    , TAISHO_SHURYO_YMD
+    , MISE_BUNRUI
+    , HACCHUSAKI_CD
+    , HACCHUSAKI_NM
+    , SHUSEI_KBN
+    , SINSEI_ASSOCIATION_CD
+    , TEISEI_SINSEI_NO
+    , TEISEI_MOTO_SINSEI_NO
+    , CHOFUKU_JOGAI
+    , SHUSEI_KAGAMI_NO
+    , MITUMORI_TEKIYO
+    , KAKAKU_HANSOKU_KBN
+    , REMARKS
+    , CREATED_ID
+    , CREATED_AT
+    , UPDATED_ID
+    , UPDATED_AT
+    , DELETED_FLG
+    , LOCK_VERSION
+    , NEBIKI_SYUBETU
+FROM
+    T_HANSOKU_SINSEI 
+";
 
         #region Sample CRUD Operations
         public SamplesController(AppDbContext context)
@@ -187,314 +329,149 @@ namespace BourbonWeb.Controllers
         #region 販促費申請情報(T_HANSOKU_SINSEI)
         public async Task<IActionResult> HansokuSinsei()
         {
-            var sql = @"
-SELECT TOP 10
-    KAISHA_CD
-    , URIKAKE_BUNRUI
-    , CASE URIKAKE_BUNRUI 
-        WHEN '1' THEN '特約店' 
-        WHEN '4' THEN '登録店' 
-        ELSE '' 
-        END AS URIKAKE_BUNRUI_NM
-    , SEIKYU_KBN
-    , SINSEI_NO
-    , SINSEI_SHURUI
-    , SHUSEI_SINSEI_NO
-    , SINSEI_TAISHO_YM
-    , SINSEI_KEIJO_YM
-    , KAIKEI_KEIJO_YM
-    , SINSEI_KAGAMI_NO
-    , SINSEI_KAGAMI_DAIHYO_NO
-    , SINSEI_KAGAMI_DAIHYO_CD
-    , SINSEI_SIHARAI_GROUP_CD
-    , SINSEI_SEIKYU_CD
-    , SINSEI_SEIKYU_NM
-    , SINSEI_SEIKYU_BUNRUI_CD
-    , SINSEI_CHOAI_CD
-    , SINSEI_CHOAI_NM
-    , SINSEI_CHOAI_BUNRUI_CD
-    , SINSEI_SEIKYU_HONTEN_CD
-    , SINSEI_SEIKYU_HONTEN_NM
-    , SINSEI_SEIKYU_SIMEBI
-    , SINSEI_SEIKYU_SHUKIN_BI
-    , SINSEI_SEIKYU_KAISHU_SITE
-    , SINSEI_SEIKYU_LAST_SIMEBI
-    , KIKAKU_BUNRUI_NO
-    , TORIHIKI_CD_A
-    , TORIHIKI_NM_A
-    , TORIHIKI_KANA_A
-    , TORIHIKI_BUNRUI_CD
-    , TORIHIKI_GYOTAI_KBN
-    , TORIHIKI_CD_KBN
-    , TORIHIKI_CD_B
-    , TORIHIKI_KANJI_KBN
-    , TORIHIKI_NM_B
-    , TORIHIKI_AREA_CD
-    , TORIHIKI_BUSHO_CD
-    , TORIHIKI_EIGYO_CD
-    , TORIHIKI_CENTER_CD
-    , TORIHIKI_KEIYAKU_NO
-    , TORIHIKI_KEIYAKU_HOZON
-    , TORIHIKI_MITUMORI_NO
-    , TORIHIKI_MITUMORI_HOZON
-    , TORIHIKI_MISHU_SEIKYU_NO
-    , TORIHIKI_MISHU_SEIKYU_HOZON
-    , TORIHIKI_MISHU_NO
-    , TORIHIKI_SEIKYU_SIME
-    , SIHARAI_KEITAI
-    , SIHARAI_SHUBETU
-    , CASE SUBSTRING(SIHARAI_KEITAI, 1, 1) 
-        WHEN '1' THEN '請求書控除' 
-        WHEN '2' THEN '売掛金相殺' 
-        WHEN '3' THEN CASE SIHARAI_SHUBETU 
-            WHEN '1' THEN '振込（請求・帳合）' 
-            WHEN '2' THEN '振込（得意先）' 
-            ELSE '' 
-            END 
-        ELSE '' 
-        END AS SHORI_HOHO
-    , SIHARAI_YOTEI_YMD
-    , SIHARAI_KAKUTEI_YMD
-    , SIHARAI_TETUZUKI_SHO_CD
-    , SIHARAI_TETUZUKI_SHA_CD
-    , SIHARAI_TETUZUKI_YMD
-    , SIHARAI_TETUZUKI_TIME
-    , MIBARAI_KANRI_KBN
-    , MIBARAI_KANRI_SIME
-    , MIBARAI_KANRI_SHORI_SIME_KBN
-    , SIWAKE_KIDEN_YMD
-    , SINSEI_COMMENT
-    , KYOSAN_COMMENT_HYOSI_FLG
-    , JOTAI_KBN
-    , CASE JOTAI_KBN 
-        WHEN '0' THEN '申請登録' 
-        WHEN '1' THEN '鑑作成済' 
-        WHEN '2' THEN '印刷済' 
-        WHEN '3' THEN '承認済' 
-        WHEN '4' THEN '費用計上確定' 
-        WHEN '5' THEN '支払完了' 
-        ELSE '' 
-        END AS JOTAI_KBN_NM
-    , '0' AS HONSHA_SHONIN_JOTAI_KBN
-    , KEIHISHO_CD
-    , KEIHISHO_NM
-    , KEIHISHA_CD
-    , KEIHISHA_NM
-    , SINSEI_SHO_CD
-    , IIF(SINSEI_SHO_NM = KEIHISHO_NM, '', SINSEI_SHO_NM) AS SINSEI_SHO_NM
-    , SINSEI_SHA_CD
-    , IIF(SINSEI_SHA_NM = KEIHISHA_NM, '', SINSEI_SHA_NM) AS SINSEI_SHA_NM
-    , SINSEI_KAGAMI_SHO_CD
-    , SINSEI_KAGAMI_SHO_NM
-    , SINSEI_KAGAMI_SHA_CD
-    , SINSEI_KAGAMI_SHA_NM
-    , SINSEI_TOROKU_YMD
-    , SINSEI_TOROKU_TIME
-    , SINSEI_SHO_SAKUSEI_YMD
-    , SINSEI_SHO_SAKUSEI_TIME
-    , SINSEI_SHO_SAKUSEI_YMD_ZENKAI
-    , SINSEI_SHO_SAKUSEI_TIME_ZENKAI
-    , SINSEI_SHO_INSATU_YMD
-    , SINSEI_SHO_INSATU_TIME
-    , SINSEI_SHO_INSATU_CNT
-    , SURYO_TANI_KBN
-    , KYOSAN_JOKEN_TANI_KBN
-    , KYOSAN_GAKU
-    , KYOSAN_GAKU_ZEI_KBN
-    , KYOSAN_GAKU_ZEI_GAKU
-    , KYOSAN_GAKU_ZEI_NUKI
-    , ZEI_HASU_SHORI_KBN
-    , SINSEI_YMD
-    , TAISHO_KAISI_YMD
-    , TAISHO_SHURYO_YMD
-    , MISE_BUNRUI
-    , HACCHUSAKI_CD
-    , HACCHUSAKI_NM
-    , SHUSEI_KBN
-    , SINSEI_ASSOCIATION_CD
-    , TEISEI_SINSEI_NO
-    , TEISEI_MOTO_SINSEI_NO
-    , CHOFUKU_JOGAI
-    , SHUSEI_KAGAMI_NO
-    , MITUMORI_TEKIYO
-    , KAKAKU_HANSOKU_KBN
-    , REMARKS
-    , CREATED_ID
-    , CREATED_AT
-    , UPDATED_ID
-    , UPDATED_AT
-    , DELETED_FLG
-    , LOCK_VERSION
-    , NEBIKI_SYUBETU 
-FROM
-    T_HANSOKU_SINSEI
-";
-
             var list = await _context.HansokuSinsei
                 .FromSqlRaw(sql)
                 .AsNoTracking()
+                .Take(10)
                 .ToListAsync();
             return View(list);
         }
 
         public async Task<IActionResult> Home(int? mainPageNumber, int? queryPageNumber)
         {
-            var sql = @"
-SELECT
-    KAISHA_CD
-    , URIKAKE_BUNRUI
-    , CASE URIKAKE_BUNRUI 
-        WHEN '1' THEN '特約店' 
-        WHEN '4' THEN '登録店' 
-        ELSE '' 
-        END AS URIKAKE_BUNRUI_NM
-    , SEIKYU_KBN
-    , SINSEI_NO
-    , SINSEI_SHURUI
-    , SHUSEI_SINSEI_NO
-    , SINSEI_TAISHO_YM
-    , SINSEI_KEIJO_YM
-    , KAIKEI_KEIJO_YM
-    , SINSEI_KAGAMI_NO
-    , SINSEI_KAGAMI_DAIHYO_NO
-    , SINSEI_KAGAMI_DAIHYO_CD
-    , SINSEI_SIHARAI_GROUP_CD
-    , SINSEI_SEIKYU_CD
-    , SINSEI_SEIKYU_NM
-    , SINSEI_SEIKYU_BUNRUI_CD
-    , SINSEI_CHOAI_CD
-    , SINSEI_CHOAI_NM
-    , SINSEI_CHOAI_BUNRUI_CD
-    , SINSEI_SEIKYU_HONTEN_CD
-    , SINSEI_SEIKYU_HONTEN_NM
-    , SINSEI_SEIKYU_SIMEBI
-    , SINSEI_SEIKYU_SHUKIN_BI
-    , SINSEI_SEIKYU_KAISHU_SITE
-    , SINSEI_SEIKYU_LAST_SIMEBI
-    , KIKAKU_BUNRUI_NO
-    , TORIHIKI_CD_A
-    , TORIHIKI_NM_A
-    , TORIHIKI_KANA_A
-    , TORIHIKI_BUNRUI_CD
-    , TORIHIKI_GYOTAI_KBN
-    , TORIHIKI_CD_KBN
-    , TORIHIKI_CD_B
-    , TORIHIKI_KANJI_KBN
-    , TORIHIKI_NM_B
-    , TORIHIKI_AREA_CD
-    , TORIHIKI_BUSHO_CD
-    , TORIHIKI_EIGYO_CD
-    , TORIHIKI_CENTER_CD
-    , TORIHIKI_KEIYAKU_NO
-    , TORIHIKI_KEIYAKU_HOZON
-    , TORIHIKI_MITUMORI_NO
-    , TORIHIKI_MITUMORI_HOZON
-    , TORIHIKI_MISHU_SEIKYU_NO
-    , TORIHIKI_MISHU_SEIKYU_HOZON
-    , TORIHIKI_MISHU_NO
-    , TORIHIKI_SEIKYU_SIME
-    , SIHARAI_KEITAI
-    , SIHARAI_SHUBETU
-    , CASE SUBSTRING(SIHARAI_KEITAI, 1, 1) 
-        WHEN '1' THEN '請求書控除' 
-        WHEN '2' THEN '売掛金相殺' 
-        WHEN '3' THEN CASE SIHARAI_SHUBETU 
-            WHEN '1' THEN '振込（請求・帳合）' 
-            WHEN '2' THEN '振込（得意先）' 
-            ELSE '' 
-            END 
-        ELSE '' 
-        END AS SHORI_HOHO
-    , SIHARAI_YOTEI_YMD
-    , SIHARAI_KAKUTEI_YMD
-    , SIHARAI_TETUZUKI_SHO_CD
-    , SIHARAI_TETUZUKI_SHA_CD
-    , SIHARAI_TETUZUKI_YMD
-    , SIHARAI_TETUZUKI_TIME
-    , MIBARAI_KANRI_KBN
-    , MIBARAI_KANRI_SIME
-    , MIBARAI_KANRI_SHORI_SIME_KBN
-    , SIWAKE_KIDEN_YMD
-    , SINSEI_COMMENT
-    , KYOSAN_COMMENT_HYOSI_FLG
-    , JOTAI_KBN
-    , CASE JOTAI_KBN 
-        WHEN '0' THEN '申請登録' 
-        WHEN '1' THEN '鑑作成済' 
-        WHEN '2' THEN '印刷済' 
-        WHEN '3' THEN '承認済' 
-        WHEN '4' THEN '費用計上確定' 
-        WHEN '5' THEN '支払完了' 
-        ELSE '' 
-        END AS JOTAI_KBN_NM
-    , '0' AS HONSHA_SHONIN_JOTAI_KBN
-    , KEIHISHO_CD
-    , KEIHISHO_NM
-    , KEIHISHA_CD
-    , KEIHISHA_NM
-    , SINSEI_SHO_CD
-    , IIF(SINSEI_SHO_NM = KEIHISHO_NM, '', SINSEI_SHO_NM) AS SINSEI_SHO_NM
-    , SINSEI_SHA_CD
-    , IIF(SINSEI_SHA_NM = KEIHISHA_NM, '', SINSEI_SHA_NM) AS SINSEI_SHA_NM
-    , SINSEI_KAGAMI_SHO_CD
-    , SINSEI_KAGAMI_SHO_NM
-    , SINSEI_KAGAMI_SHA_CD
-    , SINSEI_KAGAMI_SHA_NM
-    , SINSEI_TOROKU_YMD
-    , SINSEI_TOROKU_TIME
-    , SINSEI_SHO_SAKUSEI_YMD
-    , SINSEI_SHO_SAKUSEI_TIME
-    , SINSEI_SHO_SAKUSEI_YMD_ZENKAI
-    , SINSEI_SHO_SAKUSEI_TIME_ZENKAI
-    , SINSEI_SHO_INSATU_YMD
-    , SINSEI_SHO_INSATU_TIME
-    , SINSEI_SHO_INSATU_CNT
-    , SURYO_TANI_KBN
-    , KYOSAN_JOKEN_TANI_KBN
-    , KYOSAN_GAKU
-    , KYOSAN_GAKU_ZEI_KBN
-    , KYOSAN_GAKU_ZEI_GAKU
-    , KYOSAN_GAKU_ZEI_NUKI
-    , ZEI_HASU_SHORI_KBN
-    , SINSEI_YMD
-    , TAISHO_KAISI_YMD
-    , TAISHO_SHURYO_YMD
-    , MISE_BUNRUI
-    , HACCHUSAKI_CD
-    , HACCHUSAKI_NM
-    , SHUSEI_KBN
-    , SINSEI_ASSOCIATION_CD
-    , TEISEI_SINSEI_NO
-    , TEISEI_MOTO_SINSEI_NO
-    , CHOFUKU_JOGAI
-    , SHUSEI_KAGAMI_NO
-    , MITUMORI_TEKIYO
-    , KAKAKU_HANSOKU_KBN
-    , REMARKS
-    , CREATED_ID
-    , CREATED_AT
-    , UPDATED_ID
-    , UPDATED_AT
-    , DELETED_FLG
-    , LOCK_VERSION
-    , NEBIKI_SYUBETU 
-FROM
-    T_HANSOKU_SINSEI
-";
-
             var baseQuery = _context.HansokuSinsei
+                .FromSqlRaw(sql)
                 .AsNoTracking();
+
+            baseQuery = baseQuery
+                .OrderByDescending(s => s.SinseiNo);
+
             var queryResult = _context.HansokuSinsei
                 .FromSqlRaw(sql)
                 .AsNoTracking();
-            int pageSize = 5;
 
+            queryResult = queryResult
+                .OrderByDescending(s => s.ShuseiKagamiNo)
+                .ThenByDescending(s => s.SinseiNo);
+
+            int pageSize = 5;
             var viewModel = new HomeViewModel
             {
                 MainList = await PaginatedList<HansokuSinsei>.CreateAsync(baseQuery, mainPageNumber ?? 1, pageSize),
                 QueryList = await PaginatedList<HansokuSinsei>.CreateAsync(queryResult, queryPageNumber ?? 1, pageSize)
             };
             return View(viewModel);
+        }
+
+        public async Task<IActionResult> InputConditions(HansokuSinseiSearchCondition condition, int? pageNumber)
+        {
+            if (string.IsNullOrEmpty(condition.SinseiTaishoYm))
+            {
+                condition.SinseiTaishoYm = "2024-08";
+            }
+
+            if (string.IsNullOrEmpty(condition.SiharaiYoteiYmd))
+            {
+                condition.SiharaiYoteiYmd = "2024-09-30";
+            }
+
+            if (string.IsNullOrEmpty(condition.KeihishoCd))
+            {
+                condition.KeihishoCd = "210300";
+            }
+
+            if (string.IsNullOrEmpty(condition.KeihishaCd))
+            {
+                condition.KeihishaCd = "063441";
+            }
+
+            if (string.IsNullOrEmpty(condition.SinseiChoaiCd))
+            {
+                condition.SinseiChoaiCd = "201632";
+            }
+
+            if (string.IsNullOrEmpty(condition.SeikyuKbn))
+            {
+                condition.SeikyuKbn = "0";
+            }
+
+            if (string.IsNullOrEmpty(condition.TorihikiCdA))
+            {
+                condition.TorihikiCdA = "XA0734";
+            }
+
+            var baseQuery = _context.HansokuSinsei
+                .FromSqlRaw(sql)
+                .AsNoTracking();
+
+            if (!string.IsNullOrEmpty(condition.SinseiTaishoYm))
+            {
+                var ym = condition.SinseiTaishoYm.Replace("-", "");
+                baseQuery = baseQuery.Where(s => s.SinseiTaishoYm == ym);
+            }
+
+            if (!string.IsNullOrEmpty(condition.SiharaiYoteiYmd))
+            {
+                var ymd = condition.SiharaiYoteiYmd.Replace("-", "");
+                baseQuery = baseQuery.Where(s => s.SiharaiYoteiYmd == ymd);
+            }
+
+            if (!string.IsNullOrEmpty(condition.SinseiShoCd))
+            {
+                baseQuery = baseQuery.Where(s => s.SinseiShoCd == condition.SinseiShoCd);
+            }
+
+            if (!string.IsNullOrEmpty(condition.SinseiShaCd))
+            {
+                baseQuery = baseQuery.Where(s => s.SinseiShaCd == condition.SinseiShaCd);
+            }
+
+            if (!string.IsNullOrEmpty(condition.SinseiSeikyuCd))
+            {
+                baseQuery = baseQuery.Where(s => s.SinseiSeikyuCd == condition.SinseiSeikyuCd);
+            }
+
+            if (!string.IsNullOrEmpty(condition.SeikyuKbn))
+            {
+                baseQuery = baseQuery.Where(s => s.SeikyuKbn == condition.SeikyuKbn);
+            }
+
+            if (!string.IsNullOrEmpty(condition.TorihikiCdA))
+            {
+                baseQuery = baseQuery.Where(s => s.TorihikiCdA == condition.TorihikiCdA);
+            }
+
+            if (!string.IsNullOrEmpty(condition.KeihishoCd))
+            {
+                baseQuery = baseQuery.Where(s => s.KeihishoCd == condition.KeihishoCd);
+            }
+
+            if (!string.IsNullOrEmpty(condition.KeihishaCd))
+            {
+                baseQuery = baseQuery.Where(s => s.KeihishaCd == condition.KeihishaCd);
+            }
+
+            if (!string.IsNullOrEmpty(condition.SinseiChoaiCd))
+            {
+                baseQuery = baseQuery.Where(s => s.SinseiChoaiCd == condition.SinseiChoaiCd);
+            }
+
+            baseQuery = baseQuery
+                .OrderByDescending(s => s.SinseiNo);
+
+            int pageSize = 5;
+            ViewData["CurrentSinseiTaishoYm"] = condition.SinseiTaishoYm;
+            ViewData["CurrentSiharaiYoteiYmd"] = condition.SiharaiYoteiYmd;
+            ViewData["CurrentSinseiShoCd"] = condition.SinseiShoCd;
+            ViewData["CurrentSinseiShaCd"] = condition.SinseiShaCd;
+            ViewData["CurrentSinseiSeikyuCd"] = condition.SinseiSeikyuCd;
+            ViewData["CurrentSeikyuKbn"] = condition.SeikyuKbn;
+            ViewData["CurrentTorihikiCdA"] = condition.TorihikiCdA;
+            ViewData["CurrentKeihishoCd"] = condition.KeihishoCd;
+            ViewData["CurrentKeihishaCd"] = condition.KeihishaCd;
+            ViewData["CurrentSinseiChoaiCd"] = condition.SinseiChoaiCd;
+            var list = await PaginatedList<HansokuSinsei>.CreateAsync(baseQuery, pageNumber ?? 1, pageSize);
+            return View(list);
         }
         #endregion
     }

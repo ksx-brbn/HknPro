@@ -33,7 +33,7 @@
         <table class="table table-sm table-bordered table-striped">
             <thead>
                 <tr>
-                    <th class="text-center">#</th>
+                    <th class="table-row-index">#</th>
                     <th>
                         @Html.DisplayNameFor(model => model[0].Name)
                     </th>
@@ -86,7 +86,7 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td class="text-center">@rowIndex</td>
+                        <td class="table-row-index">@rowIndex</td>
                         <td>
                             <a href="https://www.bourbon.co.jp/">@item.Name</a>
                         </td>
