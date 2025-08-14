@@ -4,24 +4,9 @@
     ViewData["Title"] = "HOME";
 }
 
-@* toast案1 NG
+@* toast案1 XXX *@
 <div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 1200">
-    <div id="noticeToast" class="toast" style="width: 600px; max-width: 90%;" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-            <strong class="me-auto">お知らせ</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-            2025年10月31日21時からシステムメンテナンスのため利用できなくなります。<br />
-            ほげほげ
-        </div>
-    </div>
-</div>
- *@
-
-@* toast案2 OK
-<div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 1200">
-    <div id="noticeToast"
+    <div id="noticeToast1"
          class="toast bg-warning text-dark border border-dark shadow"
          style="width: 800px; max-width: 90%;"
          role="alert" aria-live="assertive" aria-atomic="true">
@@ -37,116 +22,32 @@
         </div>
     </div>
 </div>
- *@
 
-@* toast案3 右下表示
-<div class="toast-container position-fixed bottom-0 end-0 p-3">
-    <div id="noticeToast"
-         class="toast align-items-center text-bg-info border-0"
-         role="alert" aria-live="assertive" aria-atomic="true"
-         data-bs-delay="5000">
-        <div class="d-flex">
-            <div class="toast-body">
-                2025年10月31日21時からシステムメンテナンスのため利用できなくなります。<br />
-                ほげほげ
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto"
-                    data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="progress" style="height: 2px;">
-            <div class="progress-bar progress-bar-striped progress-bar-animated bg-white w-100"></div>
-        </div>
-    </div>
-</div>
- *@
-
-@* toast案4 
-    トップ中央に固定したトーストを、プライマリカラーとアイコンを用いたシンプルなスタイルへ刷新
+@* toast案2 XXX *@
 <div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 1200">
-    <div id="noticeToast"
-         class="toast align-items-center text-bg-primary border-0 shadow-lg"
-         style="width: 700px; max-width: 90%;"
-         role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body">
-                <span class="me-2">🔔</span>
-                2025年10月31日21時からシステムメンテナンスのため利用できなくなります。<br />
-                ほげほげ
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-    </div>
-</div>
- *@
-
-@* toast案5 NG
-    グラデーション背景と白文字を用い、ヘッダーを透明化してよりモダンな見た目に変更
-<div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 1200">
-    <div id="noticeToast"
-         class="toast bg-primary bg-gradient text-white border-0 shadow-lg"
-         style="width: 800px; max-width: 90%;"
-         role="alert" aria-live="assertive" aria-atomic="true">
-
-        <div class="toast-header bg-transparent border-0">
-            <strong class="me-auto">ℹ️ お知らせ</strong>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-
-        <div class="toast-body fs-5">
-            2025年10月31日21時からシステムメンテナンスのため利用できなくなります。<br />
-            ほげほげ
-        </div>
-    </div>
-</div>
- *@
-
-@* toast案6 OK
-    トップ中央のトーストメッセージに、青基調で角丸・シャドウ付きの新デザインを追加し、メッセージと閉じるボタンを横並びに配置
-<div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 1200">
-    <div id="noticeToast"
-         class="toast align-items-center bg-primary text-white border-0 rounded-3 shadow-lg"
-         style="width: 800px; max-width: 90%;"
-         role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body fs-5">
-                2025年10月31日21時からシステムメンテナンスのため利用できなくなります。<br />
-                ほげほげ
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-    </div>
-</div>
- *@
-
-@* toast案7 NG
-    トップ中央の表示位置を維持しつつ、青系グラデーション背景・角丸・影付きでトーストメッセージを刷新
-<div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 1200">
-    <div id="noticeToast"
-         class="toast bg-primary bg-gradient text-white border-0 shadow-lg rounded-3"
-         style="width: 800px; max-width: 90%;"
-         role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header bg-transparent border-0 text-white">
-            <strong class="me-auto">ℹ お知らせ</strong>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-            2025年10月31日21時からシステムメンテナンスのため利用できなくなります。<br />
-            ほげほげ
-        </div>
-    </div>
-</div>
- *@
-
-@* toast案8 OK
- *@
-<div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 1200">
-    <div id="noticeToast"
+    <div id="noticeToast2"
          class="toast border-0 shadow-lg text-white rounded-4"
          style="width: 800px; max-width: 90%; background: linear-gradient(135deg, #4e54c8, #8f94fb);"
          role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex align-items-center">
             <div class="toast-body fs-5">
                 <span class="fw-bold">🔔 お知らせ</span><br />
+                2025年10月31日21時からシステムメンテナンスのため利用できなくなります。<br />
+                ほげほげ
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+@* toast案3 トップ中央のトーストメッセージに、青基調で角丸・シャドウ付きの新デザインを追加し、メッセージと閉じるボタンを横並びに配置 *@
+<div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 1200">
+    <div id="noticeToast3"
+         class="toast align-items-center bg-primary text-white border-0 rounded-3 shadow-lg"
+         style="width: 800px; max-width: 90%;"
+         role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body fs-5">
                 2025年10月31日21時からシステムメンテナンスのため利用できなくなります。<br />
                 ほげほげ
             </div>
@@ -262,7 +163,23 @@
 </nav>
 
 <hr />
-<div class="card mt-5">
+<button id="showToastButton1" class="btn btn-primary">トースト案①</button>
+<button id="showToastButton2" class="btn btn-primary">トースト案②</button>
+<button id="showToastButton3" class="btn btn-primary">トースト案③</button>
+
+<hr />
+<p>現行画面イメージ・業務メニュータブ</p>
+<div class="text-center">
+    <img src="~/img/current/CMV0020_Default3_業務メニュー.png" alt="Current System Image" class="img-fluid" />
+</div>
+
+<hr />
+<p>現行画面イメージ・印刷条件選択ダイアログ</p>
+<div class="text-center">
+</div>
+
+<hr />
+<div class="card">
     <div class="card-header">要件一覧</div>
     <div class="card-body">
         <ul class="mb-0">
@@ -270,7 +187,7 @@
         </ul>
     </div>
 </div>
-<div class="card mt-5">
+<div class="card mt-1">
     <div class="card-header">確認事項</div>
     <div class="card-body">
         <ul class="mb-0">
@@ -286,7 +203,7 @@
         </ul>
     </div>
 </div>
-<div class="card mt-5">
+<div class="card mt-1">
     <div class="card-header">機能概要</div>
     <div class="card-body">
         <ul class="mb-0">
@@ -295,11 +212,11 @@
         </ul>
     </div>
 </div>
-<div class="card mt-5">
+<div class="card mt-1">
     <div class="card-header">TODO</div>
     <div class="card-body">
         <ul class="mb-0">
-            <li>PDF出力画面に選択項目を追加</li>
+            <li></li>
         </ul>
     </div>
 </div>
@@ -307,13 +224,40 @@
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            var toastEl = document.getElementById('noticeToast');
-            if (toastEl) {
-                var toast = new bootstrap.Toast(toastEl, { 
+            var toastEl = document.getElementById('noticeToast1');
+            var button = document.getElementById('showToastButton1');
+            if (toastEl && button) {
+                var toast = new bootstrap.Toast(toastEl, {
                     delay: 5000,    // 5秒後に消える
                     autohide: true  // falseにすると自動では消えない
                 });
-                toast.show();
+                button.addEventListener('click', function () {
+                    toast.show();
+                });
+            }
+
+            var toastEl2 = document.getElementById('noticeToast2');
+            var button2 = document.getElementById('showToastButton2');
+            if (toastEl2 && button2) {
+                var toast2 = new bootstrap.Toast(toastEl2, {
+                    delay: 5000,
+                    autohide: true
+                });
+                button2.addEventListener('click', function () {
+                    toast2.show();
+                });
+            }
+
+            var toastEl3 = document.getElementById('noticeToast3');
+            var button3 = document.getElementById('showToastButton3');
+            if (toastEl3 && button3) {
+                var toast3 = new bootstrap.Toast(toastEl3, {
+                    delay: 5000,
+                    autohide: true
+                });
+                button3.addEventListener('click', function () {
+                    toast3.show();
+                });
             }
         });
     </script>

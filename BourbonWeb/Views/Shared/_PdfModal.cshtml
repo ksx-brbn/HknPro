@@ -40,7 +40,7 @@
                     <input type="text" class="form-control" value="2025/08/29" />
                 </div>
                 <div class="mt-5 d-flex justify-content-between">
-                    <a class="btn btn-primary btn-fixed" href="/pdf/サンプル申請書(鑑).pdf" target="_blank" rel="noopener noreferrer" download>出力</a>
+                    <a id="pdfDownloadBtn" class="btn btn-primary btn-fixed" href="/pdf/サンプル申請書(鑑).pdf" download>出力</a>
                     <button type="button" class="btn btn-secondary btn-fixed" data-bs-dismiss="modal">キャンセル</button>
                 </div>
             </div>
@@ -53,3 +53,23 @@
         opacity: 0.5 !important;
     }
 </style>
+
+<script>
+    document.getElementById('pdfDownloadBtn').addEventListener('click', async function (e) {
+        e.preventDefault();
+        const response = await fetch(this.href);
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        const fileName = this.getAttribute('download') || decodeURIComponent(this.href.split('/').pop());
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+        const modalEl = document.getElementById('pdfModal');
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        modal.hide();
+    });
+</script>
