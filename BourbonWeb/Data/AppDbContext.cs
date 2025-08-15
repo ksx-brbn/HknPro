@@ -25,7 +25,13 @@ namespace BourbonWeb.Data
                 .Property(p => p.Price)
                 .HasPrecision(18, 4);
 
-            modelBuilder.Ignore<HansokuSinsei>();
+            // HansokuSinseiモデルをマイグレーション対象外に設定
+            modelBuilder.Entity<HansokuSinsei>(entity =>
+            {
+                entity.ToTable("T_HANSOKU_SINSEI");
+                entity.HasKey(h => new { h.KaishaCd, h.UrikakeBunrui, h.SeikyuKbn, h.SinseiNo });
+                entity.Metadata.SetIsTableExcludedFromMigrations(true);
+            });
         }
     }
 }
