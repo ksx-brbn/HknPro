@@ -25,9 +25,7 @@ namespace BourbonWeb.Data
                 .Property(p => p.Price)
                 .HasPrecision(18, 4);
 
-            modelBuilder.Entity<HansokuSinsei>()
-                .ToTable("T_HANSOKU_SINSEI")
-                .HasKey(h => new { h.KaishaCd, h.UrikakeBunrui, h.SeikyuKbn, h.SinseiNo });
+            modelBuilder.Ignore<HansokuSinsei>();
         }
     }
 }
