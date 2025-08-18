@@ -91,6 +91,14 @@ namespace BourbonWeb.Models
         [Column("SEIKYU_KBN")]
         [Display(Name = "請求区分")]
         public required string SeikyuKbn { get; set; }
+        [NotMapped]
+        [Display(Name = "請求区分")]
+        public string SeikyuKbnNm => SeikyuKbn switch
+        {
+            "0" => "菓子",
+            "1" => "飲料",
+            _ => string.Empty
+        };
 
         [Column("SINSEI_NO")]
         [Display(Name = "申請番号")]
@@ -137,7 +145,7 @@ namespace BourbonWeb.Models
         public string? SinseiSeikyuCd { get; set; }
 
         [Column("SINSEI_SEIKYU_NM")]
-        [Display(Name = "請求先名")]
+        [Display(Name = "請求先")]
         public string? SinseiSeikyuNm { get; set; }
 
         [Column("SINSEI_SEIKYU_BUNRUI_CD")]
@@ -149,7 +157,7 @@ namespace BourbonWeb.Models
         public string? SinseiChoaiCd { get; set; }
 
         [Column("SINSEI_CHOAI_NM")]
-        [Display(Name = "帳合名")]
+        [Display(Name = "帳合店")]
         public string? SinseiChoaiNm { get; set; }
 
         [Column("SINSEI_CHOAI_BUNRUI_CD")]
@@ -185,11 +193,11 @@ namespace BourbonWeb.Models
         public string? KikakuBunruiNo { get; set; }
 
         [Column("TORIHIKI_CD_A")]
-        [Display(Name = "得意先CD_A")]
+        [Display(Name = "得意先CD")]
         public string? TorihikiCdA { get; set; }
 
         [Column("TORIHIKI_NM_A")]
-        [Display(Name = "得意先名")]
+        [Display(Name = "得意先")]
         public string? TorihikiNmA { get; set; }
 
         [Column("TORIHIKI_KANA_A")]
@@ -322,6 +330,15 @@ namespace BourbonWeb.Models
         [Column("MIBARAI_KANRI_KBN")]
         [Display(Name = "未払管理区分")]
         public string? MibaraiKanriKbn { get; set; }
+        [NotMapped]
+        [Display(Name = "費用計上")]
+        public string HiyoKeijo => MibaraiKanriKbn switch
+        {
+            "0" => "支払未確定",
+            "1" => "支払確定",
+            "2" => "支払訂正",
+            _ => string.Empty
+        };
 
         [Column("MIBARAI_KANRI_SIME")]
         [Display(Name = "未払管理締日")]
@@ -457,10 +474,27 @@ namespace BourbonWeb.Models
         [Column("SURYO_TANI_KBN")]
         [Display(Name = "数量単位区分")]
         public string? SuryoTaniKbn { get; set; }
+        [NotMapped]
+        [Display(Name = "数量単位")]
+        public string SuryoTaniKbnNm => SuryoTaniKbn switch
+        {
+            "0" => "バラ",
+            "1" => "ボール",
+            "2" => "ケース",
+            _ => string.Empty
+        };
 
         [Column("KYOSAN_JOKEN_TANI_KBN")]
         [Display(Name = "協賛条件単位区分")]
         public string? KyosanJokenTaniKbn { get; set; }
+        [NotMapped]
+        [Display(Name = "条件単位")]
+        public string KyosanJokenTaniKbnNm => KyosanJokenTaniKbn switch
+        {
+            "0" => "率",
+            "1" => "円",
+            _ => string.Empty
+        };
 
         [Column("KYOSAN_GAKU")]
         [Display(Name = "協賛額")]
@@ -481,9 +515,19 @@ namespace BourbonWeb.Models
         [Column("ZEI_HASU_SHORI_KBN")]
         [Display(Name = "消費税端数処理区分")]
         public required string ZeiHasuShoriKbn { get; set; }
+        [NotMapped]
+        [Display(Name = "税処理")]
+        public string ZeiHasuShoriKbnNm => MibaraiKanriKbn switch
+        {
+            "0" => "切捨",
+            "1" => "切上",
+            "2" => "四捨五入",
+            "9" => "商品別税額積上方式",
+            _ => string.Empty
+        };
 
         [Column("SINSEI_YMD")]
-        [Display(Name = "申請年月日")]
+        [Display(Name = "申請日")]
         public string? SinseiYmd { get; set; }
 
         [Column("TAISHO_KAISI_YMD")]
@@ -537,6 +581,15 @@ namespace BourbonWeb.Models
         [Column("KAKAKU_HANSOKU_KBN")]
         [Display(Name = "価格販促区分")]
         public required string KakakuHansokuKbn { get; set; }
+        [NotMapped]
+        [Display(Name = "価格販促区分")]
+        public string KakakuHansokuKbnNm => KakakuHansokuKbn switch
+        {
+            "1" => "商品CD指定",
+            "2" => "企画CD指定",
+            "3" => "承認CD指定",
+            _ => string.Empty
+        };
 
         [Column("REMARKS")]
         [Display(Name = "備考")]
@@ -569,6 +622,14 @@ namespace BourbonWeb.Models
         [Column("NEBIKI_SYUBETU")]
         [Display(Name = "値引き種別")]
         public required string NebikiSyubetu { get; set; }
+
+        [NotMapped]
+        [Display(Name = "未確定申請数")]
+        public int MikakuteiCnt => 1234;
+
+        [NotMapped]
+        [Display(Name = "経費率設定")]
+        public string KeihiHaibunJokenNm => "条件有";
     }
 
     [Display(Name = "販促費申請情報検索条件")]
