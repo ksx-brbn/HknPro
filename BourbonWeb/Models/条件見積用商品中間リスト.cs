@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BourbonWeb.Models
 {
+    [Display(Name = "条件見積用商品中間リスト")]
     public class 条件見積用商品中間リスト
     {
         [Column("対象年月")]
