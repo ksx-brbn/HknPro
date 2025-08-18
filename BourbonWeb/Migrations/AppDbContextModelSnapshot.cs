@@ -81,7 +81,7 @@ namespace BourbonWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sample");
+                    b.ToTable("Sample", (string)null);
                 });
 #pragma warning restore 612, 618
         }
