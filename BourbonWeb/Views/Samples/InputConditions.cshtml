@@ -9,7 +9,7 @@
     @await Html.PartialAsync("_InputConditionsSection", Model, new ViewDataDictionary(ViewData) { ["Layout"] = layout })
     <div class="me-1 text-end">
         <button type="submit" id="searchButton" class="btn btn-sm btn-secondary btn-fixed">検索 (F10)</button>
-        <button type="button" id="closeButton" class="btn btn-sm btn-secondary btn-fixed ms-2">閉じる (F4)</button>
+        <a asp-action="Home" id="closeButton" class="btn btn-sm btn-secondary btn-fixed ms-2">閉じる (F4)</a>
     </div>
     <input type="hidden" name="pageNumber" value="1" />
 </form>
@@ -17,7 +17,7 @@
 <hr />
 <div class="d-flex align-items-center justify-content-between mb-1 me-1">
     <div class="d-flex align-items-center">
-        <button type="submit" id="createButton" class="btn btn-sm btn-secondary btn-fixed">新規登録 (F12)</button>
+        <a asp-action="CRV0020Sample" id="createButton" class="btn btn-sm btn-secondary btn-fixed">新規登録 (F12)</a>
     </div>
     <div>
         @Model.TotalCount.ToString("N0") 件
@@ -117,9 +117,7 @@
     <div class="card-header">TODO</div>
     <div class="card-body">
         <ul class="mb-0">
-            <li>対象年月にカレンダー入力を追加</li>
-            <li>支払予定日にカレンダー入力を追加</li>
-            <li>Functionキー対応</li>
+            <li></li>
         </ul>
     </div>
 </div>

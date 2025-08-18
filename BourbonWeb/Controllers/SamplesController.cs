@@ -466,6 +466,11 @@ FROM
             var list = await PaginatedList<HansokuSinsei>.CreateAsync(baseQuery, pageNumber ?? 1, pageSize);
             return View(list);
         }
+
+        public IActionResult CRV0020Sample()
+        {
+            return View();
+        }
         #endregion
     }
 }
