@@ -2,131 +2,11 @@
 
 @{
     ViewData["Title"] = "販促費申請条件入力（確定）";
+    var layout = ViewData["Layout"] as string ?? "pattern2";
 }
 
 <form method="get" class="mb-3 text-nowrap">
-    <div class="d-flex align-items-center">
-        <label for="sinseiTaishoYm" class="me-2 fixed-width-sm">対象年月</label>
-        <input type="text" id="sinseiTaishoYm" name="sinseiTaishoYm" class="form-control form-control-sm fixed-width-mdc" value="@(ViewData["CurrentSinseiTaishoYm"] ?? "2023-12")" />
-        <input type="month" id="sinseiTaishoYmPicker" style="position:absolute; left:-9999px;" />
-    </div>
-    <div class="d-flex align-items-center mt-2">
-        <label for="siharaiYoteiYmd" class="me-2 fixed-width-sm">支払予定日</label>
-        <div class="input-group input-group-sm fixed-width-md">
-            <input type="text" id="siharaiYoteiYmd" name="siharaiYoteiYmd" class="form-control text-center" value="@(ViewData["CurrentSiharaiYoteiYmd"])" />
-            <span class="input-group-text position-relative p-0">
-                <i class="bi bi-calendar3"></i>
-                <input type="date" id="siharaiYoteiYmdPicker" class="position-absolute top-0 start-0 opacity-0" style="width:100%; height:100%; cursor:pointer;" />
-            </span>
-        </div>
-    </div>
-    <div class="d-flex align-items-center mt-2">
-        <label for="keihishoCd" class="me-2 fixed-width-sm">経費所</label>
-        <input type="text" id="keihishoCd" name="keihishoCd" class="form-control form-control-sm fixed-width-smc" value="@(ViewData["CurrentKeihishoCd"])" />
-        <input type="text" id="keihishoNm" name="keihishoNm" class="form-control form-control-sm fixed-width-lg ms-2" value="@(ViewData["CurrentKeihishoNm"] ?? "宇都宮")" disabled />
-    </div>
-    <div class="d-flex align-items-center mt-2">
-        <label for="keihishaCd" class="me-2 fixed-width-sm">経費者</label>
-        <input type="text" id="keihishaCd" name="keihishaCd" class="form-control form-control-sm fixed-width-smc" value="@(ViewData["CurrentKeihishaCd"])" />
-        <input type="text" id="keihishaNm" name="keihishaNm" class="form-control form-control-sm fixed-width-lg ms-2" value="@(ViewData["CurrentKeihishaNm"] ?? "歌川　英明")" disabled />
-    </div>
-    <div class="d-flex align-items-center mt-2">
-        <label for="sinseiChoaiCd" class="me-2 fixed-width-sm">請求・帳合</label>
-        <input type="text" id="sinseiChoaiCd" name="sinseiChoaiCd" class="form-control form-control-sm fixed-width-smc" value="@(ViewData["CurrentSinseiChoaiCd"])" />
-        <input type="text" id="sinseiChoaiNm" name="sinseiChoaiNm" class="form-control form-control-sm fixed-width-lg ms-2" value="@(ViewData["CurrentSinseiChoaiNm"] ?? "㈱ハセガワ　東京支店")" disabled />
-    </div>
-    <div class="d-flex align-items-center mt-2">
-        <label class="me-2 fixed-width-sm">請求区分</label>
-        <div class="form-check form-check-inline mt-1 ms-1">
-            <input class="form-check-input" type="radio" id="seikyuKbn1" name="seikyuKbn" value="0" @(ViewData["CurrentSeikyuKbn"]?.ToString() == "0" ? "checked" : "") />
-            <label class="form-check-label" for="seikyuKbn1">菓子</label>
-        </div>
-        <div class="form-check form-check-inline mt-1">
-            <input class="form-check-input" type="radio" id="seikyuKbn2" name="seikyuKbn" value="1" @(ViewData["CurrentSeikyuKbn"]?.ToString() == "1" ? "checked" : "") />
-            <label class="form-check-label" for="seikyuKbn2">飲料</label>
-        </div>
-    </div>
-    <div class="d-flex align-items-center mt-2">
-        <label for="torihikiCdA" class="me-2 fixed-width-sm">得意先</label>
-        <input type="text" id="torihikiCdA" name="torihikiCdA" class="form-control form-control-sm fixed-width-smc" value="@(ViewData["CurrentTorihikiCdA"])" />
-        <select id="torihikiNmA" name="torihikiNmA" class="form-select form-select-sm fixed-width-lg ms-2" disabled>
-            <option value="">選択してください</option>
-            <option value="@(ViewData["CurrentTorihikiNmA"] ?? "㈱福田屋百貨店")" selected>
-                @(ViewData["CurrentTorihikiNmA"] ?? "㈱福田屋百貨店")
-            </option>
-        </select>
-    </div>
-    <div class="d-flex align-items-center mt-2">
-        <label class="me-2 fixed-width-sm">処理方法</label>
-        <div class="form-check form-check-inline mt-1 ms-1">
-            <input class="form-check-input" type="radio" id="shoriHoho1" name="shoriHoho" value="20;" @(ViewData["CurrentShoriHoho"]?.ToString() == "20;" ? "checked" : "") />
-            <label class="form-check-label" for="shoriHoho1">売掛金相殺</label>
-        </div>
-        <div class="form-check form-check-inline mt-1">
-            <input class="form-check-input" type="radio" id="shoriHoho2" name="shoriHoho" value="30;1" @(ViewData["CurrentShoriHoho"]?.ToString() == "30;1" ? "checked" : "") />
-            <label class="form-check-label" for="shoriHoho2">振込(特約店)</label>
-        </div>
-        <div class="form-check form-check-inline mt-1">
-            <input class="form-check-input" type="radio" id="shoriHoho3" name="shoriHoho" value="30;2" @(ViewData["CurrentShoriHoho"]?.ToString() == "30;2" ? "checked" : "") />
-            <label class="form-check-label" for="shoriHoho3">振込(小売業)</label>
-        </div>
-        <div class="form-check form-check-inline mt-1">
-            <input class="form-check-input" type="radio" id="shoriHoho4" name="shoriHoho" value="30;3" @(ViewData["CurrentShoriHoho"]?.ToString() == "30;3" ? "checked" : "") />
-            <label class="form-check-label" for="shoriHoho4">振込(業者・一般店・グループ企業)</label>
-        </div>
-        <div class="form-check form-check-inline mt-1">
-            <input class="form-check-input" type="radio" id="shoriHoho5" name="shoriHoho" value="30;4" @(ViewData["CurrentShoriHoho"]?.ToString() == "30;4" ? "checked" : "") />
-            <label class="form-check-label" for="shoriHoho5">振込(登録二次店)</label>
-        </div>
-    </div>
-    <div class="d-flex align-items-center mt-2">
-        <label for="gyoshaCd" class="me-2 fixed-width-sm">業者</label>
-        <input type="text" id="gyoshaCd" name="gyoshaCd" class="form-control form-control-sm fixed-width-smc" value="@(ViewData["CurrentGyoshaCd"])" disabled />
-        <select id="gyoshaNm" name="gyoshaNm" class="form-select form-select-sm fixed-width-lg ms-2" disabled>
-            <option value="" selected></option>
-        </select>
-    </div>
-    <div class="d-flex align-items-center mt-2">
-        <label class="me-2 fixed-width-sm">協賛条件単位</label>
-        <div class="form-check form-check-inline mt-1 ms-1">
-            <input class="form-check-input" type="radio" id="kyosanJokenTaniKbn1" name="kyosanJokenTaniKbn" value="0" @(ViewData["CurrentKyosanJokenTaniKbn"]?.ToString() == "0" ? "checked" : "") />
-            <label class="form-check-label" for="kyosanJokenTaniKbn1">率</label>
-        </div>
-        <div class="form-check form-check-inline mt-1">
-            <input class="form-check-input" type="radio" id="kyosanJokenTaniKbn2" name="kyosanJokenTaniKbn" value="1" @(ViewData["CurrentKyosanJokenTaniKbn"]?.ToString() == "1" ? "checked" : "") />
-            <label class="form-check-label" for="kyosanJokenTaniKbn2">円</label>
-        </div>
-    </div>
-    <div class="d-flex align-items-center mt-2">
-        <label class="me-2 fixed-width-sm">価格販促区分</label>
-        <div class="form-check form-check-inline mt-1 ms-1">
-            <input class="form-check-input" type="radio" id="kakakuHansokuKbn1" name="kakakuHansokuKbn" value="1" @(ViewData["CurrentKakakuHansokuKbn"]?.ToString() == "1" ? "checked" : "") />
-            <label class="form-check-label" for="kakakuHansokuKbn1">商品CD指定</label>
-        </div>
-        <div class="form-check form-check-inline mt-1">
-            <input class="form-check-input" type="radio" id="kakakuHansokuKbn2" name="kakakuHansokuKbn" value="2" @(ViewData["CurrentKakakuHansokuKbn"]?.ToString() == "2" ? "checked" : "") />
-            <label class="form-check-label" for="kakakuHansokuKbn2">企画CD指定</label>
-        </div>
-        <div class="form-check form-check-inline mt-1">
-            <input class="form-check-input" type="radio" id="kakakuHansokuKbn3" name="kakakuHansokuKbn" value="3" @(ViewData["CurrentKakakuHansokuKbn"]?.ToString() == "3" ? "checked" : "") />
-            <label class="form-check-label" for="kakakuHansokuKbn3">承認CD指定</label>
-        </div>
-    </div>
-    <div class="d-flex align-items-center mt-2">
-        <label class="me-2 fixed-width-sm">所別経費率</label>
-        <div class="form-check form-check-inline mt-1 ms-1">
-            <input class="form-check-input" type="radio" id="createKeihiRitu1" name="createKeihiRitu" value="0" @(ViewData["CurrentCreateKeihiRitu"]?.ToString() == "0" ? "checked" : "") />
-            <label class="form-check-label" for="createKeihiRitu1">作成しない</label>
-        </div>
-        <div class="form-check form-check-inline mt-1">
-            <input class="form-check-input" type="radio" id="createKeihiRitu2" name="createKeihiRitu" value="1" @(ViewData["CurrentCreateKeihiRitu"]?.ToString() == "1" ? "checked" : "") />
-            <label class="form-check-label" for="createKeihiRitu2">作成する</label>
-        </div>
-    </div>
-    <div class="d-flex align-items-center mt-2">
-        <label for="sinseiNo" class="me-2 fixed-width-sm">申請番号</label>
-        <input type="text" id="sinseiNo" name="sinseiNo" class="form-control form-control-sm fixed-width-mdc" />
-    </div>
+    @await Html.PartialAsync("_InputConditionsSection", Model, new ViewDataDictionary(ViewData) { ["Layout"] = layout })
     <div class="mt-3">
         <button type="submit" id="searchButton" class="btn btn-sm btn-primary btn-fixed">検索 (F10)</button>
     </div>
@@ -176,6 +56,14 @@
         </li>
     </ul>
 </nav>
+
+<hr />
+<p>現行画面イメージ</p>
+<div class="text-center">
+    <img src="~/img/current/CRV0010_AEST0010_販促費申請検索1.png" alt="Current System Image" class="img-fluid" />
+    <hr />
+    <img src="~/img/current/CRV0010_AEST0010_販促費申請検索2.png" alt="Current System Image" class="img-fluid" />
+</div>
 
 <hr />
 <div class="card mt-1">
