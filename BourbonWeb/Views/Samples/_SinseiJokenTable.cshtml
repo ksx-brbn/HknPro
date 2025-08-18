@@ -8,25 +8,44 @@
                 <thead class="text-center">
                     <tr>
                         <th rowspan="2" class="table-row-index">#</th>
-                        <th>@Html.DisplayNameFor(model => model[0].KeihishoNm)</th>
-                        <th>@Html.DisplayNameFor(model => model[0].KeihishaNm)</th>
-                        <th>@Html.DisplayNameFor(model => model[0].SinseiTaishoYm)</th>
-                        <th rowspan="2">@Html.DisplayNameFor(model => model[0].SiharaiYoteiYmd)</th>
-                        <th rowspan="2">@Html.DisplayNameFor(model => model[0].ShoriHoho)</th>
-                        <th rowspan="2">@Html.DisplayNameFor(model => model[0].SinseiSeikyuCd)</th>
-                        <th rowspan="2">@Html.DisplayNameFor(model => model[0].SinseiChoaiCd)</th>
-                        <th rowspan="2">@Html.DisplayNameFor(model => model[0].SinseiChoaiNm)</th>
-                        <th rowspan="2">@Html.DisplayNameFor(model => model[0].TorihikiNmA)</th>
+                        <th rowspan="2">編集</th>
+                        <th rowspan="2">削除</th>
                         <th rowspan="2">@Html.DisplayNameFor(model => model[0].SinseiNo)</th>
-                        <th rowspan="2">@Html.DisplayNameFor(model => model[0].KyosanGaku)</th>
+                        <th>@Html.DisplayNameFor(model => model[0].SinseiTaishoYm)</th>
+                        <th>@Html.DisplayNameFor(model => model[0].ShoriHoho)</th>
+                        <th rowspan="2">@Html.Raw(Html.DisplayNameFor(model => model[0].SeikyuKbnNm).Insert(2, "<br />"))</th>
+                        <th colspan="2">@Html.DisplayNameFor(model => model[0].SinseiChoaiNm)</th>
+                        <th rowspan="2">@Html.DisplayNameFor(model => model[0].TorihikiNmA)</th>
+                        <th rowspan="2" colspan="2">@Html.DisplayNameFor(model => model[0].KyosanGaku)</th>
+                        <th>@Html.DisplayNameFor(model => model[0].HiyoKeijo)</th>
+                        <th>@Html.DisplayNameFor(model => model[0].SuryoTaniKbnNm)</th>
+                        <th colspan="2">@Html.DisplayNameFor(model => model[0].KeihishoNm)</th>
+                        <th>@Html.DisplayNameFor(model => model[0].SinseiKeijoYm)</th>
+                        <th>@Html.DisplayNameFor(model => model[0].TeiseiSinseiNo)</th>
+                        <th rowspan="2">@Html.Raw(Html.DisplayNameFor(model => model[0].MikakuteiCnt).Insert(3, "<br />"))</th>
+                        <th rowspan="2">@Html.Raw(Html.DisplayNameFor(model => model[0].KakakuHansokuKbnNm).Insert(4, "<br />"))</th>
+                        <th rowspan="2">@Html.Raw(Html.DisplayNameFor(model => model[0].KeihiHaibunJokenNm).Insert(3, "<br />"))</th>
+
+@* 
                         <th>@Html.DisplayNameFor(model => model[0].CreatedAt)</th>
                         <th rowspan="2">@Html.DisplayNameFor(model => model[0].MibaraiKanriSime)</th>
+ *@
                     </tr>
                     <tr>
+                        <th>@Html.DisplayNameFor(model => model[0].SiharaiYoteiYmd)</th>
+                        <th>@Html.DisplayNameFor(model => model[0].JotaiKbnNm)</th>
+                        <th colspan="2">@Html.DisplayNameFor(model => model[0].SinseiSeikyuNm)</th>
+                        <th>@Html.DisplayNameFor(model => model[0].ZeiHasuShoriKbnNm)</th>
+                        <th>@Html.DisplayNameFor(model => model[0].KyosanJokenTaniKbnNm)</th>
+                        <th colspan="2">@Html.DisplayNameFor(model => model[0].KeihishaNm)</th>
+                        <th>@Html.DisplayNameFor(model => model[0].SinseiYmd)</th>
+                        <th>@Html.DisplayNameFor(model => model[0].TeiseiMotoSinseiNo)</th>
+
+@* 
                         <th>@Html.DisplayNameFor(model => model[0].SinseiShoNm)</th>
                         <th>@Html.DisplayNameFor(model => model[0].SinseiShaNm)</th>
-                        <th>@Html.DisplayNameFor(model => model[0].SinseiKeijoYm)</th>
                         <th>@Html.DisplayNameFor(model => model[0].UpdatedAt)</th>
+ *@
                     </tr>
                 </thead>
                 <tbody>
@@ -37,25 +56,50 @@
                     {
                         <tr>
                             <td rowspan="2" class="table-row-index">@rowIndex</td>
-                            <td>@Html.DisplayFor(modelItem => item.KeihishoNm)</td>
-                            <td>@Html.DisplayFor(modelItem => item.KeihishaNm)</td>
-                            <td class="text-center">@Html.DisplayFor(modelItem => item.SinseiTaishoYm)</td>
-                            <td rowspan="2" class="text-center">@Html.DisplayFor(modelItem => item.SiharaiYoteiYmd)</td>
-                            <td rowspan="2">@Html.DisplayFor(modelItem => item.ShoriHoho)</td>
-                            <td rowspan="2" class="text-center">@Html.DisplayFor(modelItem => item.SinseiSeikyuCd)</td>
-                            <td rowspan="2" class="text-center">@Html.DisplayFor(modelItem => item.SinseiChoaiCd)</td>
-                            <td rowspan="2">@Html.DisplayFor(modelItem => item.SinseiChoaiNm)</td>
-                            <td rowspan="2">@Html.DisplayFor(modelItem => item.TorihikiNmA)</td>
+                            <td rowspan="2" class="text-center"><a asp-action="Edit" asp-route-id="@item.SinseiNo" class="btn btn-primary btn-sm me-1">編集</a></td>
+                            <td rowspan="2" class="text-center"><a asp-action="Delete" asp-route-id="@item.SinseiNo" class="btn btn-danger btn-sm">削除</a></td>
                             <td rowspan="2" class="text-center"><a href="/pdf/サンプル申請書(明細).pdf" target="_blank" rel="noopener noreferrer" download>@item.SinseiNo</a></td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.SinseiTaishoYm)</td>
+                            <td>@Html.DisplayFor(modelItem => item.ShoriHoho)</td>
+                            <td rowspan="2" class="text-center">@Html.DisplayFor(modelItem => item.SeikyuKbnNm)</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.SinseiChoaiCd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiChoaiNm)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TorihikiCdA)</td>
                             <td rowspan="2" class="text-end">@(item.KyosanGaku.HasValue ? $"¥{item.KyosanGaku.Value:#,0}" : "")</td>
+                            <td rowspan="2" class="text-center">＊</td>
+                            <td>@Html.DisplayFor(modelItem => item.HiyoKeijo)</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.SuryoTaniKbnNm)</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.KeihishoCd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.KeihishoNm)</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.SinseiKeijoYm)</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.TeiseiSinseiNo)</td>
+                            <td rowspan="2" class="text-end">@item.MikakuteiCnt.ToString("N0")</td>
+                            <td rowspan="2" class="text-center">@Html.DisplayFor(modelItem => item.KakakuHansokuKbnNm)</td>
+                            <td rowspan="2" class="text-center">@Html.DisplayFor(modelItem => item.KeihiHaibunJokenNm)</td>
+
+@* 
                             <td>@Html.DisplayFor(modelItem => item.CreatedAt)</td>
                             <td rowspan="2" class="text-center">@Html.DisplayFor(modelItem => item.MibaraiKanriSime)</td>
+ *@
                         </tr>
                         <tr class="text-nowrap">
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.SiharaiYoteiYmd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.JotaiKbnNm)</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.SinseiSeikyuCd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SinseiSeikyuNm)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TorihikiNmA)</td>
+                            <td>@Html.DisplayFor(modelItem => item.ZeiHasuShoriKbnNm)</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.KyosanJokenTaniKbnNm)</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.KeihishaCd)</td>
+                            <td>@Html.DisplayFor(modelItem => item.KeihishaNm)</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.SinseiYmd)</td>
+                            <td class="text-center">@Html.DisplayFor(modelItem => item.TeiseiMotoSinseiNo)</td>
+
+@* 
                             <td>@Html.DisplayFor(modelItem => item.SinseiShoNm)</td>
                             <td>@Html.DisplayFor(modelItem => item.SinseiShaNm)</td>
-                            <td class="text-center">@Html.DisplayFor(modelItem => item.SinseiKeijoYm)</td>
                             <td>@Html.DisplayFor(modelItem => item.UpdatedAt)</td>
+ *@
                         </tr>
                         rowIndex++;
                     }
