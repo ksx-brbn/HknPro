@@ -557,6 +557,11 @@ FROM
             return View();
         }
 
+        public IActionResult CMV0070Sample()
+        {
+            return View();
+        }
+
         public IActionResult CMV9010Sample()
         {
             return View();
