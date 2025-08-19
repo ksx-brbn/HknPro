@@ -472,6 +472,11 @@ FROM
             return View();
         }
 
+        public IActionResult CRE0010Sample()
+        {
+            return View();
+        }
+
         public IActionResult PRV0010Sample()
         {
             return View();
