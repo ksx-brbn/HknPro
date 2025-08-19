@@ -1,0 +1,11 @@
+@model IEnumerable<string>
+@{
+    ViewData["Title"] = "サイトマップ";
+}
+<h1>サイトマップ</h1>
+<ul>
+@foreach (var url in Model.Distinct().OrderBy(u => u))
+{
+    <li><a href="@url">@url</a></li>
+}
+</ul>

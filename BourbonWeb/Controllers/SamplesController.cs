@@ -471,6 +471,236 @@ FROM
         {
             return View();
         }
+
+        public IActionResult CRV0030Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CRE0010Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CRR0010Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CRR0020Sample()
+        {
+            return View();
+        }
+
+        public IActionResult PRV0010Sample()
+        {
+            return View();
+        }
+
+        public IActionResult PRV0020Sample()
+        {
+            return View();
+        }
+
+        public IActionResult PGV0010Sample()
+        {
+            return View();
+        }
+
+        public IActionResult PGB0010Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CPV0010Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CPB0010Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CPB0020Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CPB0030Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CPB0040Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CPB0050Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CPB0060Sample()
+        {
+            return View();
+        }
+
+        public IActionResult PPV0010Sample()
+        {
+            return View();
+        }
+
+        public IActionResult PPV0020Sample()
+        {
+            return View();
+        }
+
+        public IActionResult PPV0030Sample()
+        {
+            return View();
+        }
+
+        public IActionResult PPR0010Sample()
+        {
+            return View();
+        }
+
+        public IActionResult RAV0010Sample()
+        {
+            return View();
+        }
+
+        public IActionResult RAV0020Sample()
+        {
+            return View();
+        }
+
+        public IActionResult RAV0030Sample()
+        {
+            return View();
+        }
+
+        public IActionResult RAV0040Sample()
+        {
+            return View();
+        }
+
+        public IActionResult RAR0010Sample()
+        {
+            return View();
+        }
+
+        public IActionResult RAR0020Sample()
+        {
+            return View();
+        }
+
+        public IActionResult RAR0030Sample()
+        {
+            return View();
+        }
+
+        public IActionResult RAR0040Sample()
+        {
+            return View();
+        }
+
+        public IActionResult RAR0050Sample()
+        {
+            return View();
+        }
+
+        public IActionResult RAR0060Sample()
+        {
+            return View();
+        }
+
+        public IActionResult RAR0070Sample()
+        {
+            return View();
+        }
+
+        public IActionResult RAR0080Sample()
+        {
+            return View();
+        }
+
+        public IActionResult RAR0090Sample()
+        {
+            return View();
+        }
+
+        public IActionResult RAV0050Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CMV0010Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CMV0030Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CMV0040Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CMV0050Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CMV0060Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CMV0070Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CMV0080Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CMV9010Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CMB0010Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CMB0020Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CMB0030Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CMB0040Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CMB0050Sample()
+        {
+            return View();
+        }
         #endregion
     }
 }
