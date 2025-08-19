@@ -486,6 +486,11 @@ FROM
         {
             return View();
         }
+
+        public IActionResult CPV0010Sample()
+        {
+            return View();
+        }
         #endregion
     }
 }
