@@ -476,6 +476,11 @@ FROM
         {
             return View();
         }
+
+        public IActionResult PRV0020Sample()
+        {
+            return View();
+        }
         #endregion
     }
 }
