@@ -617,6 +617,11 @@ FROM
             return View();
         }
 
+        public IActionResult RAR0070Sample()
+        {
+            return View();
+        }
+
         public IActionResult RAV0050Sample()
         {
             return View();
