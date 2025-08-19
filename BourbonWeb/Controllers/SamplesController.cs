@@ -476,6 +476,26 @@ FROM
         {
             return View();
         }
+
+        public IActionResult PRV0020Sample()
+        {
+            return View();
+        }
+
+        public IActionResult PGV0010Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CPV0010Sample()
+        {
+            return View();
+        }
+
+        public IActionResult PPV0010Sample()
+        {
+            return View();
+        }
         #endregion
     }
 }
