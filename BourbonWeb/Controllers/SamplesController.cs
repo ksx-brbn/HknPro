@@ -496,6 +496,31 @@ FROM
         {
             return View();
         }
+
+        public IActionResult PPV0020Sample()
+        {
+            return View();
+        }
+
+        public IActionResult PPV0030Sample()
+        {
+            return View();
+        }
+
+        public IActionResult RAV0010Sample()
+        {
+            return View();
+        }
+
+        public IActionResult RAV0020Sample()
+        {
+            return View();
+        }
+
+        public IActionResult RAV0030Sample()
+        {
+            return View();
+        }
         #endregion
     }
 }
