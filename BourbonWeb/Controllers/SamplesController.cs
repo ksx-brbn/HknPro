@@ -576,6 +576,11 @@ FROM
         {
             return View();
         }
+
+        public IActionResult CMB0020Sample()
+        {
+            return View();
+        }
         #endregion
     }
 }
