@@ -521,6 +521,26 @@ FROM
         {
             return View();
         }
+
+        public IActionResult RAV0040Sample()
+        {
+            return View();
+        }
+
+        public IActionResult RAV0050Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CMV0010Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CMV9010Sample()
+        {
+            return View();
+        }
         #endregion
     }
 }
