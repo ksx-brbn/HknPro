@@ -501,6 +501,11 @@ FROM
         {
             return View();
         }
+
+        public IActionResult PPV0030Sample()
+        {
+            return View();
+        }
         #endregion
     }
 }
