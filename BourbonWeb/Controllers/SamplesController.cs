@@ -521,6 +521,11 @@ FROM
         {
             return View();
         }
+
+        public IActionResult RAV0040Sample()
+        {
+            return View();
+        }
         #endregion
     }
 }
