@@ -337,7 +337,7 @@ FROM
             return View(list);
         }
 
-        public async Task<IActionResult> Home(int? mainPageNumber, int? queryPageNumber)
+        public async Task<IActionResult> Home(int? mainPageNumber, int? queryPageNumber, int? mainPageSize, int? queryPageSize)
         {
             var baseQuery = _context.HansokuSinsei
                 .FromSqlRaw(sql)
@@ -354,11 +354,12 @@ FROM
                 .OrderByDescending(s => s.ShuseiKagamiNo)
                 .ThenByDescending(s => s.SinseiNo);
 
-            int pageSize = 5;
+            int mainSize = mainPageSize ?? 5;
+            int querySize = queryPageSize ?? 5;
             var viewModel = new HomeViewModel
             {
-                MainList = await PaginatedList<HansokuSinsei>.CreateAsync(baseQuery, mainPageNumber ?? 1, pageSize),
-                QueryList = await PaginatedList<HansokuSinsei>.CreateAsync(queryResult, queryPageNumber ?? 1, pageSize)
+                MainList = await PaginatedList<HansokuSinsei>.CreateAsync(baseQuery, mainPageNumber ?? 1, mainSize),
+                QueryList = await PaginatedList<HansokuSinsei>.CreateAsync(queryResult, queryPageNumber ?? 1, querySize)
             };
             return View(viewModel);
         }
