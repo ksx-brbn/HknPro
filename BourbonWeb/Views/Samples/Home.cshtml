@@ -72,37 +72,50 @@
 @await Html.PartialAsync("_KagamiNotCreatedTable", Model.MainList)
 
 <nav aria-label="page navigation" class="mt-3">
-    <ul class="pagination justify-content-center">
-        <li class="page-item @(Model.MainList.HasPreviousPage ? "" : "disabled")">
-            <a class="page-link" asp-route-mainPageNumber="@(Model.MainList.PageIndex - 1)" asp-route-queryPageNumber="@Model.QueryList.PageIndex">前へ</a>
-        </li>
-        <li class="page-item @(Model.MainList.PageIndex == 1 ? "active" : "")">
-            <a class="page-link" asp-route-mainPageNumber="1" asp-route-queryPageNumber="@Model.QueryList.PageIndex">1</a>
-        </li>
-        @if (Model.MainList.PageIndex > 3)
-        {
-            <li class="page-item disabled"><span class="page-link">…</span></li>
-        }
-        @for (var i = Math.Max(2, Model.MainList.PageIndex - 1); i <= Math.Min(Model.MainList.TotalPages - 1, Model.MainList.PageIndex + 1); i++)
-        {
-            <li class="page-item @(i == Model.MainList.PageIndex ? "active" : "")">
-                <a class="page-link" asp-route-mainPageNumber="@i" asp-route-queryPageNumber="@Model.QueryList.PageIndex">@i</a>
+    <div class="d-flex justify-content-center align-items-center">
+        <ul class="pagination justify-content-center mb-0">
+            <li class="page-item @(Model.MainList.HasPreviousPage ? "" : "disabled")">
+                <a class="page-link" asp-route-mainPageNumber="@(Model.MainList.PageIndex - 1)" asp-route-queryPageNumber="@Model.QueryList.PageIndex" asp-route-mainPageSize="@Model.MainList.PageSize" asp-route-queryPageSize="@Model.QueryList.PageSize">前へ</a>
             </li>
-        }
-        @if (Model.MainList.PageIndex < Model.MainList.TotalPages - 2)
-        {
-            <li class="page-item disabled"><span class="page-link">…</span></li>
-        }
-        @if (Model.MainList.TotalPages > 1)
-        {
-            <li class="page-item @(Model.MainList.PageIndex == Model.MainList.TotalPages ? "active" : "")">
-                <a class="page-link" asp-route-mainPageNumber="@Model.MainList.TotalPages" asp-route-queryPageNumber="@Model.QueryList.PageIndex">@Model.MainList.TotalPages</a>
+            <li class="page-item @(Model.MainList.PageIndex == 1 ? "active" : "")">
+                <a class="page-link" asp-route-mainPageNumber="1" asp-route-queryPageNumber="@Model.QueryList.PageIndex" asp-route-mainPageSize="@Model.MainList.PageSize" asp-route-queryPageSize="@Model.QueryList.PageSize">1</a>
             </li>
-        }
-        <li class="page-item @(Model.MainList.HasNextPage ? "" : "disabled")">
-            <a class="page-link" asp-route-mainPageNumber="@(Model.MainList.PageIndex + 1)" asp-route-queryPageNumber="@Model.QueryList.PageIndex">次へ</a>
-        </li>
-    </ul>
+            @if (Model.MainList.PageIndex > 3)
+            {
+                <li class="page-item disabled"><span class="page-link">…</span></li>
+            }
+            @for (var i = Math.Max(2, Model.MainList.PageIndex - 1); i <= Math.Min(Model.MainList.TotalPages - 1, Model.MainList.PageIndex + 1); i++)
+            {
+                <li class="page-item @(i == Model.MainList.PageIndex ? "active" : "")">
+                    <a class="page-link" asp-route-mainPageNumber="@i" asp-route-queryPageNumber="@Model.QueryList.PageIndex" asp-route-mainPageSize="@Model.MainList.PageSize" asp-route-queryPageSize="@Model.QueryList.PageSize">@i</a>
+                </li>
+            }
+            @if (Model.MainList.PageIndex < Model.MainList.TotalPages - 2)
+            {
+                <li class="page-item disabled"><span class="page-link">…</span></li>
+            }
+            @if (Model.MainList.TotalPages > 1)
+            {
+                <li class="page-item @(Model.MainList.PageIndex == Model.MainList.TotalPages ? "active" : "")">
+                    <a class="page-link" asp-route-mainPageNumber="@Model.MainList.TotalPages" asp-route-queryPageNumber="@Model.QueryList.PageIndex" asp-route-mainPageSize="@Model.MainList.PageSize" asp-route-queryPageSize="@Model.QueryList.PageSize">@Model.MainList.TotalPages</a>
+                </li>
+            }
+            <li class="page-item @(Model.MainList.HasNextPage ? "" : "disabled")">
+                <a class="page-link" asp-route-mainPageNumber="@(Model.MainList.PageIndex + 1)" asp-route-queryPageNumber="@Model.QueryList.PageIndex" asp-route-mainPageSize="@Model.MainList.PageSize" asp-route-queryPageSize="@Model.QueryList.PageSize">次へ</a>
+            </li>
+        </ul>
+        <form method="get" class="ms-2">
+            <select name="mainPageSize" class="form-select form-select-sm" onchange="this.form.submit()">
+                <option value="5" @(Model.MainList.PageSize == 5 ? "selected" : "")>5件</option>
+                <option value="10" @(Model.MainList.PageSize == 10 ? "selected" : "")>10件</option>
+                <option value="25" @(Model.MainList.PageSize == 25 ? "selected" : "")>25件</option>
+                <option value="50" @(Model.MainList.PageSize == 50 ? "selected" : "")>50件</option>
+            </select>
+            <input type="hidden" name="mainPageNumber" value="1" />
+            <input type="hidden" name="queryPageNumber" value="@Model.QueryList.PageIndex" />
+            <input type="hidden" name="queryPageSize" value="@Model.QueryList.PageSize" />
+        </form>
+    </div>
 </nav>
 
 <hr />
@@ -129,37 +142,50 @@
 @await Html.PartialAsync("_AwaitingPaymentTable", Model.QueryList)
 
 <nav aria-label="page navigation" class="mt-3">
-    <ul class="pagination justify-content-center">
-        <li class="page-item @(Model.QueryList.HasPreviousPage ? "" : "disabled")">
-            <a class="page-link" asp-route-queryPageNumber="@(Model.QueryList.PageIndex - 1)" asp-route-mainPageNumber="@Model.MainList.PageIndex">前へ</a>
-        </li>
-        <li class="page-item @(Model.QueryList.PageIndex == 1 ? "active" : "")">
-            <a class="page-link" asp-route-queryPageNumber="1" asp-route-mainPageNumber="@Model.MainList.PageIndex">1</a>
-        </li>
-        @if (Model.QueryList.PageIndex > 3)
-        {
-            <li class="page-item disabled"><span class="page-link">…</span></li>
-        }
-        @for (var i = Math.Max(2, Model.QueryList.PageIndex - 1); i <= Math.Min(Model.QueryList.TotalPages - 1, Model.QueryList.PageIndex + 1); i++)
-        {
-            <li class="page-item @(i == Model.QueryList.PageIndex ? "active" : "")">
-                <a class="page-link" asp-route-queryPageNumber="@i" asp-route-mainPageNumber="@Model.MainList.PageIndex">@i</a>
+    <div class="d-flex justify-content-center align-items-center">
+        <ul class="pagination justify-content-center mb-0">
+            <li class="page-item @(Model.QueryList.HasPreviousPage ? "" : "disabled")">
+                <a class="page-link" asp-route-queryPageNumber="@(Model.QueryList.PageIndex - 1)" asp-route-mainPageNumber="@Model.MainList.PageIndex" asp-route-mainPageSize="@Model.MainList.PageSize" asp-route-queryPageSize="@Model.QueryList.PageSize">前へ</a>
             </li>
-        }
-        @if (Model.QueryList.PageIndex < Model.QueryList.TotalPages - 2)
-        {
-            <li class="page-item disabled"><span class="page-link">…</span></li>
-        }
-        @if (Model.QueryList.TotalPages > 1)
-        {
-            <li class="page-item @(Model.QueryList.PageIndex == Model.QueryList.TotalPages ? "active" : "")">
-                <a class="page-link" asp-route-queryPageNumber="@Model.QueryList.TotalPages" asp-route-mainPageNumber="@Model.MainList.PageIndex">@Model.QueryList.TotalPages</a>
+            <li class="page-item @(Model.QueryList.PageIndex == 1 ? "active" : "")">
+                <a class="page-link" asp-route-queryPageNumber="1" asp-route-mainPageNumber="@Model.MainList.PageIndex" asp-route-mainPageSize="@Model.MainList.PageSize" asp-route-queryPageSize="@Model.QueryList.PageSize">1</a>
             </li>
-        }
-        <li class="page-item @(Model.QueryList.HasNextPage ? "" : "disabled")">
-            <a class="page-link" asp-route-queryPageNumber="@(Model.QueryList.PageIndex + 1)" asp-route-mainPageNumber="@Model.MainList.PageIndex">次へ</a>
-        </li>
-    </ul>
+            @if (Model.QueryList.PageIndex > 3)
+            {
+                <li class="page-item disabled"><span class="page-link">…</span></li>
+            }
+            @for (var i = Math.Max(2, Model.QueryList.PageIndex - 1); i <= Math.Min(Model.QueryList.TotalPages - 1, Model.QueryList.PageIndex + 1); i++)
+            {
+                <li class="page-item @(i == Model.QueryList.PageIndex ? "active" : "")">
+                    <a class="page-link" asp-route-queryPageNumber="@i" asp-route-mainPageNumber="@Model.MainList.PageIndex" asp-route-mainPageSize="@Model.MainList.PageSize" asp-route-queryPageSize="@Model.QueryList.PageSize">@i</a>
+                </li>
+            }
+            @if (Model.QueryList.PageIndex < Model.QueryList.TotalPages - 2)
+            {
+                <li class="page-item disabled"><span class="page-link">…</span></li>
+            }
+            @if (Model.QueryList.TotalPages > 1)
+            {
+                <li class="page-item @(Model.QueryList.PageIndex == Model.QueryList.TotalPages ? "active" : "")">
+                    <a class="page-link" asp-route-queryPageNumber="@Model.QueryList.TotalPages" asp-route-mainPageNumber="@Model.MainList.PageIndex" asp-route-mainPageSize="@Model.MainList.PageSize" asp-route-queryPageSize="@Model.QueryList.PageSize">@Model.QueryList.TotalPages</a>
+                </li>
+            }
+            <li class="page-item @(Model.QueryList.HasNextPage ? "" : "disabled")">
+                <a class="page-link" asp-route-queryPageNumber="@(Model.QueryList.PageIndex + 1)" asp-route-mainPageNumber="@Model.MainList.PageIndex" asp-route-mainPageSize="@Model.MainList.PageSize" asp-route-queryPageSize="@Model.QueryList.PageSize">次へ</a>
+            </li>
+        </ul>
+        <form method="get" class="ms-2">
+            <select name="queryPageSize" class="form-select form-select-sm" onchange="this.form.submit()">
+                <option value="5" @(Model.QueryList.PageSize == 5 ? "selected" : "")>5件</option>
+                <option value="10" @(Model.QueryList.PageSize == 10 ? "selected" : "")>10件</option>
+                <option value="25" @(Model.QueryList.PageSize == 25 ? "selected" : "")>25件</option>
+                <option value="50" @(Model.QueryList.PageSize == 50 ? "selected" : "")>50件</option>
+            </select>
+            <input type="hidden" name="queryPageNumber" value="1" />
+            <input type="hidden" name="mainPageNumber" value="@Model.MainList.PageIndex" />
+            <input type="hidden" name="mainPageSize" value="@Model.MainList.PageSize" />
+        </form>
+    </div>
 </nav>
 
 <hr />
