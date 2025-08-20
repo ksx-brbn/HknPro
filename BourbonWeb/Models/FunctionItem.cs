@@ -6,7 +6,7 @@ namespace BourbonWeb.Models
         public string KinouId { get; set; } = string.Empty;
         public string DaiBunrui { get; set; } = string.Empty;
         public string ChuuBunrui { get; set; } = string.Empty;
-        public string ShouBunrui { get; set; } = string.Empty;
+        public string KinouNm { get; set; } = string.Empty;
         public string Kubun { get; set; } = string.Empty;
         public string Shokai { get; set; } = string.Empty;
         public string Kensaku { get; set; } = string.Empty;

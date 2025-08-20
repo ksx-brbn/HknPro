@@ -10,7 +10,7 @@
             <th>機能ID</th>
             <th>大分類</th>
             <th>中分類</th>
-            <th>小分類</th>
+            <th>機能名</th>
             <th>区分</th>
             <th>照会</th>
             <th>検索</th>
@@ -25,26 +25,26 @@
         </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td class="text-end">@item.No</td>
-            <td>@item.KinouId</td>
-            <td>@item.DaiBunrui</td>
-            <td>@item.ChuuBunrui</td>
-            <td>@item.ShouBunrui</td>
-            <td>@item.Kubun</td>
-            <td class="text-center">@item.Shokai</td>
-            <td class="text-center">@item.Kensaku</td>
-            <td class="text-center">@item.Touroku</td>
-            <td class="text-center">@item.Koushin</td>
-            <td class="text-center">@item.Sakujo</td>
-            <td class="text-center">@item.Chouhyou</td>
-            <td class="text-center">@item.In</td>
-            <td class="text-center">@item.Out</td>
-            <td>@item.Bikou</td>
-            <td>@item.KyuuId</td>
-        </tr>
-    }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-center">@item.No</td>
+                <td>@item.KinouId</td>
+                <td>@item.DaiBunrui</td>
+                <td>@item.ChuuBunrui</td>
+                <td>@item.KinouNm</td>
+                <td>@item.Kubun</td>
+                <td class="text-center">@item.Shokai</td>
+                <td class="text-center">@item.Kensaku</td>
+                <td class="text-center">@item.Touroku</td>
+                <td class="text-center">@item.Koushin</td>
+                <td class="text-center">@item.Sakujo</td>
+                <td class="text-center">@item.Chouhyou</td>
+                <td class="text-center">@item.In</td>
+                <td class="text-center">@item.Out</td>
+                <td>@item.Bikou</td>
+                <td>@item.KyuuId</td>
+            </tr>
+        }
     </tbody>
 </table>

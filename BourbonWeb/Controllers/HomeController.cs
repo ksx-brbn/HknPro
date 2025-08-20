@@ -45,9 +45,11 @@ namespace BourbonWeb.Controllers
                     KinouId = "CRV0010",
                     DaiBunrui = "販促費申請",
                     ChuuBunrui = "確定",
-                    ShouBunrui = "販促費申請検索",
+                    KinouNm = "販促費申請検索",
                     Kubun = "画面",
                     Shokai = "○",
+                    Kensaku = "○",
+                    Chouhyou = "○",
                     KyuuId = "AEST0010"
                 },
                 new FunctionItem
@@ -56,7 +58,7 @@ namespace BourbonWeb.Controllers
                     KinouId = "CRV0020",
                     DaiBunrui = "販促費申請",
                     ChuuBunrui = "確定",
-                    ShouBunrui = "販促費申請登録",
+                    KinouNm = "販促費申請登録",
                     Kubun = "画面",
                     KyuuId = "AEST0020"
                 }
