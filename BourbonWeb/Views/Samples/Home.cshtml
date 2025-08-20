@@ -106,10 +106,10 @@
         </ul>
         <form method="get" class="ms-2">
             <select name="mainPageSize" class="form-select form-select-sm" onchange="this.form.submit()">
-                <option value="5" @(Model.MainList.PageSize == 5 ? "selected" : "")>5件</option>
-                <option value="10" @(Model.MainList.PageSize == 10 ? "selected" : "")>10件</option>
-                <option value="25" @(Model.MainList.PageSize == 25 ? "selected" : "")>25件</option>
-                <option value="50" @(Model.MainList.PageSize == 50 ? "selected" : "")>50件</option>
+                <option value="5" selected="@(Model.MainList.PageSize == 5)">5件</option>
+                <option value="10" selected="@(Model.MainList.PageSize == 10)">10件</option>
+                <option value="25" selected="@(Model.MainList.PageSize == 25)">25件</option>
+                <option value="50" selected="@(Model.MainList.PageSize == 50)">50件</option>
             </select>
             <input type="hidden" name="mainPageNumber" value="1" />
             <input type="hidden" name="queryPageNumber" value="@Model.QueryList.PageIndex" />
@@ -176,10 +176,10 @@
         </ul>
         <form method="get" class="ms-2">
             <select name="queryPageSize" class="form-select form-select-sm" onchange="this.form.submit()">
-                <option value="5" @(Model.QueryList.PageSize == 5 ? "selected" : "")>5件</option>
-                <option value="10" @(Model.QueryList.PageSize == 10 ? "selected" : "")>10件</option>
-                <option value="25" @(Model.QueryList.PageSize == 25 ? "selected" : "")>25件</option>
-                <option value="50" @(Model.QueryList.PageSize == 50 ? "selected" : "")>50件</option>
+                <option value="5" selected="@(Model.QueryList.PageSize == 5)">5件</option>
+                <option value="10" selected="@(Model.QueryList.PageSize == 10)">10件</option>
+                <option value="25" selected="@(Model.QueryList.PageSize == 25)">25件</option>
+                <option value="50" selected="@(Model.QueryList.PageSize == 50)">50件</option>
             </select>
             <input type="hidden" name="queryPageNumber" value="1" />
             <input type="hidden" name="mainPageNumber" value="@Model.MainList.PageIndex" />
