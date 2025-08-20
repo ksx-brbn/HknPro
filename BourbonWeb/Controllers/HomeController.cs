@@ -35,6 +35,36 @@ namespace BourbonWeb.Controllers
             return View();
         }
 
+        public IActionResult FunctionList()
+        {
+            var items = new List<FunctionItem>
+            {
+                new FunctionItem
+                {
+                    No = 1,
+                    KinouId = "CRV0010",
+                    DaiBunrui = "販促費申請",
+                    ChuuBunrui = "確定",
+                    ShouBunrui = "販促費申請検索",
+                    Kubun = "画面",
+                    Shokai = "○",
+                    KyuuId = "AEST0010"
+                },
+                new FunctionItem
+                {
+                    No = 2,
+                    KinouId = "CRV0020",
+                    DaiBunrui = "販促費申請",
+                    ChuuBunrui = "確定",
+                    ShouBunrui = "販促費申請登録",
+                    Kubun = "画面",
+                    KyuuId = "AEST0020"
+                }
+            };
+
+            return View(items);
+        }
+
         public IActionResult Sitemap()
         {
             var descriptors = _actions.ActionDescriptors.Items
