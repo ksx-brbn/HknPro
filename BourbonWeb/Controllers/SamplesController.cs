@@ -532,7 +532,13 @@ FROM
         {
             return View();
         }
+
         public IActionResult PRV0021Sample()
+        {
+            return View();
+        }
+
+        public IActionResult PRV0022Sample()
         {
             return View();
         }
