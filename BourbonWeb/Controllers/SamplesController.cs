@@ -473,6 +473,36 @@ FROM
             return View();
         }
 
+        public IActionResult CRV0021Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CRV0022Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CRV0023Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CRV0024Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CRV0025Sample()
+        {
+            return View();
+        }
+
+        public IActionResult CRV0026Sample()
+        {
+            return View();
+        }
+
         public IActionResult CRV0030Sample()
         {
             return View();
@@ -503,7 +533,33 @@ FROM
             return View();
         }
 
+        public IActionResult PRV0021Sample()
+        {
+            return View();
+        }
+
+        public IActionResult PRV0022Sample()
+        {
+            return View();
+        }
+
+
         public IActionResult PGV0010Sample()
+        {
+            return View();
+        }
+
+        public IActionResult PGV0011Sample()
+        {
+            return View();
+        }
+
+        public IActionResult PGV0012Sample()
+        {
+            return View();
+        }
+
+        public IActionResult PGV0013Sample()
         {
             return View();
         }
@@ -553,12 +609,32 @@ FROM
             return View();
         }
 
+        public IActionResult PPV0011Sample()
+        {
+            return View();
+        }
+
+        public IActionResult PPV0012Sample()
+        {
+            return View();
+        }
+
+        public IActionResult PPV0013Sample()
+        {
+            return View();
+        }
+
         public IActionResult PPV0020Sample()
         {
             return View();
         }
 
         public IActionResult PPV0030Sample()
+        {
+            return View();
+        }
+
+        public IActionResult PPV0031Sample()
         {
             return View();
         }
@@ -579,6 +655,11 @@ FROM
         }
 
         public IActionResult RAV0030Sample()
+        {
+            return View();
+        }
+
+        public IActionResult RAV0031Sample()
         {
             return View();
         }
