@@ -554,6 +554,11 @@ FROM
             return View();
         }
 
+        public IActionResult PGV0012Sample()
+        {
+            return View();
+        }
+
         public IActionResult PGB0010Sample()
         {
             return View();
