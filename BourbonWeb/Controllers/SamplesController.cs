@@ -483,6 +483,11 @@ FROM
             return View();
         }
 
+        public IActionResult CRV0023Sample()
+        {
+            return View();
+        }
+
         public IActionResult CRV0030Sample()
         {
             return View();
