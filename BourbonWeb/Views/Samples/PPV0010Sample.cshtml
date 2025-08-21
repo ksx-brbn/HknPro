@@ -9,51 +9,17 @@
     <img src="~/img/current/PPV0010_AESK1010_販促費支払手続確定.png" alt="Current System Image" class="img-fluid" />
 </div>
 
-<hr />
-<p>現行画面イメージ・一括確定</p>
-<div class="text-center">
-    <img src="~/img/current/PPV0011_AESK1011_一括確定.png" alt="Current System Image" class="img-fluid" />
-</div>
-
-<hr />
-<p>現行画面イメージ・振込明細確認</p>
-<div class="text-center">
-    <img src="~/img/current/PPV0012_AEFM0020_振込明細確認.png" alt="Current System Image" class="img-fluid" />
-</div>
-
-<hr />
-<p>現行画面イメージ・SAP連携データ作成</p>
-<div class="text-center">
-    <img src="~/img/current/PPV0013_AESD0020_SAP連携データ作成.png" alt="Current System Image" class="img-fluid" />
-</div>
 
 <hr />
 <div class="card mt-1">
     <div class="card-header">要件一覧</div>
     <div class="card-body">
-        <span>販促費支払手続確定</span>
         <ul class="mb-0">
             <li>一般のユーザーの対象データはワークフロー最終承認されたものを販促費支払手続確定の対象とする … ①No.35</li>
             <li>財務管理課権限のユーザーは、ワークフロー承認前(鑑作成済、鑑出力前)のデータも抽出可能 … ①No.36</li>
             <li>銀行名、支店名、口座種別、口座番号、受取人名、受取人名カナの更新廃止 … ①No.37、719行目</li>
             <li>消費税率調整廃止 … ①No.37C、720行目</li>
             <li>処理方法が振込(登録二次店)と売掛金相殺以外の場合、確定後にSAP連携データ作成画面へ遷移 … ①No.41</li>
-        </ul>
-        <span>振込明細確認</span>
-        <ul class="mb-0">
-            <li>画面名を変更。 振込明細確認（特約・登録店）→ 振込明細確認（特約） … ①No.37B</li>
-            <li>Excelデータ：特約店・登録店_経費所別協賛額一覧廃止 … ①No.38</li>
-            <li>Excelデータ：特約店・登録店 販促費振込明細表のタイトル変更。 特約店・登録店 販促費振込明細表 → 特約店 販促費振込明細表 … ①No.39</li>
-        </ul>
-        <span>SAP連携データ作成</span>
-        <ul class="mb-0">
-            <li>画面名を変更。 預金台帳印刷 → SAP連携データ作成 … ①No.41A</li>
-            <li>SAPの項目に合わせてレイアウト変更。振込先情報項目を追加 … ①No.42</li>ここまで
-            <li>SAP連携ファイルのレイアウトをSAPに合わせて変更 … ①No.43</li>
-            <li>SAPの監視フォルダに出力 … ①No.43</li>
-            <li>「未払伝票」「支払伝票」の2つを出力しているが、今後は1本化 … ①No.43</li>
-            <li>振込(登録二次店)の場合、SAPでの支払とはしないため対象外 … ①No.43</li>
-            <li>仮登録ボタン、科目変更ボタン廃止 … ①No.44</li>
         </ul>
     </div>
     <div class="card-footer">
