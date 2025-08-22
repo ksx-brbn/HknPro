@@ -364,7 +364,7 @@ FROM
             return View(viewModel);
         }
 
-        public async Task<IActionResult> InputConditions(HansokuSinseiSearchCondition condition, int? pageNumber)
+        public async Task<IActionResult> InputConditions(HansokuSinseiSearchCondition condition, int? pageNumber, int? pageSize)
         {
             if (string.IsNullOrEmpty(condition.SinseiTaishoYm))
             {
@@ -427,7 +427,7 @@ FROM
 
             if (!string.IsNullOrEmpty(condition.SinseiTaishoYm))
             {
-                var ym = condition.SinseiTaishoYm.Replace("-", "");
+                var ym = condition.SinseiTaishoYm.Replace("-", "").Replace("年", "").Replace("月", "");
                 baseQuery = baseQuery.Where(s => s.SinseiTaishoYm == ym);
             }
 
@@ -449,7 +449,7 @@ FROM
             baseQuery = baseQuery
                 .OrderByDescending(s => s.SinseiNo);
 
-            int pageSize = 5;
+            int currentPageSize = pageSize ?? 5;
             ViewData["CurrentSinseiTaishoYm"] = condition.SinseiTaishoYm;
             ViewData["CurrentSiharaiYoteiYmd"] = condition.SiharaiYoteiYmd;
             ViewData["CurrentSinseiShoCd"] = condition.SinseiShoCd;
@@ -464,7 +464,7 @@ FROM
             ViewData["CurrentKyosanJokenTaniKbn"] = condition.KyosanJokenTaniKbn;
             ViewData["CurrentKakakuHansokuKbn"] = condition.KakakuHansokuKbn;
             ViewData["CurrentCreateKeihiRitu"] = condition.CreateKeihiRitu;
-            var list = await PaginatedList<HansokuSinsei>.CreateAsync(baseQuery, pageNumber ?? 1, pageSize);
+            var list = await PaginatedList<HansokuSinsei>.CreateAsync(baseQuery, pageNumber ?? 1, currentPageSize);
             return View(list);
         }
 
