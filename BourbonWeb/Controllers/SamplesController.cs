@@ -426,7 +426,7 @@ FROM
 
             if (!string.IsNullOrEmpty(condition.SinseiTaishoYm))
             {
-                var ym = condition.SinseiTaishoYm.Replace("-", "");
+                var ym = condition.SinseiTaishoYm.Replace("-", "").Replace("年", "").Replace("月", "");
                 baseQuery = baseQuery.Where(s => s.SinseiTaishoYm == ym);
             }
 
