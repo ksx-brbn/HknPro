@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Text;
+using System.IO;
+using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -643,6 +644,145 @@ FROM
             }
 
             return File(Encoding.UTF8.GetBytes(sb.ToString()), "text/csv", "inputconditions.csv");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> InputConditionsExcel(HansokuSinseiSearchCondition condition)
+        {
+            if (string.IsNullOrEmpty(condition.SinseiTaishoYm))
+            {
+                condition.SinseiTaishoYm = "2024-08";
+            }
+
+            if (string.IsNullOrEmpty(condition.SiharaiYoteiYmd))
+            {
+                condition.SiharaiYoteiYmd = "2024-09-30";
+            }
+
+            if (string.IsNullOrEmpty(condition.KeihishoCd))
+            {
+                condition.KeihishoCd = "210300";
+            }
+
+            if (string.IsNullOrEmpty(condition.KeihishaCd))
+            {
+                condition.KeihishaCd = "063441";
+            }
+
+            if (string.IsNullOrEmpty(condition.SinseiChoaiCd))
+            {
+                condition.SinseiChoaiCd = "201632";
+            }
+
+            if (string.IsNullOrEmpty(condition.SeikyuKbn))
+            {
+                condition.SeikyuKbn = "0";
+            }
+
+            if (string.IsNullOrEmpty(condition.TorihikiCdA))
+            {
+                condition.TorihikiCdA = "XA0734";
+            }
+
+            if (string.IsNullOrEmpty(condition.ShoriHoho))
+            {
+                condition.ShoriHoho = "20;";
+            }
+
+            if (string.IsNullOrEmpty(condition.KyosanJokenTaniKbn))
+            {
+                condition.KyosanJokenTaniKbn = "0";
+            }
+
+            if (string.IsNullOrEmpty(condition.KakakuHansokuKbn))
+            {
+                condition.KakakuHansokuKbn = "1";
+            }
+
+            if (string.IsNullOrEmpty(condition.CreateKeihiRitu))
+            {
+                condition.CreateKeihiRitu = "0";
+            }
+
+            var baseQuery = _context.HansokuSinsei
+                .FromSqlRaw(sql)
+                .AsNoTracking();
+
+            if (!string.IsNullOrEmpty(condition.SinseiTaishoYm))
+            {
+                var ym = condition.SinseiTaishoYm.Replace("-", "").Replace("年", "").Replace("月", "");
+                baseQuery = baseQuery.Where(s => s.SinseiTaishoYm == ym);
+            }
+
+            if (!string.IsNullOrEmpty(condition.KeihishoCd))
+            {
+                baseQuery = baseQuery.Where(s => s.KeihishoCd == condition.KeihishoCd);
+            }
+
+            if (!string.IsNullOrEmpty(condition.SinseiChoaiCd))
+            {
+                baseQuery = baseQuery.Where(s => s.SinseiChoaiCd == condition.SinseiChoaiCd);
+            }
+
+            if (!string.IsNullOrEmpty(condition.SeikyuKbn))
+            {
+                baseQuery = baseQuery.Where(s => s.SeikyuKbn == condition.SeikyuKbn);
+            }
+
+            baseQuery = baseQuery
+                .OrderByDescending(s => s.SinseiNo);
+
+            var list = await baseQuery.ToListAsync();
+
+            using var workbook = new XLWorkbook();
+            var worksheet = workbook.Worksheets.Add("InputConditions");
+            worksheet.Cell(1, 1).Value = "申請番号";
+            worksheet.Cell(1, 2).Value = "対象年月";
+            worksheet.Cell(1, 3).Value = "処理方法";
+            worksheet.Cell(1, 4).Value = "請求区分";
+            worksheet.Cell(1, 5).Value = "帳合CD";
+            worksheet.Cell(1, 6).Value = "帳合店";
+            worksheet.Cell(1, 7).Value = "得意先CD";
+            worksheet.Cell(1, 8).Value = "得意先名";
+            worksheet.Cell(1, 9).Value = "協賛額";
+            worksheet.Cell(1,10).Value = "費用計上";
+            worksheet.Cell(1,11).Value = "数量単位区分";
+            worksheet.Cell(1,12).Value = "経費所CD";
+            worksheet.Cell(1,13).Value = "経費所名";
+            worksheet.Cell(1,14).Value = "申請計上年月";
+            worksheet.Cell(1,15).Value = "訂正申請番号";
+            worksheet.Cell(1,16).Value = "未確定件数";
+            worksheet.Cell(1,17).Value = "価格販促区分";
+            worksheet.Cell(1,18).Value = "経費配分条件";
+
+            var row = 2;
+            foreach (var item in list)
+            {
+                worksheet.Cell(row, 1).Value = item.SinseiNo;
+                worksheet.Cell(row, 2).Value = item.SinseiTaishoYm;
+                worksheet.Cell(row, 3).Value = item.ShoriHoho;
+                worksheet.Cell(row, 4).Value = item.SeikyuKbnNm;
+                worksheet.Cell(row, 5).Value = item.SinseiChoaiCd;
+                worksheet.Cell(row, 6).Value = item.SinseiChoaiNm;
+                worksheet.Cell(row, 7).Value = item.TorihikiCdA;
+                worksheet.Cell(row, 8).Value = item.TorihikiNmA;
+                worksheet.Cell(row, 9).Value = item.KyosanGaku;
+                worksheet.Cell(row,10).Value = item.HiyoKeijo;
+                worksheet.Cell(row,11).Value = item.SuryoTaniKbnNm;
+                worksheet.Cell(row,12).Value = item.KeihishoCd;
+                worksheet.Cell(row,13).Value = item.KeihishoNm;
+                worksheet.Cell(row,14).Value = item.SinseiKeijoYm;
+                worksheet.Cell(row,15).Value = item.TeiseiSinseiNo;
+                worksheet.Cell(row,16).Value = item.MikakuteiCnt;
+                worksheet.Cell(row,17).Value = item.KakakuHansokuKbnNm;
+                worksheet.Cell(row,18).Value = item.KeihiHaibunJokenNm;
+                row++;
+            }
+
+            using var stream = new MemoryStream();
+            workbook.SaveAs(stream);
+            stream.Position = 0;
+            return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "inputconditions.xlsx");
         }
 
         public IActionResult CRV0020Sample()
