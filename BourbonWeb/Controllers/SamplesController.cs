@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Globalization;
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using BourbonWeb.Data;
 using BourbonWeb.Models;
@@ -223,6 +225,57 @@ FROM
             return File(Encoding.UTF8.GetBytes(sb.ToString()), "text/csv", "Sample.csv");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ImportCsv(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            using var reader = new StreamReader(file.OpenReadStream(), Encoding.UTF8);
+            string? line;
+            bool isFirst = true;
+            while ((line = await reader.ReadLineAsync()) != null)
+            {
+                if (isFirst)
+                {
+                    isFirst = false;
+                    continue;
+                }
+
+                var fields = ParseCsvLine(line);
+                if (fields.Count < 14)
+                {
+                    continue;
+                }
+
+                var sample = new Sample
+                {
+                    Name = fields[0],
+                    Price = decimal.TryParse(fields[1], out var price) ? price : 0,
+                    Description = fields[2],
+                    Quantity = int.TryParse(fields[3], out var quantity) ? quantity : null,
+                    Weight = double.TryParse(fields[4], out var weight) ? weight : null,
+                    TargetYM = DateOnly.TryParseExact(fields[5], "yyyyMM", CultureInfo.InvariantCulture, DateTimeStyles.None, out var targetYm) ? targetYm : null,
+                    PaymentDate = DateOnly.TryParseExact(fields[6], "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var paymentDate) ? paymentDate : null,
+                    UpdatedAt = DateTime.TryParse(fields[7], out var updatedAt) ? updatedAt : null,
+                    IsActive = fields[8] switch { "有効" => true, "無効" => false, _ => null },
+                    Text1 = fields.ElementAtOrDefault(9),
+                    Text2 = fields.ElementAtOrDefault(10),
+                    Text3 = fields.ElementAtOrDefault(11),
+                    Text4 = fields.ElementAtOrDefault(12),
+                    Text5 = fields.ElementAtOrDefault(13)
+                };
+
+                _context.Sample.Add(sample);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
         // GET: Samples
         public async Task<IActionResult> Index2(string? searchString, int? pageNumber)
         {
@@ -376,6 +429,60 @@ FROM
             }
 
             return field;
+        }
+
+        private static List<string> ParseCsvLine(string line)
+        {
+            var result = new List<string>();
+            if (line == null)
+            {
+                return result;
+            }
+
+            var sb = new StringBuilder();
+            bool inQuotes = false;
+            for (int i = 0; i < line.Length; i++)
+            {
+                char c = line[i];
+                if (inQuotes)
+                {
+                    if (c == '"')
+                    {
+                        if (i + 1 < line.Length && line[i + 1] == '"')
+                        {
+                            sb.Append('"');
+                            i++;
+                        }
+                        else
+                        {
+                            inQuotes = false;
+                        }
+                    }
+                    else
+                    {
+                        sb.Append(c);
+                    }
+                }
+                else
+                {
+                    if (c == '"')
+                    {
+                        inQuotes = true;
+                    }
+                    else if (c == ',')
+                    {
+                        result.Add(sb.ToString());
+                        sb.Clear();
+                    }
+                    else
+                    {
+                        sb.Append(c);
+                    }
+                }
+            }
+
+            result.Add(sb.ToString());
+            return result;
         }
 
         private bool SampleExists(int id)
