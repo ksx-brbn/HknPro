@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Text;
+using System.Globalization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic.FileIO;
 using BourbonWeb.Data;
 using BourbonWeb.Models;
 
@@ -221,6 +224,67 @@ FROM
             return File(Encoding.UTF8.GetBytes(sb.ToString()), "text/csv", "Sample.csv");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ImportCsv(IFormFile? csvFile)
+        {
+            if (csvFile == null || csvFile.Length == 0)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            using var parser = new TextFieldParser(csvFile.OpenReadStream(), Encoding.UTF8);
+            parser.TextFieldType = FieldType.Delimited;
+            parser.SetDelimiters(",");
+            parser.HasFieldsEnclosedInQuotes = true;
+
+            var isFirst = true;
+            while (!parser.EndOfData)
+            {
+                var fields = parser.ReadFields();
+                if (fields == null)
+                {
+                    continue;
+                }
+                if (isFirst)
+                {
+                    isFirst = false;
+                    continue;
+                }
+
+                int id = 0;
+                _ = int.TryParse(fields.ElementAtOrDefault(0), out id);
+                Sample? sample = null;
+                if (id > 0)
+                {
+                    sample = await _context.Sample.FindAsync(id);
+                }
+                if (sample == null)
+                {
+                    sample = new Sample();
+                    _context.Sample.Add(sample);
+                }
+
+                sample.Name = fields.ElementAtOrDefault(1) ?? string.Empty;
+                if (decimal.TryParse(fields.ElementAtOrDefault(2), out var price)) sample.Price = price;
+                sample.Description = fields.ElementAtOrDefault(3);
+                if (int.TryParse(fields.ElementAtOrDefault(4), out var qty)) sample.Quantity = qty;
+                if (double.TryParse(fields.ElementAtOrDefault(5), out var weight)) sample.Weight = weight;
+                if (DateOnly.TryParseExact(fields.ElementAtOrDefault(6), "yyyyMM", CultureInfo.InvariantCulture, DateTimeStyles.None, out var targetYm)) sample.TargetYM = targetYm;
+                if (DateOnly.TryParseExact(fields.ElementAtOrDefault(7), "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var paymentDate)) sample.PaymentDate = paymentDate;
+                sample.IsActive = ParseIsActive(fields.ElementAtOrDefault(8));
+                sample.Text1 = fields.ElementAtOrDefault(9);
+                sample.Text2 = fields.ElementAtOrDefault(10);
+                sample.Text3 = fields.ElementAtOrDefault(11);
+                sample.Text4 = fields.ElementAtOrDefault(12);
+                sample.Text5 = fields.ElementAtOrDefault(13);
+                sample.UpdatedAt = DateTime.Now;
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
         // GET: Samples
         public async Task<IActionResult> Index2(string? searchString, int? pageNumber)
         {
@@ -359,6 +423,18 @@ FROM
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        private static bool? ParseIsActive(string? value)
+        {
+            return value switch
+            {
+                "有効" => true,
+                "無効" => false,
+                "1" => true,
+                "0" => false,
+                _ => bool.TryParse(value, out var b) ? b : null
+            };
         }
 
         private static string EscapeCsv(string? field)
