@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
@@ -522,6 +523,126 @@ FROM
             ViewData["CurrentCreateKeihiRitu"] = condition.CreateKeihiRitu;
             var list = await PaginatedList<HansokuSinsei>.CreateAsync(baseQuery, pageNumber ?? 1, currentPageSize);
             return View(list);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> InputConditionsCsv(HansokuSinseiSearchCondition condition)
+        {
+            if (string.IsNullOrEmpty(condition.SinseiTaishoYm))
+            {
+                condition.SinseiTaishoYm = "2024-08";
+            }
+
+            if (string.IsNullOrEmpty(condition.SiharaiYoteiYmd))
+            {
+                condition.SiharaiYoteiYmd = "2024-09-30";
+            }
+
+            if (string.IsNullOrEmpty(condition.KeihishoCd))
+            {
+                condition.KeihishoCd = "210300";
+            }
+
+            if (string.IsNullOrEmpty(condition.KeihishaCd))
+            {
+                condition.KeihishaCd = "063441";
+            }
+
+            if (string.IsNullOrEmpty(condition.SinseiChoaiCd))
+            {
+                condition.SinseiChoaiCd = "201632";
+            }
+
+            if (string.IsNullOrEmpty(condition.SeikyuKbn))
+            {
+                condition.SeikyuKbn = "0";
+            }
+
+            if (string.IsNullOrEmpty(condition.TorihikiCdA))
+            {
+                condition.TorihikiCdA = "XA0734";
+            }
+
+            if (string.IsNullOrEmpty(condition.ShoriHoho))
+            {
+                condition.ShoriHoho = "20;";
+            }
+
+            if (string.IsNullOrEmpty(condition.KyosanJokenTaniKbn))
+            {
+                condition.KyosanJokenTaniKbn = "0";
+            }
+
+            if (string.IsNullOrEmpty(condition.KakakuHansokuKbn))
+            {
+                condition.KakakuHansokuKbn = "1";
+            }
+
+            if (string.IsNullOrEmpty(condition.CreateKeihiRitu))
+            {
+                condition.CreateKeihiRitu = "0";
+            }
+
+            var baseQuery = _context.HansokuSinsei
+                .FromSqlRaw(sql)
+                .AsNoTracking();
+
+            if (!string.IsNullOrEmpty(condition.SinseiTaishoYm))
+            {
+                var ym = condition.SinseiTaishoYm.Replace("-", "").Replace("年", "").Replace("月", "");
+                baseQuery = baseQuery.Where(s => s.SinseiTaishoYm == ym);
+            }
+
+            if (!string.IsNullOrEmpty(condition.KeihishoCd))
+            {
+                baseQuery = baseQuery.Where(s => s.KeihishoCd == condition.KeihishoCd);
+            }
+
+            if (!string.IsNullOrEmpty(condition.SinseiChoaiCd))
+            {
+                baseQuery = baseQuery.Where(s => s.SinseiChoaiCd == condition.SinseiChoaiCd);
+            }
+
+            if (!string.IsNullOrEmpty(condition.SeikyuKbn))
+            {
+                baseQuery = baseQuery.Where(s => s.SeikyuKbn == condition.SeikyuKbn);
+            }
+
+            baseQuery = baseQuery
+                .OrderByDescending(s => s.SinseiNo);
+
+            var list = await baseQuery.ToListAsync();
+
+            var sb = new StringBuilder();
+            sb.AppendLine("申請番号,対象年月,処理方法,請求区分,帳合CD,帳合店,得意先CD,得意先名,協賛額,費用計上,数量単位区分,経費所CD,経費所名,申請計上年月,訂正申請番号,未確定件数,価格販促区分,経費配分条件");
+
+            foreach (var item in list)
+            {
+                string[] fields = new string[]
+                {
+                    item.SinseiNo,
+                    item.SinseiTaishoYm ?? string.Empty,
+                    item.ShoriHoho ?? string.Empty,
+                    item.SeikyuKbnNm,
+                    item.SinseiChoaiCd ?? string.Empty,
+                    item.SinseiChoaiNm ?? string.Empty,
+                    item.TorihikiCdA ?? string.Empty,
+                    item.TorihikiNmA ?? string.Empty,
+                    item.KyosanGaku?.ToString() ?? string.Empty,
+                    item.HiyoKeijo ?? string.Empty,
+                    item.SuryoTaniKbnNm ?? string.Empty,
+                    item.KeihishoCd ?? string.Empty,
+                    item.KeihishoNm ?? string.Empty,
+                    item.SinseiKeijoYm ?? string.Empty,
+                    item.TeiseiSinseiNo ?? string.Empty,
+                    item.MikakuteiCnt.ToString(),
+                    item.KakakuHansokuKbnNm ?? string.Empty,
+                    item.KeihiHaibunJokenNm ?? string.Empty
+                };
+                sb.AppendLine(string.Join(',', fields.Select(f => $"\"{f.Replace("\"", "\"\"")}\"")));
+            }
+
+            return File(Encoding.UTF8.GetBytes(sb.ToString()), "text/csv", "inputconditions.csv");
         }
 
         public IActionResult CRV0020Sample()
