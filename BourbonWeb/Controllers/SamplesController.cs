@@ -276,6 +276,44 @@ FROM
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ImportExcel(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            using var workbook = new XLWorkbook(file.OpenReadStream());
+            var worksheet = workbook.Worksheets.First();
+            foreach (var row in worksheet.RowsUsed().Skip(1))
+            {
+                var sample = new Sample
+                {
+                    Name = row.Cell(1).GetString(),
+                    Price = decimal.TryParse(row.Cell(2).GetString(), out var price) ? price : 0,
+                    Description = row.Cell(3).GetString(),
+                    Quantity = int.TryParse(row.Cell(4).GetString(), out var quantity) ? quantity : null,
+                    Weight = double.TryParse(row.Cell(5).GetString(), out var weight) ? weight : null,
+                    TargetYM = DateOnly.TryParseExact(row.Cell(6).GetString(), "yyyyMM", CultureInfo.InvariantCulture, DateTimeStyles.None, out var targetYm) ? targetYm : null,
+                    PaymentDate = DateOnly.TryParseExact(row.Cell(7).GetString(), "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var paymentDate) ? paymentDate : null,
+                    UpdatedAt = DateTime.TryParse(row.Cell(8).GetString(), out var updatedAt) ? updatedAt : null,
+                    IsActive = row.Cell(9).GetString() switch { "有効" => true, "無効" => false, _ => (bool?)null },
+                    Text1 = row.Cell(10).GetString(),
+                    Text2 = row.Cell(11).GetString(),
+                    Text3 = row.Cell(12).GetString(),
+                    Text4 = row.Cell(13).GetString(),
+                    Text5 = row.Cell(14).GetString()
+                };
+
+                _context.Sample.Add(sample);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
         // GET: Samples
         public async Task<IActionResult> Index2(string? searchString, int? pageNumber)
         {

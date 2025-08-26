@@ -13,6 +13,12 @@
             <button type="submit" class="btn btn-secondary"><i class="bi bi-upload"></i> CSV取込</button>
         </div>
     </form>
+    <form asp-action="ImportExcel" method="post" enctype="multipart/form-data" class="ms-2">
+        <div class="input-group input-group-sm">
+            <input type="file" name="file" class="form-control" />
+            <button type="submit" class="btn btn-secondary"><i class="bi bi-upload"></i> EXCEL取込</button>
+        </div>
+    </form>
 </div>
 <div class="card">
     <div class="card-header">
