@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Text;
+using System.IO;
+using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 using BourbonWeb.Data;
 using BourbonWeb.Models;
 
@@ -221,6 +224,55 @@ FROM
             return File(Encoding.UTF8.GetBytes(sb.ToString()), "text/csv", "Sample.csv");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ImportCsv(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                TempData["Error"] = "CSVファイルが選択されていません。";
+                return RedirectToAction(nameof(Index));
+            }
+
+            using var reader = new StreamReader(file.OpenReadStream(), Encoding.UTF8);
+            string? line;
+            bool isFirst = true;
+            while ((line = await reader.ReadLineAsync()) != null)
+            {
+                if (isFirst)
+                {
+                    isFirst = false;
+                    if (line.StartsWith("Id", StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+                }
+
+                var fields = line.Split(',');
+                if (fields.Length < 15)
+                {
+                    continue;
+                }
+
+                if (int.TryParse(fields[0], out var id))
+                {
+                    var existing = await _context.Sample.FindAsync(id);
+                    if (existing != null)
+                    {
+                        SetSampleProperties(existing, fields);
+                        continue;
+                    }
+                }
+
+                var sample = new Sample();
+                SetSampleProperties(sample, fields);
+                _context.Sample.Add(sample);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
         // GET: Samples
         public async Task<IActionResult> Index2(string? searchString, int? pageNumber)
         {
@@ -374,6 +426,30 @@ FROM
             }
 
             return field;
+        }
+
+        private static void SetSampleProperties(Sample sample, string[] fields)
+        {
+            sample.Name = fields[1];
+            sample.Price = decimal.TryParse(fields[2], out var price) ? price : 0m;
+            sample.Description = string.IsNullOrWhiteSpace(fields[3]) ? null : fields[3];
+            sample.Quantity = int.TryParse(fields[4], out var quantity) ? quantity : null;
+            sample.Weight = double.TryParse(fields[5], out var weight) ? weight : null;
+            sample.TargetYM = DateOnly.TryParseExact(fields[6], "yyyyMM", CultureInfo.InvariantCulture, DateTimeStyles.None, out var ym) ? ym : null;
+            sample.PaymentDate = DateOnly.TryParseExact(fields[7], "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var pd) ? pd : null;
+            sample.UpdatedAt = DateTime.TryParse(fields[8], out var updatedAt) ? updatedAt : null;
+            sample.IsActive = fields[9] switch
+            {
+                "有効" => true,
+                "無効" => false,
+                _ when bool.TryParse(fields[9], out var b) => b,
+                _ => null
+            };
+            sample.Text1 = string.IsNullOrWhiteSpace(fields[10]) ? null : fields[10];
+            sample.Text2 = string.IsNullOrWhiteSpace(fields[11]) ? null : fields[11];
+            sample.Text3 = string.IsNullOrWhiteSpace(fields[12]) ? null : fields[12];
+            sample.Text4 = string.IsNullOrWhiteSpace(fields[13]) ? null : fields[13];
+            sample.Text5 = string.IsNullOrWhiteSpace(fields[14]) ? null : fields[14];
         }
 
         private bool SampleExists(int id)
