@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -178,6 +179,48 @@ FROM
             query = query.OrderBy(s => s.Id);
             ViewData["CurrentFilter"] = searchString;
             return View(await PaginatedList<Sample>.CreateAsync(query, pageNumber ?? 1, currentPageSize));
+        }
+
+        // GET: Samples/ExportCsv
+        public async Task<IActionResult> ExportCsv()
+        {
+            var samples = await _context.Sample
+                .AsNoTracking()
+                .OrderBy(s => s.Id)
+                .ToListAsync();
+
+            var sb = new StringBuilder();
+            sb.AppendLine("Id,Name,Price,Description,Quantity,Weight,TargetYM,PaymentDate,UpdatedAt,IsActive,Text1,Text2,Text3,Text4,Text5");
+
+            foreach (var s in samples)
+            {
+                var fields = new[]
+                {
+                    Quote(s.Id),
+                    Quote(s.Name),
+                    Quote(s.Price),
+                    Quote(s.Description),
+                    Quote(s.Quantity),
+                    Quote(s.Weight),
+                    Quote(s.TargetYM?.ToString("yyyyMM")),
+                    Quote(s.PaymentDate?.ToString("yyyyMMdd")),
+                    Quote(s.UpdatedAt?.ToString("yyyy-MM-dd HH:mm:ss")),
+                    Quote(s.IsActive),
+                    Quote(s.Text1),
+                    Quote(s.Text2),
+                    Quote(s.Text3),
+                    Quote(s.Text4),
+                    Quote(s.Text5)
+                };
+                sb.AppendLine(string.Join(",", fields));
+            }
+
+            return File(Encoding.UTF8.GetBytes(sb.ToString()), "text/csv", "samples.csv");
+        }
+
+        private static string Quote(object? value)
+        {
+            return $"\"{value?.ToString()?.Replace("\"", "\"\"")}\"";
         }
 
         // GET: Samples
