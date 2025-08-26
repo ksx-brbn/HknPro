@@ -1,12 +1,12 @@
 ﻿@{
-    ViewData["Title"] = "PPV0020_出張所別経費率検索（旧AEKB0010）";
+    ViewData["Title"] = "PPV0013_SAP連携データ作成（旧AESD0020）";
 }
 <p>このページは現在準備中です。</p>
 
 <hr />
 <p>現行画面イメージ</p>
 <div class="text-center">
-    <img src="~/img/current/PPV0020_AEKB0010_出張所別経費率検索.png" alt="Current System Image" class="img-fluid" />
+    <img src="~/img/current/PPV0013_AESD0020_SAP連携データ作成.png" alt="Current System Image" class="img-fluid" />
 </div>
 
 <hr />
@@ -14,7 +14,13 @@
     <div class="card-header">要件一覧</div>
     <div class="card-body">
         <ul class="mb-0">
-            <li>処理方法：振込細分化（特約店、小売業、業者・一般店・グループ企業、登録二次店） … ①No.10</li>
+            <li>画面名を変更。 預金台帳印刷 → SAP連携データ作成 … ①No.41A</li>
+            <li>SAPの項目に合わせてレイアウト変更。振込先情報項目を追加 … ①No.42</li>
+            <li>SAP連携ファイルのレイアウトをSAPに合わせて変更 … ①No.43</li>
+            <li>SAPの監視フォルダに出力 … ①No.43</li>
+            <li>「未払伝票」「支払伝票」の2つを出力しているが、今後は1本化 … ①No.43</li>
+            <li>振込(登録二次店)の場合、SAPでの支払とはしないため対象外 … ①No.43</li>
+            <li>仮登録ボタン、科目変更ボタン廃止 … ①No.44</li>
         </ul>
     </div>
     <div class="card-footer">
