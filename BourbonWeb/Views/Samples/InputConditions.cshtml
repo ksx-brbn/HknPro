@@ -5,7 +5,7 @@
     var layout = ViewData["Layout"] as string ?? "pattern2";
 }
 
-<form method="get" class="mb-3 text-nowrap">
+<form id="searchForm" method="get" class="mb-3 text-nowrap">
     @await Html.PartialAsync("_InputConditionsSection", Model, new ViewDataDictionary(ViewData) { ["Layout"] = layout })
     <div class="me-1 text-end">
         <button type="submit" id="searchButton" class="btn btn-sm btn-secondary btn-fixed">検索 (F10)</button>
@@ -15,9 +15,24 @@
 </form>
 
 <hr />
+<div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3" style="z-index:1200">
+    <div id="excelToast"
+         class="toast align-items-center bg-primary text-white border-0 rounded-3 shadow-lg"
+         style="width: 800px; max-width: 90%;"
+         role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body fs-5">
+                Excelの出力が完了しました。
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
 <div class="d-flex align-items-center justify-content-between mb-1 me-1">
     <div class="d-flex align-items-center">
         <a asp-action="CRV0020Sample" id="createButton" class="btn btn-sm btn-secondary btn-fixed">新規登録 (F12)</a>
+        <button type="submit" form="searchForm" formaction="@Url.Action("InputConditionsCsv")" class="btn btn-sm btn-secondary btn-fixed ms-2">CSV出力</button>
+        <button type="button" id="excelExport" class="btn btn-sm btn-secondary btn-fixed ms-2" data-url="@Url.Action("InputConditionsExcel")">Excel出力</button>
     </div>
     <div>
         @Model.TotalCount.ToString("N0") 件
@@ -25,13 +40,13 @@
 </div>
 @await Html.PartialAsync("_SinseiJokenTable", Model)
 
-<nav aria-label="page navigation" class="mt-3">
-    <ul class="pagination justify-content-center">
+<nav aria-label="page navigation" class="mt-3 position-relative">
+    <ul class="pagination mb-0 justify-content-center">
         <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
-            <a class="page-link" asp-action="InputConditions" asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-sinseiTaishoYm="@(ViewData["CurrentSinseiTaishoYm"])" asp-route-siharaiYoteiYmd="@(ViewData["CurrentSiharaiYoteiYmd"])" asp-route-keihishoCd="@(ViewData["CurrentKeihishoCd"])" asp-route-keihishaCd="@(ViewData["CurrentKeihishaCd"])" asp-route-sinseiChoaiCd="@(ViewData["CurrentSinseiChoaiCd"])" asp-route-torihikiCdA="@(ViewData["CurrentTorihikiCdA"])">前へ</a>
+            <a class="page-link" asp-action="InputConditions" asp-route-pageNumber="@(Model.PageIndex - 1)" asp-route-sinseiTaishoYm="@(ViewData["CurrentSinseiTaishoYm"])" asp-route-siharaiYoteiYmd="@(ViewData["CurrentSiharaiYoteiYmd"])" asp-route-keihishoCd="@(ViewData["CurrentKeihishoCd"])" asp-route-keihishaCd="@(ViewData["CurrentKeihishaCd"])" asp-route-sinseiChoaiCd="@(ViewData["CurrentSinseiChoaiCd"])" asp-route-torihikiCdA="@(ViewData["CurrentTorihikiCdA"])" asp-route-pageSize="@Model.PageSize">前へ</a>
         </li>
         <li class="page-item @(Model.PageIndex == 1 ? "active" : "")">
-            <a class="page-link" asp-action="InputConditions" asp-route-pageNumber="1" asp-route-sinseiTaishoYm="@(ViewData["CurrentSinseiTaishoYm"])" asp-route-siharaiYoteiYmd="@(ViewData["CurrentSiharaiYoteiYmd"])" asp-route-keihishoCd="@(ViewData["CurrentKeihishoCd"])" asp-route-keihishaCd="@(ViewData["CurrentKeihishaCd"])" asp-route-sinseiChoaiCd="@(ViewData["CurrentSinseiChoaiCd"])" asp-route-torihikiCdA="@(ViewData["CurrentTorihikiCdA"])">1</a>
+            <a class="page-link" asp-action="InputConditions" asp-route-pageNumber="1" asp-route-sinseiTaishoYm="@(ViewData["CurrentSinseiTaishoYm"])" asp-route-siharaiYoteiYmd="@(ViewData["CurrentSiharaiYoteiYmd"])" asp-route-keihishoCd="@(ViewData["CurrentKeihishoCd"])" asp-route-keihishaCd="@(ViewData["CurrentKeihishaCd"])" asp-route-sinseiChoaiCd="@(ViewData["CurrentSinseiChoaiCd"])" asp-route-torihikiCdA="@(ViewData["CurrentTorihikiCdA"])" asp-route-pageSize="@Model.PageSize">1</a>
         </li>
         @if (Model.PageIndex > 3)
         {
@@ -40,7 +55,7 @@
         @for (var i = Math.Max(2, Model.PageIndex - 1); i <= Math.Min(Model.TotalPages - 1, Model.PageIndex + 1); i++)
         {
             <li class="page-item @(i == Model.PageIndex ? "active" : "")">
-                <a class="page-link" asp-action="InputConditions" asp-route-pageNumber="@i" asp-route-sinseiTaishoYm="@(ViewData["CurrentSinseiTaishoYm"])" asp-route-siharaiYoteiYmd="@(ViewData["CurrentSiharaiYoteiYmd"])" asp-route-keihishoCd="@(ViewData["CurrentKeihishoCd"])" asp-route-keihishaCd="@(ViewData["CurrentKeihishaCd"])" asp-route-sinseiChoaiCd="@(ViewData["CurrentSinseiChoaiCd"])" asp-route-torihikiCdA="@(ViewData["CurrentTorihikiCdA"])">@i</a>
+                <a class="page-link" asp-action="InputConditions" asp-route-pageNumber="@i" asp-route-sinseiTaishoYm="@(ViewData["CurrentSinseiTaishoYm"])" asp-route-siharaiYoteiYmd="@(ViewData["CurrentSiharaiYoteiYmd"])" asp-route-keihishoCd="@(ViewData["CurrentKeihishoCd"])" asp-route-keihishaCd="@(ViewData["CurrentKeihishaCd"])" asp-route-sinseiChoaiCd="@(ViewData["CurrentSinseiChoaiCd"])" asp-route-torihikiCdA="@(ViewData["CurrentTorihikiCdA"])" asp-route-pageSize="@Model.PageSize">@i</a>
             </li>
         }
         @if (Model.PageIndex < Model.TotalPages - 2)
@@ -50,13 +65,21 @@
         @if (Model.TotalPages > 1)
         {
             <li class="page-item @(Model.PageIndex == Model.TotalPages ? "active" : "")">
-                <a class="page-link" asp-action="InputConditions" asp-route-pageNumber="@Model.TotalPages" asp-route-sinseiTaishoYm="@(ViewData["CurrentSinseiTaishoYm"])" asp-route-siharaiYoteiYmd="@(ViewData["CurrentSiharaiYoteiYmd"])" asp-route-keihishoCd="@(ViewData["CurrentKeihishoCd"])" asp-route-keihishaCd="@(ViewData["CurrentKeihishaCd"])" asp-route-sinseiChoaiCd="@(ViewData["CurrentSinseiChoaiCd"])" asp-route-torihikiCdA="@(ViewData["CurrentTorihikiCdA"])">@Model.TotalPages</a>
+                <a class="page-link" asp-action="InputConditions" asp-route-pageNumber="@Model.TotalPages" asp-route-sinseiTaishoYm="@(ViewData["CurrentSinseiTaishoYm"])" asp-route-siharaiYoteiYmd="@(ViewData["CurrentSiharaiYoteiYmd"])" asp-route-keihishoCd="@(ViewData["CurrentKeihishoCd"])" asp-route-keihishaCd="@(ViewData["CurrentKeihishaCd"])" asp-route-sinseiChoaiCd="@(ViewData["CurrentSinseiChoaiCd"])" asp-route-torihikiCdA="@(ViewData["CurrentTorihikiCdA"])" asp-route-pageSize="@Model.PageSize">@Model.TotalPages</a>
             </li>
         }
         <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
-            <a class="page-link" asp-action="InputConditions" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-sinseiTaishoYm="@(ViewData["CurrentSinseiTaishoYm"])" asp-route-siharaiYoteiYmd="@(ViewData["CurrentSiharaiYoteiYmd"])" asp-route-keihishoCd="@(ViewData["CurrentKeihishoCd"])" asp-route-keihishaCd="@(ViewData["CurrentKeihishaCd"])" asp-route-sinseiChoaiCd="@(ViewData["CurrentSinseiChoaiCd"])" asp-route-torihikiCdA="@(ViewData["CurrentTorihikiCdA"])">次へ</a>
+            <a class="page-link" asp-action="InputConditions" asp-route-pageNumber="@(Model.PageIndex + 1)" asp-route-sinseiTaishoYm="@(ViewData["CurrentSinseiTaishoYm"])" asp-route-siharaiYoteiYmd="@(ViewData["CurrentSiharaiYoteiYmd"])" asp-route-keihishoCd="@(ViewData["CurrentKeihishoCd"])" asp-route-keihishaCd="@(ViewData["CurrentKeihishaCd"])" asp-route-sinseiChoaiCd="@(ViewData["CurrentSinseiChoaiCd"])" asp-route-torihikiCdA="@(ViewData["CurrentTorihikiCdA"])" asp-route-pageSize="@Model.PageSize">次へ</a>
         </li>
     </ul>
+    <div class="position-absolute top-50 end-0 translate-middle-y">
+        <select form="searchForm" name="pageSize" class="form-select form-select-sm" onchange="this.form.submit()">
+            <option value="5" selected="@(Model.PageSize == 5)">5件</option>
+            <option value="10" selected="@(Model.PageSize == 10)">10件</option>
+            <option value="25" selected="@(Model.PageSize == 25)">25件</option>
+            <option value="50" selected="@(Model.PageSize == 50)">50件</option>
+        </select>
+    </div>
 </nav>
 
 <hr />
@@ -72,11 +95,14 @@
     <div class="card-header">要件一覧</div>
     <div class="card-body">
         <ul class="mb-0">
-            <li>半角ｶﾅ表示廃止 … 資料①No.9、資料②131行目</li>
-            <li>処理方法：請求書控除廃止</li>
-            <li>処理方法：振込細分化（特約店、小売業、業者・一般店・グループ企業、登録二次店）</li>
-            <li>業者CD入力追加</li>
-            <li>値引種別廃止</li>
+            <li>半角ｶﾅ表示廃止 … ①No.9</li>
+            <li>処理方法：請求書控除廃止 … ①No.8</li>
+            <li>処理方法：振込細分化（特約店、小売業、業者・一般店・グループ企業、登録二次店） … ①No.10</li>
+            <li>表示業者CD入力追加 … ①No.10</li>
+            <li>処理方法の業者振込を選択することで、業者コードが表示業者CD入力追加 … ①No.11B</li>
+            <li>項目をマウスオーバーで説明表示 … ①No11A.</li>
+            <li>経費所、経費者コードの存在チェックは売上データを参照 … ①No.11C、②134行目</li>
+            <li>値引種別廃止 … ③24行目</li>
         </ul>
     </div>
     <div class="card-footer">
@@ -84,7 +110,7 @@
         <ol class="mb-0">
             <li>要件定義書_未払費用管理システム.xlsx「3.2 業務課題と要望」</li>
             <li>ブルボン様_未払費用管理システム_3.1 業務フロー 新業務フロー(To-Be).xlsx</li>
-            <li>確定登録画面不要＆コード表改修.xlsx</li>
+            <li>確定登録画面不要＆コード表改修.xlsx「入力画面不要項目」</li>
         </ol>
     </div>
 </div>
@@ -128,7 +154,6 @@
             <li>表示件数切替対応</li>
             <li>編集ボタン遷移</li>
             <li>削除ボタン確認ダイアログ</li>
-            <li>エクセル出力追加</li>
         </ul>
     </div>
 </div>
@@ -143,6 +168,7 @@
         const searchButton = document.getElementById('searchButton');
         const closeButton = document.getElementById('closeButton');
         const createButton = document.getElementById('createButton');
+        const excelButton = document.getElementById('excelExport');
 
         document.addEventListener('keydown', (event) => {
             if (event.key === 'F4' || event.keyCode === 115) {
@@ -230,5 +256,49 @@
             ymInput.value = toInputYm(ymInput.value);
             siharaiInput.value = toInputYmd(siharaiInput.value);
         });
+
+        if (excelButton) {
+            excelButton.addEventListener('click', async () => {
+                const ymValue = ymInput.value;
+                const siharaiValue = siharaiInput.value;
+                ymInput.value = toInputYm(ymValue);
+                siharaiInput.value = toInputYmd(siharaiValue);
+                const params = new URLSearchParams(new FormData(form));
+                ymInput.value = ymValue;
+                siharaiInput.value = siharaiValue;
+                try {
+                    const url = `${excelButton.dataset.url}?${params.toString()}`;
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    const blob = await response.blob();
+                    let fileName = 'inputconditions.xlsx';
+                    const disposition = response.headers.get('Content-Disposition');
+                    if (disposition) {
+                        const match = disposition.match(/filename="?([^";]+)"?/);
+                        if (match && match[1]) {
+                            fileName = decodeURIComponent(match[1]);
+                        }
+                    }
+                    const downloadUrl = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = downloadUrl;
+                    a.download = fileName;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    window.URL.revokeObjectURL(downloadUrl);
+
+                    const toastEl = document.getElementById('excelToast');
+                    if (toastEl) {
+                        const toast = new bootstrap.Toast(toastEl);
+                        toast.show();
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            });
+        }
     });
 </script>
