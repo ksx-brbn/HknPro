@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -180,6 +181,46 @@ FROM
             return View(await PaginatedList<Sample>.CreateAsync(query, pageNumber ?? 1, currentPageSize));
         }
 
+        public async Task<IActionResult> ExportCsv(string? searchString)
+        {
+            var query = _context.Sample
+                .AsNoTracking();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                query = query.Where(s => s.Name.Contains(searchString));
+            }
+
+            var list = await query
+                .OrderBy(s => s.Id)
+                .ToListAsync();
+
+            var sb = new StringBuilder();
+            sb.AppendLine("名称,価格,説明,数量,重量,対象年月,支払日,更新日時,状態,文字1,文字2,文字3,文字4,文字5");
+
+            foreach (var s in list)
+            {
+                sb.AppendLine(string.Join(",",
+                    EscapeCsv(s.Name),
+                    s.Price.ToString(),
+                    EscapeCsv(s.Description),
+                    s.Quantity?.ToString(),
+                    s.Weight?.ToString(),
+                    s.TargetYM?.ToString("yyyyMM"),
+                    s.PaymentDate?.ToString("yyyyMMdd"),
+                    s.UpdatedAt?.ToString("yyyy-MM-dd HH:mm:ss"),
+                    EscapeCsv(s.IsActiveDisplay),
+                    EscapeCsv(s.Text1),
+                    EscapeCsv(s.Text2),
+                    EscapeCsv(s.Text3),
+                    EscapeCsv(s.Text4),
+                    EscapeCsv(s.Text5)
+                ));
+            }
+
+            return File(Encoding.UTF8.GetBytes(sb.ToString()), "text/csv", "Sample.csv");
+        }
+
         // GET: Samples
         public async Task<IActionResult> Index2(string? searchString, int? pageNumber)
         {
@@ -318,6 +359,21 @@ FROM
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        private static string EscapeCsv(string? field)
+        {
+            if (string.IsNullOrEmpty(field))
+            {
+                return string.Empty;
+            }
+
+            if (field.Contains('"') || field.Contains(',') || field.Contains('\n') || field.Contains('\r'))
+            {
+                return $"\"{field.Replace("\"", "\"\"")}\"";
+            }
+
+            return field;
         }
 
         private bool SampleExists(int id)
