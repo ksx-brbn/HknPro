@@ -15,9 +15,24 @@
 </form>
 
 <hr />
+<div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3" style="z-index:1200">
+    <div id="excelToast"
+         class="toast align-items-center bg-primary text-white border-0 rounded-3 shadow-lg"
+         style="width: 800px; max-width: 90%;"
+         role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body fs-5">
+                Excelの出力が完了しました。
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
 <div class="d-flex align-items-center justify-content-between mb-1 me-1">
     <div class="d-flex align-items-center">
         <a asp-action="CRV0020Sample" id="createButton" class="btn btn-sm btn-secondary btn-fixed">新規登録 (F12)</a>
+        <button type="submit" form="searchForm" formaction="@Url.Action("InputConditionsCsv")" class="btn btn-sm btn-secondary btn-fixed ms-2">CSV出力</button>
+        <button type="button" id="excelExport" class="btn btn-sm btn-secondary btn-fixed ms-2" data-url="@Url.Action("InputConditionsExcel")">Excel出力</button>
     </div>
     <div>
         @Model.TotalCount.ToString("N0") 件
@@ -139,7 +154,6 @@
             <li>表示件数切替対応</li>
             <li>編集ボタン遷移</li>
             <li>削除ボタン確認ダイアログ</li>
-            <li>エクセル出力追加</li>
         </ul>
     </div>
 </div>
@@ -154,6 +168,7 @@
         const searchButton = document.getElementById('searchButton');
         const closeButton = document.getElementById('closeButton');
         const createButton = document.getElementById('createButton');
+        const excelButton = document.getElementById('excelExport');
 
         document.addEventListener('keydown', (event) => {
             if (event.key === 'F4' || event.keyCode === 115) {
@@ -241,5 +256,49 @@
             ymInput.value = toInputYm(ymInput.value);
             siharaiInput.value = toInputYmd(siharaiInput.value);
         });
+
+        if (excelButton) {
+            excelButton.addEventListener('click', async () => {
+                const ymValue = ymInput.value;
+                const siharaiValue = siharaiInput.value;
+                ymInput.value = toInputYm(ymValue);
+                siharaiInput.value = toInputYmd(siharaiValue);
+                const params = new URLSearchParams(new FormData(form));
+                ymInput.value = ymValue;
+                siharaiInput.value = siharaiValue;
+                try {
+                    const url = `${excelButton.dataset.url}?${params.toString()}`;
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    const blob = await response.blob();
+                    let fileName = 'inputconditions.xlsx';
+                    const disposition = response.headers.get('Content-Disposition');
+                    if (disposition) {
+                        const match = disposition.match(/filename="?([^";]+)"?/);
+                        if (match && match[1]) {
+                            fileName = decodeURIComponent(match[1]);
+                        }
+                    }
+                    const downloadUrl = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = downloadUrl;
+                    a.download = fileName;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    window.URL.revokeObjectURL(downloadUrl);
+
+                    const toastEl = document.getElementById('excelToast');
+                    if (toastEl) {
+                        const toast = new bootstrap.Toast(toastEl);
+                        toast.show();
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            });
+        }
     });
 </script>

@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using System.Globalization;
+using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using BourbonWeb.Data;
 using BourbonWeb.Models;
@@ -180,6 +185,135 @@ FROM
             return View(await PaginatedList<Sample>.CreateAsync(query, pageNumber ?? 1, currentPageSize));
         }
 
+        public async Task<IActionResult> ExportCsv(string? searchString)
+        {
+            var query = _context.Sample
+                .AsNoTracking();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                query = query.Where(s => s.Name.Contains(searchString));
+            }
+
+            var list = await query
+                .OrderBy(s => s.Id)
+                .ToListAsync();
+
+            var sb = new StringBuilder();
+            sb.AppendLine("名称,価格,説明,数量,重量,対象年月,支払日,更新日時,状態,文字1,文字2,文字3,文字4,文字5");
+
+            foreach (var s in list)
+            {
+                sb.AppendLine(string.Join(",",
+                    EscapeCsv(s.Name),
+                    s.Price.ToString(),
+                    EscapeCsv(s.Description),
+                    s.Quantity?.ToString(),
+                    s.Weight?.ToString(),
+                    s.TargetYM?.ToString("yyyyMM"),
+                    s.PaymentDate?.ToString("yyyyMMdd"),
+                    s.UpdatedAt?.ToString("yyyy-MM-dd HH:mm:ss"),
+                    EscapeCsv(s.IsActiveDisplay),
+                    EscapeCsv(s.Text1),
+                    EscapeCsv(s.Text2),
+                    EscapeCsv(s.Text3),
+                    EscapeCsv(s.Text4),
+                    EscapeCsv(s.Text5)
+                ));
+            }
+
+            return File(Encoding.UTF8.GetBytes(sb.ToString()), "text/csv", "Sample.csv");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ImportCsv(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            using var reader = new StreamReader(file.OpenReadStream(), Encoding.UTF8);
+            string? line;
+            bool isFirst = true;
+            while ((line = await reader.ReadLineAsync()) != null)
+            {
+                if (isFirst)
+                {
+                    isFirst = false;
+                    continue;
+                }
+
+                var fields = ParseCsvLine(line);
+                if (fields.Count < 14)
+                {
+                    continue;
+                }
+
+                var sample = new Sample
+                {
+                    Name = fields[0],
+                    Price = decimal.TryParse(fields[1], out var price) ? price : 0,
+                    Description = fields[2],
+                    Quantity = int.TryParse(fields[3], out var quantity) ? quantity : null,
+                    Weight = double.TryParse(fields[4], out var weight) ? weight : null,
+                    TargetYM = DateOnly.TryParseExact(fields[5], "yyyyMM", CultureInfo.InvariantCulture, DateTimeStyles.None, out var targetYm) ? targetYm : null,
+                    PaymentDate = DateOnly.TryParseExact(fields[6], "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var paymentDate) ? paymentDate : null,
+                    UpdatedAt = DateTime.TryParse(fields[7], out var updatedAt) ? updatedAt : null,
+                    IsActive = fields[8] switch { "有効" => true, "無効" => false, _ => null },
+                    Text1 = fields.ElementAtOrDefault(9),
+                    Text2 = fields.ElementAtOrDefault(10),
+                    Text3 = fields.ElementAtOrDefault(11),
+                    Text4 = fields.ElementAtOrDefault(12),
+                    Text5 = fields.ElementAtOrDefault(13)
+                };
+
+                _context.Sample.Add(sample);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ImportExcel(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            using var workbook = new XLWorkbook(file.OpenReadStream());
+            var worksheet = workbook.Worksheets.First();
+            foreach (var row in worksheet.RowsUsed().Skip(1))
+            {
+                var sample = new Sample
+                {
+                    Name = row.Cell(1).GetString(),
+                    Price = decimal.TryParse(row.Cell(2).GetString(), out var price) ? price : 0,
+                    Description = row.Cell(3).GetString(),
+                    Quantity = int.TryParse(row.Cell(4).GetString(), out var quantity) ? quantity : null,
+                    Weight = double.TryParse(row.Cell(5).GetString(), out var weight) ? weight : null,
+                    TargetYM = DateOnly.TryParseExact(row.Cell(6).GetString(), "yyyyMM", CultureInfo.InvariantCulture, DateTimeStyles.None, out var targetYm) ? targetYm : null,
+                    PaymentDate = DateOnly.TryParseExact(row.Cell(7).GetString(), "yyyyMMdd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var paymentDate) ? paymentDate : null,
+                    UpdatedAt = DateTime.TryParse(row.Cell(8).GetString(), out var updatedAt) ? updatedAt : null,
+                    IsActive = row.Cell(9).GetString() switch { "有効" => true, "無効" => false, _ => (bool?)null },
+                    Text1 = row.Cell(10).GetString(),
+                    Text2 = row.Cell(11).GetString(),
+                    Text3 = row.Cell(12).GetString(),
+                    Text4 = row.Cell(13).GetString(),
+                    Text5 = row.Cell(14).GetString()
+                };
+
+                _context.Sample.Add(sample);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
         // GET: Samples
         public async Task<IActionResult> Index2(string? searchString, int? pageNumber)
         {
@@ -318,6 +452,75 @@ FROM
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        private static string EscapeCsv(string? field)
+        {
+            if (string.IsNullOrEmpty(field))
+            {
+                return string.Empty;
+            }
+
+            if (field.Contains('"') || field.Contains(',') || field.Contains('\n') || field.Contains('\r'))
+            {
+                return $"\"{field.Replace("\"", "\"\"")}\"";
+            }
+
+            return field;
+        }
+
+        private static List<string> ParseCsvLine(string line)
+        {
+            var result = new List<string>();
+            if (line == null)
+            {
+                return result;
+            }
+
+            var sb = new StringBuilder();
+            bool inQuotes = false;
+            for (int i = 0; i < line.Length; i++)
+            {
+                char c = line[i];
+                if (inQuotes)
+                {
+                    if (c == '"')
+                    {
+                        if (i + 1 < line.Length && line[i + 1] == '"')
+                        {
+                            sb.Append('"');
+                            i++;
+                        }
+                        else
+                        {
+                            inQuotes = false;
+                        }
+                    }
+                    else
+                    {
+                        sb.Append(c);
+                    }
+                }
+                else
+                {
+                    if (c == '"')
+                    {
+                        inQuotes = true;
+                    }
+                    else if (c == ',')
+                    {
+                        result.Add(sb.ToString());
+                        sb.Clear();
+                    }
+                    else
+                    {
+                        sb.Append(c);
+                    }
+                }
+            }
+
+            result.Add(sb.ToString());
+            return result;
         }
 
         private bool SampleExists(int id)
@@ -466,6 +669,265 @@ FROM
             ViewData["CurrentCreateKeihiRitu"] = condition.CreateKeihiRitu;
             var list = await PaginatedList<HansokuSinsei>.CreateAsync(baseQuery, pageNumber ?? 1, currentPageSize);
             return View(list);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> InputConditionsCsv(HansokuSinseiSearchCondition condition)
+        {
+            if (string.IsNullOrEmpty(condition.SinseiTaishoYm))
+            {
+                condition.SinseiTaishoYm = "2024-08";
+            }
+
+            if (string.IsNullOrEmpty(condition.SiharaiYoteiYmd))
+            {
+                condition.SiharaiYoteiYmd = "2024-09-30";
+            }
+
+            if (string.IsNullOrEmpty(condition.KeihishoCd))
+            {
+                condition.KeihishoCd = "210300";
+            }
+
+            if (string.IsNullOrEmpty(condition.KeihishaCd))
+            {
+                condition.KeihishaCd = "063441";
+            }
+
+            if (string.IsNullOrEmpty(condition.SinseiChoaiCd))
+            {
+                condition.SinseiChoaiCd = "201632";
+            }
+
+            if (string.IsNullOrEmpty(condition.SeikyuKbn))
+            {
+                condition.SeikyuKbn = "0";
+            }
+
+            if (string.IsNullOrEmpty(condition.TorihikiCdA))
+            {
+                condition.TorihikiCdA = "XA0734";
+            }
+
+            if (string.IsNullOrEmpty(condition.ShoriHoho))
+            {
+                condition.ShoriHoho = "20;";
+            }
+
+            if (string.IsNullOrEmpty(condition.KyosanJokenTaniKbn))
+            {
+                condition.KyosanJokenTaniKbn = "0";
+            }
+
+            if (string.IsNullOrEmpty(condition.KakakuHansokuKbn))
+            {
+                condition.KakakuHansokuKbn = "1";
+            }
+
+            if (string.IsNullOrEmpty(condition.CreateKeihiRitu))
+            {
+                condition.CreateKeihiRitu = "0";
+            }
+
+            var baseQuery = _context.HansokuSinsei
+                .FromSqlRaw(sql)
+                .AsNoTracking();
+
+            if (!string.IsNullOrEmpty(condition.SinseiTaishoYm))
+            {
+                var ym = condition.SinseiTaishoYm.Replace("-", "").Replace("年", "").Replace("月", "");
+                baseQuery = baseQuery.Where(s => s.SinseiTaishoYm == ym);
+            }
+
+            if (!string.IsNullOrEmpty(condition.KeihishoCd))
+            {
+                baseQuery = baseQuery.Where(s => s.KeihishoCd == condition.KeihishoCd);
+            }
+
+            if (!string.IsNullOrEmpty(condition.SinseiChoaiCd))
+            {
+                baseQuery = baseQuery.Where(s => s.SinseiChoaiCd == condition.SinseiChoaiCd);
+            }
+
+            if (!string.IsNullOrEmpty(condition.SeikyuKbn))
+            {
+                baseQuery = baseQuery.Where(s => s.SeikyuKbn == condition.SeikyuKbn);
+            }
+
+            baseQuery = baseQuery
+                .OrderByDescending(s => s.SinseiNo);
+
+            var list = await baseQuery.ToListAsync();
+
+            var sb = new StringBuilder();
+            sb.AppendLine("申請番号,対象年月,処理方法,請求区分,帳合CD,帳合店,得意先CD,得意先名,協賛額,費用計上,数量単位区分,経費所CD,経費所名,申請計上年月,訂正申請番号,未確定件数,価格販促区分,経費配分条件");
+
+            foreach (var item in list)
+            {
+                string[] fields = new string[]
+                {
+                    item.SinseiNo,
+                    item.SinseiTaishoYm ?? string.Empty,
+                    item.ShoriHoho ?? string.Empty,
+                    item.SeikyuKbnNm,
+                    item.SinseiChoaiCd ?? string.Empty,
+                    item.SinseiChoaiNm ?? string.Empty,
+                    item.TorihikiCdA ?? string.Empty,
+                    item.TorihikiNmA ?? string.Empty,
+                    item.KyosanGaku?.ToString() ?? string.Empty,
+                    item.HiyoKeijo ?? string.Empty,
+                    item.SuryoTaniKbnNm ?? string.Empty,
+                    item.KeihishoCd ?? string.Empty,
+                    item.KeihishoNm ?? string.Empty,
+                    item.SinseiKeijoYm ?? string.Empty,
+                    item.TeiseiSinseiNo ?? string.Empty,
+                    item.MikakuteiCnt.ToString(),
+                    item.KakakuHansokuKbnNm ?? string.Empty,
+                    item.KeihiHaibunJokenNm ?? string.Empty
+                };
+                sb.AppendLine(string.Join(',', fields.Select(f => $"\"{f.Replace("\"", "\"\"")}\"")));
+            }
+
+            return File(Encoding.UTF8.GetBytes(sb.ToString()), "text/csv", "inputconditions.csv");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> InputConditionsExcel(HansokuSinseiSearchCondition condition)
+        {
+            if (string.IsNullOrEmpty(condition.SinseiTaishoYm))
+            {
+                condition.SinseiTaishoYm = "2024-08";
+            }
+
+            if (string.IsNullOrEmpty(condition.SiharaiYoteiYmd))
+            {
+                condition.SiharaiYoteiYmd = "2024-09-30";
+            }
+
+            if (string.IsNullOrEmpty(condition.KeihishoCd))
+            {
+                condition.KeihishoCd = "210300";
+            }
+
+            if (string.IsNullOrEmpty(condition.KeihishaCd))
+            {
+                condition.KeihishaCd = "063441";
+            }
+
+            if (string.IsNullOrEmpty(condition.SinseiChoaiCd))
+            {
+                condition.SinseiChoaiCd = "201632";
+            }
+
+            if (string.IsNullOrEmpty(condition.SeikyuKbn))
+            {
+                condition.SeikyuKbn = "0";
+            }
+
+            if (string.IsNullOrEmpty(condition.TorihikiCdA))
+            {
+                condition.TorihikiCdA = "XA0734";
+            }
+
+            if (string.IsNullOrEmpty(condition.ShoriHoho))
+            {
+                condition.ShoriHoho = "20;";
+            }
+
+            if (string.IsNullOrEmpty(condition.KyosanJokenTaniKbn))
+            {
+                condition.KyosanJokenTaniKbn = "0";
+            }
+
+            if (string.IsNullOrEmpty(condition.KakakuHansokuKbn))
+            {
+                condition.KakakuHansokuKbn = "1";
+            }
+
+            if (string.IsNullOrEmpty(condition.CreateKeihiRitu))
+            {
+                condition.CreateKeihiRitu = "0";
+            }
+
+            var baseQuery = _context.HansokuSinsei
+                .FromSqlRaw(sql)
+                .AsNoTracking();
+
+            if (!string.IsNullOrEmpty(condition.SinseiTaishoYm))
+            {
+                var ym = condition.SinseiTaishoYm.Replace("-", "").Replace("年", "").Replace("月", "");
+                baseQuery = baseQuery.Where(s => s.SinseiTaishoYm == ym);
+            }
+
+            if (!string.IsNullOrEmpty(condition.KeihishoCd))
+            {
+                baseQuery = baseQuery.Where(s => s.KeihishoCd == condition.KeihishoCd);
+            }
+
+            if (!string.IsNullOrEmpty(condition.SinseiChoaiCd))
+            {
+                baseQuery = baseQuery.Where(s => s.SinseiChoaiCd == condition.SinseiChoaiCd);
+            }
+
+            if (!string.IsNullOrEmpty(condition.SeikyuKbn))
+            {
+                baseQuery = baseQuery.Where(s => s.SeikyuKbn == condition.SeikyuKbn);
+            }
+
+            baseQuery = baseQuery
+                .OrderByDescending(s => s.SinseiNo);
+
+            var list = await baseQuery.ToListAsync();
+
+            using var workbook = new XLWorkbook();
+            var worksheet = workbook.Worksheets.Add("InputConditions");
+            worksheet.Cell(1, 1).Value = "申請番号";
+            worksheet.Cell(1, 2).Value = "対象年月";
+            worksheet.Cell(1, 3).Value = "処理方法";
+            worksheet.Cell(1, 4).Value = "請求区分";
+            worksheet.Cell(1, 5).Value = "帳合CD";
+            worksheet.Cell(1, 6).Value = "帳合店";
+            worksheet.Cell(1, 7).Value = "得意先CD";
+            worksheet.Cell(1, 8).Value = "得意先名";
+            worksheet.Cell(1, 9).Value = "協賛額";
+            worksheet.Cell(1,10).Value = "費用計上";
+            worksheet.Cell(1,11).Value = "数量単位区分";
+            worksheet.Cell(1,12).Value = "経費所CD";
+            worksheet.Cell(1,13).Value = "経費所名";
+            worksheet.Cell(1,14).Value = "申請計上年月";
+            worksheet.Cell(1,15).Value = "訂正申請番号";
+            worksheet.Cell(1,16).Value = "未確定件数";
+            worksheet.Cell(1,17).Value = "価格販促区分";
+            worksheet.Cell(1,18).Value = "経費配分条件";
+
+            var row = 2;
+            foreach (var item in list)
+            {
+                worksheet.Cell(row, 1).Value = item.SinseiNo;
+                worksheet.Cell(row, 2).Value = item.SinseiTaishoYm;
+                worksheet.Cell(row, 3).Value = item.ShoriHoho;
+                worksheet.Cell(row, 4).Value = item.SeikyuKbnNm;
+                worksheet.Cell(row, 5).Value = item.SinseiChoaiCd;
+                worksheet.Cell(row, 6).Value = item.SinseiChoaiNm;
+                worksheet.Cell(row, 7).Value = item.TorihikiCdA;
+                worksheet.Cell(row, 8).Value = item.TorihikiNmA;
+                worksheet.Cell(row, 9).Value = item.KyosanGaku;
+                worksheet.Cell(row,10).Value = item.HiyoKeijo;
+                worksheet.Cell(row,11).Value = item.SuryoTaniKbnNm;
+                worksheet.Cell(row,12).Value = item.KeihishoCd;
+                worksheet.Cell(row,13).Value = item.KeihishoNm;
+                worksheet.Cell(row,14).Value = item.SinseiKeijoYm;
+                worksheet.Cell(row,15).Value = item.TeiseiSinseiNo;
+                worksheet.Cell(row,16).Value = item.MikakuteiCnt;
+                worksheet.Cell(row,17).Value = item.KakakuHansokuKbnNm;
+                worksheet.Cell(row,18).Value = item.KeihiHaibunJokenNm;
+                row++;
+            }
+
+            using var stream = new MemoryStream();
+            workbook.SaveAs(stream);
+            stream.Position = 0;
+            return File(stream.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "inputconditions.xlsx");
         }
 
         public IActionResult CRV0020Sample()
